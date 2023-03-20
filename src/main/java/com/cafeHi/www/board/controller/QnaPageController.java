@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.cafeHi.www.board.dto.QnA;
-import com.cafeHi.www.common.page.Criteria;
 import com.cafeHi.www.mapper.board.QnaMapper;
 import com.cafeHi.www.member.dto.CustomUser;
 import com.cafeHi.www.member.dto.Member;
@@ -33,15 +32,16 @@ public class QnaPageController {
 	
 	@GetMapping("/CafeHi-QnAWrite")
 	public String QnaWriteView() {
+
 		return "member/cafehi_qnaWrite";
 	}
 	
 	@GetMapping("/CafeHi-UpdateQnA")
-	public String QnAUpdateView(QnA qna, Model model) {
+	public String QnAUpdateView(QnA qna,SearchCriteria scri, Model model) {
 		
 		model.addAttribute("qna", qnaMapper.getQnA(qna));
 		model.addAttribute("modifyDate", LocalDateTime.now());
-		
+		model.addAttribute("scri", scri);
 		return "member/cafehi_qnaUpdate";
 	}
 	

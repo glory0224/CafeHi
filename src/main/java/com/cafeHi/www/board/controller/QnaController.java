@@ -84,7 +84,7 @@ public class QnaController {
 	
 	
 	@PostMapping("/CafeHi-UpdateQnA")
-	public String AUpdateQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, HttpServletRequest request) throws IllegalStateException, IOException {
+	public String UpdateQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, SearchCriteria scri) throws IllegalStateException, IOException {
 		
 		
 		// 수정 - 애초에 uploadfile 이 안넘어오거나, 새로운 파일이 넘어온다.
@@ -161,18 +161,17 @@ public class QnaController {
 		qna.updateQnADateTime();
 		
 		qnaMapper.modifyQnA(qna);
-		request.setAttribute("msg", "수정이 완료되었습니다.");
-		request.setAttribute("url", "CafeHi-QnA?qna_num=" + qna.getQna_num());
-		return "common/alert";
-	
+
+		return "redirect:/CafeHi-QnA?qna_num=" + qna.getQna_num() + "&page=" + scri.getPage() + "&perPageNum=" + scri.getPerPageNum() + "&searchType=" + scri.getSearchType() + "&keyword=" + scri.getKeyword();
+
 	
 }
 	
 	
 	
 	
-	@GetMapping("/CafeHi-DeleteQnA")
-	public String DeleteQnA(QnA qna, HttpServletRequest request) {
+	@PostMapping("/CafeHi-DeleteQnA")
+	public String DeleteQnA(QnA qna, HttpServletRequest request, SearchCriteria scri) {
 		
 		QnA getQnA = qnaMapper.getQnA(qna);
 		
@@ -186,13 +185,14 @@ public class QnaController {
 			file.delete();
 			}
 			
-			request.setAttribute("msg", "삭제가 완료되었습니다.");
-			request.setAttribute("url", "CafeHi-QnAList");
-			return "common/alert";
+//			request.setAttribute("msg", "삭제가 완료되었습니다.");
+//			request.setAttribute("url", "CafeHi-QnAList");
+
+			return "redirect:/CafeHi-QnAList?page=" + scri.getPage() + "&perPageNum=" + scri.getPerPageNum() + "&searchType=" + scri.getSearchType() + "&keyword=" + scri.getKeyword();
 		}else {
 			
 			request.setAttribute("msg", "삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
-			request.setAttribute("url", "CafeHi-QnAList");
+			request.setAttribute("url", "history.back()");
 			
 			return "common/alert";
 		}
@@ -227,7 +227,7 @@ public class QnaController {
 	}
 	
 	@GetMapping("CafeHi-QnA")
-	public String QnAView(HttpServletRequest request, HttpServletResponse response, QnA qna, Model model) {
+	public String QnAView(HttpServletRequest request, HttpServletResponse response, QnA qna,SearchCriteria scri, Model model) {
 		
 		// 쿠키 생성으로 방문 했던 게시글 새로고침 할 때 계속 조회수 증가하는 현상 방지
 		 Cookie oldCookie = null;
@@ -263,7 +263,8 @@ public class QnaController {
 		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		 model.addAttribute("securityId", authentication.getName()); // 로그인 중인 사용자의 권한에 따라 보이는 항목을 다르게 하기위해 ID값 반환 
 		 model.addAttribute("qna", qnaMapper.getQnA(qna));
-		
+		 model.addAttribute("scri", scri);
+
 		return "common/cafehi_qnaContent";
 	}
 	

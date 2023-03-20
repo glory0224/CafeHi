@@ -51,7 +51,7 @@
                     </form>
                     <!--------------------검색 엔진---------------------->
 
-                    <a class="btn btn-success float-end" sec:authorize="hasAnyRole('ROLE_USER')" href="">
+                    <a class="btn btn-success float-end" sec:authorize="hasAnyRole('ROLE_USER')" href="" th:href="@{/CafeHi-QnAWrite}">
                         <i class="fas fa-edit"></i> 글 작성
                     </a>
                     <a class="btn btn-success float-end" sec:authorize="hasAnyRole('ROLE_ADMIN')"
@@ -85,7 +85,7 @@
                     <tr th:each="qna : ${qnaList}" th:with="writeDate= ${qna.qna_writetime}">
                         <td th:text="${qna.qna_num }">글번호</td>
                         <td>
-                            <a th:text="${qna.qna_title }" th:href="@{/CafeHi-QnA(qna_num = ${qna.qna_num})}"
+                            <a th:text="${qna.qna_title }" th:href="@{/CafeHi-QnA(qna_num = ${qna.qna_num}, page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}"
                                style="text-decoration: none; color: black; font-weight: bold;">
                                 글제목
                             </a>
