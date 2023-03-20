@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.cafeHi.www.mapper.menu.MenuMapper">
+	
+	<resultMap type="com.cafeHi.www.menu.dto.Menu" id="MenuResult">
+		<result property="menu_code" column="menu_code" />
+		<result property="menu_price" column="menu_price" />
+		<result property="menu_type" column="menu_type" />
+		<result property="menu_name" column="menu_name" />
+		<result property="menu_explain" column="menu_explain" />
+		<result property="menu_img_path" column="menu_img_path" />
+		<result property="menu_quantity" column="menu_quantity" />
+		
+			
+	</resultMap>
+
+
+<select id="getCoffeeList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'coffee' </select>
+
+<select id="getColdBrewList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'coldbrew' </select>
+
+<select id="getLatteList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'latte' </select>
+
+<select id="getSmoothieList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'smoothie' </select>
+
+<select id="getSideList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'side' </select>
+
+<select id="getBeverageList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'beverage' </select>
+
+<select id="getFruitJuiceList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'fruitJuice' </select>
+
+<select id="getTeaList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'tea' </select>
+
+<select id="getMenu" resultType="com.cafeHi.www.menu.dto.Menu" parameterType="int">SELECT * FROM cafehi_menu WHERE menu_code = #{menuCode} </select>
+		
+</mapper>

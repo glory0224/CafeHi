@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+	crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+	integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+	crossorigin="anonymous">
+<title>나의 장바구니</title>
+</head>
+<body>
+<div th:insert="~{cafeHi_module/header :: cafeHiHeader}"></div>
+
+<div th:replace="~{cafeHi_module/MessageCommon :: cafeHiMyPageCommon}"></div>
+
+<div class="d-flex justfiy-content-center">
+<div class="float-start mt-5 p-5">
+<div th:replace="~{cafeHi_module/NavCommon :: cafeHiMyPage}"></div>
+</div>
+<div class="w-50 m-auto" style="padding-top: 5%">
+			<div th:if="${myPageCartMap.CartListSize == 0}">	
+        	<h3>장바구니가 비었습니다.</h3>
+        	<br>
+        	<a class="btn btn-success" th:href="@{/CafeHi-Menu}">카페하이 메뉴 보기</a>
+        	
+        	</div>
+        	<div th:unless="${myPageCartMap.CartListSize == 0}">
+      
+				<form method="post" action="modifyCart">
+					<table class="table table-striped" border="1" width="400px">
+					
+						<tr align="center">
+							<th class="table-success">상품명</th>
+							<th class="table-success">상품가격</th>
+							<th class="table-success">수량</th>
+							<th class="table-success">금액</th>
+							<th class="table-success">&nbsp;</th>
+						</tr>
+		
+							
+							<tr align="center" th:each="CartMap : ${myPageCartMap.CartList}">
+								<td th:text="${CartMap.menu_name}"></td>
+								<td th:text="${#numbers.formatInteger(CartMap.menu_price, 3, 'COMMA') + ' 원'}"></td>
+								<td >
+									<input type="number" th:name="cart_amount" th:value="${#numbers.formatInteger(CartMap.cart_amount, 1, 'COMMA')}" style="width: 50px; border: none;"/>
+									<input type="hidden" th:name="cart_code" th:value="${CartMap.cart_code}">
+									<!-- <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" /> -->
+								</td>
+							
+								<td th:text="${#numbers.formatInteger(CartMap.money, 3, 'COMMA')}"></td>
+								<td>
+								<button class="btn btn-success btn-sm">수정</button>
+								<button type="button" class="btn btn-success btn-sm" th:onclick="|javascript:cartDelete('${CartMap.cart_code}')|">삭제</button>
+								
+								</td>
+							</tr>
+						<tr>
+							<td align="right"></td>
+							<td colspan="5" align="right"> <b>30000원 이상부터 배송료가 무료입니다.</b> <br>
+															<!-- <fmt:formatNumber value="${myPageCartMap.sumMoney}" pattern="#,###,###" /> -->
+															장바구니 금액 합계 : <span th:text="${#numbers.formatInteger(myPageCartMap.sumMoney , 3, 'COMMA') + '원'}"></span><br> 
+															<!-- ${myPageCartMap.fee} -->
+															배송료 : <span th:text="${#numbers.formatInteger(myPageCartMap.fee , 1, 'COMMA') + '원'}"></span><br> 
+															<!--<fmt:formatNumber value="${myPageCartMap.sum}" pattern="#,###,###" />  -->
+															총합계 : <span th:text="${#numbers.formatInteger(myPageCartMap.sum , 3, 'COMMA') + '원'}"></span>
+							</td>
+						</tr>
+					</table>
+					<br>
+					<div class="d-flex justify-content-evenly">
+					<div class="float-end">
+					<button type="button" class="btn btn-success" th:onclick="|javascript:cartDeleteAll()|">장바구니 비우기</button>
+					<a class="btn btn-success" th:href="@{/CafeHi-Menu}">카페하이 메뉴 보기</a>
+					</div>
+					</div>
+				</form>
+        	</div>
+        	
+        	</div>
+			
+			
+
+
+</div>
+
+<div th:insert="~{cafeHi_module/footer :: cafeHiFooter}"></div>
+</body>
+<script th:inline="javascript">
+    function cartDelete(cart_code) {
+    	// create element (form)
+        var form = document.createElement("form");
+    	 // create element (input)
+        var cartInput = document.createElement('input');
+    	var csrfInput =  document.createElement('input');
+    	 // set attribute (form) 
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "deleteCart");
+     	// set attribute (input)
+        cartInput.setAttribute("type", "hidden");
+        cartInput.setAttribute("name", "cart_code");
+        cartInput.setAttribute("value", cart_code);
+     	// set attribute (input) - spring security 속성 추가
+     	csrfInput.setAttribute("type", "hidden");
+     	csrfInput.setAttribute("name", /*[[${_csrf.parameterName }]]*/);
+     	csrfInput.setAttribute("value", /*[[${_csrf.token }]]*/);
+     	
+        
+     	// append input (to form)
+        form.appendChild(cartInput);
+     	form.appendChild(csrfInput);
+     	// append form (to body)
+        document.body.appendChild(form);
+     	// submit form
+        form.submit();
+    }
+    
+    function cartDeleteAll() {
+    	// create element (form)
+        var form = document.createElement("form");
+    	 // create element (input)
+    	var csrfInput =  document.createElement('input');
+    	 // set attribute (form) 
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "deleteCartAll");
+
+     	// set attribute (input) - spring security 속성 추가
+     	csrfInput.setAttribute("type", "hidden");
+     	csrfInput.setAttribute("name", /*[[${_csrf.parameterName }]]*/);
+     	csrfInput.setAttribute("value", /*[[${_csrf.token }]]*/);
+     	
+        
+     	// append input (to form)
+     	form.appendChild(csrfInput);
+     	// append form (to body)
+        document.body.appendChild(form);
+     	// submit form
+        form.submit();
+    }
+    
+</script>
+</html>

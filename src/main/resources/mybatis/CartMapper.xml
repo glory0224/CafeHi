@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.cafeHi.www.mapper.cart.CartMapper">
+
+<insert id="insertCart">
+	INSERT INTO cafehi_cart (cart_code, member_code, menu_code, cart_amount, cart_writetime, cart_updatetime)
+	VALUES (seq_cart.nextval, #{member_code}, #{menu_code}, #{cart_amount}, #{cart_writetime}, #{cart_updatetime})
+</insert>
+
+<select id="getCartList" resultType="com.cafeHi.www.cart.dto.Cart">
+		
+
+
+SELECT cart_code, p.menu_code, m.member_id, member_name, menu_name, cart_amount, menu_price, (menu_price*cart_amount) money 
+
+
+FROM cafehi_member m, cafehi_cart c, cafehi_menu p 
+
+
+WHERE m.member_code = c.member_code and c.menu_code = p.menu_code and c.member_code=#{member_code} ORDER BY cart_code 
+
+</select>
+
+<update id="modifyCart">
+
+UPDATE cafehi_cart SET cart_amount = #{cart_amount}
+WHERE cart_code = #{cart_code} 
+
+</update>
+
+
+<delete id="deleteCart">
+	 DELETE FROM cafehi_cart WHERE cart_code = #{cart_code}
+</delete>
+
+
+<delete id="deleteAllCart">DELETE FROM cafehi_cart WHERE member_code = #{member_code} </delete>
+
+
+
+<select id="sumMoney" resultType="int">
+	
+SELECT nvl(sum(menu_price*cart_amount), 0) 
+<!--금액과 상품갯수를 곱한값과 0을더해서 0이 나오는 것을 검색한다. -->
+
+<!--그러니까 아무것도 담지 않았을 때 대체 값이 0이 나오도록 함 -->
+
+FROM cafehi_cart c, cafehi_menu p 
+
+WHERE c.menu_code = p.menu_code AND member_code=#{member_code} 
+
+</select>
+
+
+</mapper>

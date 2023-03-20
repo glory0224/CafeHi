@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.cafeHi.www.mapper.member.MemberAuthMapper">
+
+	<insert id="insertMemberAuth" useGeneratedKeys="false">
+		INSERT INTO cafehi_member_auth(member_auth_code, member_code, member_auth, member_auth_writetime, member_auth_updatetime)
+		VALUES(seq_member_auth.nextval , #{member_code}, #{member_auth}, #{member_auth_writetime}, #{member_auth_updatetime})
+	</insert>
+	
+</mapper>

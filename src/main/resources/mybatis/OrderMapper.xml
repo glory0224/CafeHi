@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.cafeHi.www.mapper.order.OrderMapper">
+	
+	<resultMap type="com.cafeHi.www.order.dto.Orders" id="OrdersResult">
+		<id property="order_code" column="ORDER_CODE"/>
+		<result property="member_code" column="MEMBER_CODE"/>
+		<result property="order_status" column="ORDER_STATUS"/>
+		<result property="order_writetime" column="ORDER_WRITETIME"/>
+		<result property="order_updatetime" column="ORDER_UPDATETIME"/>
+		<result property="include_delivery" column="INCLUDE_DELIVERY" />
+		
+	</resultMap>	
+	
+	
+	<resultMap type="com.cafeHi.www.order.dto.OrderMenu" id="OrderMenuResult">
+
+	<id  property="order_menu_code" column="ORDER_MENU_CODE"/>
+
+	<result property="order_code" column="ORDER_CODE" />
+
+	<result property="menu_code" column="MENU_CODE" />
+
+	<result property="total_order_price" column="TOTAL_ORDER_PRICE" />
+
+	<result property="total_order_count" column="TOTAL_ORDER_COUNT" />
+	
+	<result property="order_menu_writetime" column="ORDER_MENU_WRITETIME" />
+	
+	<result property="order_menu_updatetime" column="ORDER_MENU_UPDATETIME" />
+
+	</resultMap>
+
+
+<insert id="insertOrder" parameterType="com.cafeHi.www.order.dto.Orders">
+	INSERT INTO cafehi_order(order_code, member_code, include_delivery, order_status, order_writetime, order_updatetime)
+	VALUES(seq_order.nextval, #{member_code}, #{include_delivery}, #{order_status}, #{order_writetime}, #{order_updatetime})	
+
+</insert>
+
+<update id="cancelOrder" parameterType="com.cafeHi.www.order.dto.Orders">
+	UPDATE cafehi_order SET order_status = #{order_status}, order_updatetime = #{order_updatetime}
+	WHERE order_code = #{order_code} 
+</update>
+
+
+</mapper>

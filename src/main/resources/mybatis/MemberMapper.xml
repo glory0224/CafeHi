@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        
+<mapper namespace="com.cafeHi.www.mapper.member.MemberMapper">
+ 	
+ 	<resultMap type="com.cafeHi.www.member.dto.Member" id="MemberResultMap">
+ 		
+ 		<id column="MEMBER_CODE" property="member_code" />	
+ 		
+ 		<result column="MEMBER_CODE" property="member_code"/>
+
+		<result column="MEMBER_ID" property="member_id"/>
+
+		<result column="MEMBER_PW" property="member_pw"/>
+
+		<result column="MEMBER_NAME" property="member_name"/>
+
+		<result column="MEMBER_CONTACT" property="member_contact"/>
+
+		<result column="MEMBER_EMAIL" property="member_email"/>
+
+		<result column="MEMBER_ROAD_ADDRESS" property="member_road_address"/>
+
+		<result column="MEMBER_JIBUN_ADDRESS" property="member_jibun_address"/>
+
+		<result column="MEMBER_DETAIL_ADDRESS" property="member_detail_address"/>
+
+		<result column="ENABLED" property="enabled"/>
+		
+		<result column="MEMBER_WRITETIME" property="member_writetime"/>
+		
+		<result column="MEMBER_UPDATETIME" property="member_updatetime"/>
+		
+		<collection property="authList" resultMap="MemberAuthResultMap"></collection>
+ 		
+ 	</resultMap>
+ 	
+ 	<resultMap type="com.cafeHi.www.member.dto.MemberAuth" id="MemberAuthResultMap">
+ 		
+ 		<id column="MEMBER_AUTH_CODE" property="member_auth_code"/>
+
+		<result column="MEMBER_CODE" property="member_code" />
+
+		<result column="MEMBER_AUTH" property="member_auth"/>
+
+		<result column="MEMBER_AUTH_WRITETIME" property="member_auth_writetime"/>
+		
+		<result column="MEMBER_AUTH_UPDATETIME" property="member_auth_updatetime"/>
+ 	
+ 	</resultMap>
+
+
+
+	<insert id="insertMember" useGeneratedKeys="true" keyColumn="MEMBER_CODE" keyProperty="member_code">
+		INSERT INTO cafehi_member(member_code, member_id, member_pw, member_name, member_contact, member_email, member_road_address, member_jibun_address, member_detail_address, member_writetime, member_updatetime)
+		VALUES(seq_member.nextval, #{member_id}, #{member_pw}, #{member_name}, #{member_contact}, #{member_email}, #{member_road_address},#{member_jibun_address},#{member_detail_address}, #{member_writetime}, #{member_updatetime})
+	</insert>
+
+ 	
+ 	<update id="updateMemberName" parameterType="com.cafeHi.www.member.dto.Member">
+ 		UPDATE cafehi_member SET member_name = #{member_name} WHERE member_code = #{member_code} 
+ 	</update>
+ 	<update id="updateMemberContact" parameterType="com.cafeHi.www.member.dto.Member">
+ 		UPDATE cafehi_member SET member_contact = #{member_contact} WHERE member_code = #{member_code}
+ 	</update>
+ 	<update id="updateMemberEmail" parameterType="com.cafeHi.www.member.dto.Member">
+ 		UPDATE cafehi_member SET member_email = #{member_email} WHERE member_code = #{member_code}
+ 	</update>
+ 	<update id="updateMemberAddress" parameterType="com.cafeHi.www.member.dto.Member">
+ 		UPDATE cafehi_member
+ 		SET member_road_address = #{member_road_address}, member_jibun_address = #{member_jibun_address}
+ 		WHERE member_code = #{member_code}
+ 	</update>
+ 	<update id="updateMemberDetailAddress" parameterType="com.cafeHi.www.member.dto.Member">
+ 		UPDATE cafehi_member SET member_detail_address = #{member_detail_address} WHERE member_code = #{member_code}
+ 	</update>
+
+
+	<delete id="deleteMember" parameterType="int">
+		DELETE FROM cafehi_member WHERE member_code = #{member_code}
+	</delete>
+ 	
+ 	
+ 	<select id="findMembers" resultMap="MemberResultMap">
+ 	 	SELECT * FROM cafehi_member
+ 	</select>
+ 	
+ 	<!-- Member만 반환  -->
+ 	<select id="getMember" resultType="com.cafeHi.www.member.dto.Member">
+ 		SELECT * FROM cafehi_member WHERE member_code = #{member_code}
+ 	</select>
+
+	<!--아이디로 로그인 시 security 검증 후 멤버 정보와 권한 정보 함께 반환-->
+	<select id="findMemberById" parameterType="String" resultMap="MemberResultMap">
+		SELECT *
+		FROM cafehi_member m LEFT OUTER JOIN cafehi_member_auth cma ON m.member_code = cma.member_code
+		WHERE member_id = #{member_id}
+	</select>
+ 	
+ 	
+ 	
+ 	<select id="idCheck" parameterType="String" resultType="int">
+ 		
+ 	SELECT count(*) FROM cafehi_member WHERE member_id = #{member_id}
+ 		
+ 	</select>
+ 	
+ 	<select id="checkEmail" parameterType="String" resultType="int">
+ 	
+ 	SELECT count(*) FROM cafehi_member WHERE member_email = #{member_email}
+ 		
+ 	</select>
+ 	
+ 	
+ 	
+</mapper>
