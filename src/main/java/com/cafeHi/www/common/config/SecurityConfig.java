@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	public void configure(WebSecurity web) throws Exception {
 		// 인증을 무시하기 위한 설정
-		web.ignoring().antMatchers("/img/**","/js/**", "/css/**", "/bootstrap-5.2.0-dist/**");
+		web.ignoring().antMatchers("/cafeHi/**","/js/**", "/css/**");
 	}
 	
 	

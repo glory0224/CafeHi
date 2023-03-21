@@ -41,8 +41,16 @@ public class OrderController {
 	
 	
 	@GetMapping("/CafehiOrder")
-	public String CafeHiOrderView(@RequestParam(required = false) int toOrderAmount, Menu menu, Model model, HttpServletRequest request) {
+	public String CafeHiOrderView(@RequestParam(required = false) Integer toOrderAmount, Menu menu, Model model, HttpServletRequest request) {
 		
+		// 수량이 null로 넘어오는 경우
+		if(toOrderAmount == null) {
+			request.setAttribute("msg", "수량이 선택되지 않았습니다. 메뉴 페이지로 돌아갑니다.");
+			request.setAttribute("url", "/CafeHi-Menu");
+
+			return "common/alert";
+		}
+
 		// 수량 검증 로직
 		if(toOrderAmount == 0) {
 			request.setAttribute("msg", "수량을 선택 해야 구매 가능합니다.");

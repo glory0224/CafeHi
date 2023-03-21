@@ -26,7 +26,6 @@ CsrfRequestDataValueProcessor가 적용되어 from 에 CSRF 토큰이 자동적�
 	
 <div class="w-50 m-auto p-5">
 <form class="container" action="" th:action="@{/signup}" method="post" id="memberForm">
-<!-- <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" /> -->
 	<h1 class="text-center m-5">회원 가입</h1>
   <div class="m-5">
     <h4><label for="member_id" class="form-label">아이디</label><input id="idCheck" class="btn btn-sm btn-success float-end" type="button" value="중복 확인"></h4>
