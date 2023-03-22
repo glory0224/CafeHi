@@ -1,12 +1,14 @@
 package com.cafeHi.www.member.service;
 
 import com.cafeHi.www.member.dto.Membership;
+import com.cafeHi.www.order.dto.OrderMenu;
 
 public interface MembershipService {
 	
-	public void insertMembership(Membership membership);
-	public Membership getMembership(int member_code);
+	void insertMembership(Membership membership);
+	Membership getMembership(int member_code);
 	
-	public void updateMembershipPoint(Membership membership);
-	
+	void updateMembershipPoint(Membership membership);
+
+    void minusMembershipPoint(Membership getMembership, int total_order_price_point);
 }

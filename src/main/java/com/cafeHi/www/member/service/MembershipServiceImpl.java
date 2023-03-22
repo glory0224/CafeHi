@@ -2,6 +2,7 @@ package com.cafeHi.www.member.service;
 
 import java.time.LocalDateTime;
 
+import com.cafeHi.www.order.dto.OrderMenu;
 import org.springframework.stereotype.Service;
 
 import com.cafeHi.www.mapper.member.MembershipMapper;
@@ -37,28 +38,49 @@ public class MembershipServiceImpl implements MembershipService{
 		log.info("totalPoint = {}", totalPoint);
 		
 		// 회원 Grade 변경 로직
-		
-		if (MembershipGrade.STANDARD.getBasePoint() <= totalPoint && totalPoint < MembershipGrade.SILVER.getBasePoint()) {
-			membership.updateMembershipInfo(MembershipGrade.STANDARD.getGrade(), totalPoint);
-		}
-		
-		if (MembershipGrade.SILVER.getBasePoint() <= totalPoint && totalPoint < MembershipGrade.GOLD.getBasePoint()) {
-			membership.updateMembershipInfo(MembershipGrade.SILVER.getGrade(), totalPoint);
-		}
-		
-		if (MembershipGrade.GOLD.getBasePoint() <= totalPoint && totalPoint < MembershipGrade.VIP.getBasePoint()) {
-			membership.updateMembershipInfo(MembershipGrade.GOLD.getGrade(), totalPoint);
-		}
-		
-		if (MembershipGrade.VIP.getBasePoint() <= totalPoint) {
-			membership.updateMembershipInfo(MembershipGrade.VIP.getGrade(), totalPoint);
-		}
-		
+
+		changeGrade(membership, totalPoint);
+
 		log.info("total membership point = {}", membership.getMembership_point());
 		
 		int result =  membershipMapper.updateMembershipPoint(membership);
 		
 		log.info("updateResult = {}", result);
 	}
-	
+
+
+
+	@Override
+	public void minusMembershipPoint(Membership getMembership, int total_order_price_point) {
+
+		int returnPoint = getMembership.getMembership_point() - total_order_price_point;
+
+		log.info("returnPoint = {}", returnPoint);
+
+		changeGrade(getMembership, returnPoint);
+
+		int result =  membershipMapper.updateMembershipPoint(getMembership);
+
+		log.info("updateResult = {}", result);
+
+	}
+
+	private static void changeGrade(Membership membership, double totalPoint) {
+		if (MembershipGrade.STANDARD.getBasePoint() <= totalPoint && totalPoint < MembershipGrade.SILVER.getBasePoint()) {
+			membership.updateMembershipInfo(MembershipGrade.STANDARD.getGrade(), totalPoint);
+		}
+
+		if (MembershipGrade.SILVER.getBasePoint() <= totalPoint && totalPoint < MembershipGrade.GOLD.getBasePoint()) {
+			membership.updateMembershipInfo(MembershipGrade.SILVER.getGrade(), totalPoint);
+		}
+
+		if (MembershipGrade.GOLD.getBasePoint() <= totalPoint && totalPoint < MembershipGrade.VIP.getBasePoint()) {
+			membership.updateMembershipInfo(MembershipGrade.GOLD.getGrade(), totalPoint);
+		}
+
+		if (MembershipGrade.VIP.getBasePoint() <= totalPoint) {
+			membership.updateMembershipInfo(MembershipGrade.VIP.getGrade(), totalPoint);
+		}
+	}
+
 }

@@ -42,7 +42,6 @@ public class Membership {
 		this.membership_updatetime = LocalDateTime.now();
 	}
 
-
 }
 
 

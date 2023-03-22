@@ -50,7 +50,7 @@
 	
 	<select id="getMembership" parameterType="int" resultType="com.cafeHi.www.member.dto.Membership">
 
-		SELECT membership_grade, membership_point FROM cafehi_membership
+		SELECT member_code ,membership_grade, membership_point FROM cafehi_membership
 		WHERE member_code = #{member_code}
 	
 	</select>

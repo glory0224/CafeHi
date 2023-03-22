@@ -20,15 +20,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
-@Slf4j
 public class FileController {
 	
 	@PostMapping("/qnaFileDownload")
 	public ResponseEntity<Resource> fileDownload(@RequestParam("upload_path") String upload_path, @RequestParam("upload_file_name") String upload_file_name) throws IOException {
-		
-		log.info("upload_path = {}", upload_path);
-		log.info("upload_file_name = {}", upload_file_name);
-		
+
 		Path path = Paths.get(upload_path);
 		String contentType = Files.probeContentType(path);
 		
