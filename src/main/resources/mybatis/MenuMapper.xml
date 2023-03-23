@@ -12,7 +12,7 @@
 		<result property="menu_name" column="menu_name" />
 		<result property="menu_explain" column="menu_explain" />
 		<result property="menu_img_path" column="menu_img_path" />
-		<result property="menu_quantity" column="menu_quantity" />
+		<result property="menu_stock_quantity" column="menu_stock_quantity" />
 		
 			
 	</resultMap>
@@ -35,5 +35,11 @@
 <select id="getTeaList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'tea' </select>
 
 <select id="getMenu" resultType="com.cafeHi.www.menu.dto.Menu" parameterType="int">SELECT * FROM cafehi_menu WHERE menu_code = #{menuCode} </select>
-		
+
+	<update id="changeMenuStockQuantity" parameterType="com.cafeHi.www.menu.dto.Menu" >
+		UPDATE cafehi_menu
+		SET menu_stock_quantity = #{menu_stock_quantity}
+		WHERE menu_code = #{menu_code}
+	</update>
+
 </mapper>

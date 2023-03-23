@@ -60,14 +60,21 @@
 
     </insert>
 
+    <update id="cancelOrderMenu" parameterType="com.cafeHi.www.order.dto.OrderMenu">
+        UPDATE cafehi_order_menu
+        SET order_menu_status = #{order_menu_status}, order_menu_updatetime = #{order_menu_updatetime}
+        WHERE order_menu_code = #{order_menu_code}
+    </update>
 
     <select id="findOrderMenuList" parameterType="int" resultMap="OrderMenuResult">
 
-		SELECT m.menu_name,
+		SELECT m.menu_code,
+		       m.menu_name,
 			   m.menu_price,
 			   om.order_menu_code,
 			   om.total_order_count,
 			   om.total_order_price,
+			   om.total_order_price_point,
 			   o.include_delivery,
 			   o.order_code,
 			   o.order_status,

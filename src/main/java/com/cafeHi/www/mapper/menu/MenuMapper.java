@@ -9,21 +9,23 @@ import com.cafeHi.www.menu.dto.Menu;
 @Mapper
 public interface MenuMapper {
 
-	public List<Menu> getCoffeeList();
+	List<Menu> getCoffeeList();
 
-	public List<Menu> getColdBrewList();
+	List<Menu> getColdBrewList();
 
-	public List<Menu> getLatteList();
+	List<Menu> getLatteList();
 
-	public List<Menu> getSmoothieList();
+	List<Menu> getSmoothieList();
 
-	public List<Menu> getSideList();
+	List<Menu> getSideList();
 
-	public List<Menu> getBeverageList();
+	List<Menu> getBeverageList();
 
-	public List<Menu> getFruitJuiceList();
+	List<Menu> getFruitJuiceList();
 
-	public List<Menu> getTeaList();
+	List<Menu> getTeaList();
 
-	public Menu getMenu(int menu_code);
+	Menu getMenu(int menu_code);
+
+    void changeMenuStockQuantity(Menu getMenu);
 }

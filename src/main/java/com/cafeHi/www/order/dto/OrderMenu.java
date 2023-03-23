@@ -51,9 +51,8 @@ public class OrderMenu {
 
 	}
 
-	public void setTimeAndStatus() {
-		this.order_menu_status = true;
-		this.order_menu_writetime = LocalDateTime.now();
+	public void cancelTimeAndStatus() {
+		this.order_menu_status = false;
 		this.order_menu_updatetime = LocalDateTime.now();
 	}
 
@@ -66,19 +65,15 @@ public class OrderMenu {
 		this.order = order;
 	}
 
-	public void setTotal_order_price_point(double total_order_price_point) {
-		this.total_order_price_point = (int)total_order_price_point;
+	public void setOrder_menu_code(int order_menu_code) {
+		this.order_menu_code = order_menu_code;
 	}
 
+	public void setTotal_order_price_point(int total_order_price_point) {
+		this.total_order_price_point = total_order_price_point;
+	}
 
-	public void setTotalPriceAndTotalPointAndCount(int total_order_price , double total_order_price_point, int total_order_count) {
-
-		this.total_order_price = total_order_price;
-		this.total_order_price_point = (int)total_order_price_point;
+	public void setTotal_order_count(int total_order_count) {
 		this.total_order_count = total_order_count;
-
 	}
-
-
-	
 }

@@ -59,4 +59,8 @@ public class Orders {
 	public void setMember_code(int member_code) {
 		this.member_code = member_code;
 	}
+
+	public void setOrder_code(int order_code) {
+		this.order_code = order_code;
+	}
 }

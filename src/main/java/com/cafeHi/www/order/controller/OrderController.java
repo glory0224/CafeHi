@@ -42,7 +42,13 @@ public class OrderController {
 	
 	@GetMapping("/CafehiOrder")
 	public String CafeHiOrderView(@RequestParam(required = false) Integer toOrderAmount, Menu menu, Model model, HttpServletRequest request) {
-		
+
+		// 재고가 다 소진된 경우
+		if (menu.getMenu_stock_quantity() == 0) {
+			request.setAttribute("msg", "재고가 다 소진되었습니다.");
+			return "common/goBackAlert"; // 이전페이지 이동
+		}
+
 		// 수량이 null로 넘어오는 경우
 		if(toOrderAmount == null) {
 			request.setAttribute("msg", "수량이 선택되지 않았습니다. 메뉴 페이지로 돌아갑니다.");
@@ -54,8 +60,6 @@ public class OrderController {
 		// 수량 검증 로직
 		if(toOrderAmount == 0) {
 			request.setAttribute("msg", "수량을 선택 해야 구매 가능합니다.");
-			request.setAttribute("url", "history.back()");
-			
 			return "common/goBackAlert"; // 이전페이지 이동
 		}
 		
@@ -98,7 +102,12 @@ public class OrderController {
 
 		
 		Menu getMenu = menuMapper.getMenu(menu_code);
-		
+
+		getMenu.DecreaseMenuStockQuantity(total_order_count);
+
+		menuMapper.changeMenuStockQuantity(getMenu);
+
+
 		if (deliveryFee != 0 & newOrder.getInclude_delivery()) {
 			
 			orderMapper.insertOrder(newOrder);			
@@ -172,15 +181,29 @@ public class OrderController {
 	
 	
 	@PostMapping("/CancelOrder")
-	public String CafehiOrderCancel(Orders order,  Model model) {
+	public String CafehiOrderCancel(Orders order, OrderMenu orderMenu, Menu menu) {
 		order.cancelTimeAndStatus();
-		log.info("order_code = {}", order.getOrder_code());
-		log.info("order_updatetime = {}", order.getOrder_updatetime());
-		log.info("order_status = {}", order.getOrder_status());
-		
+
 		orderMapper.cancelOrder(order);
-		
-		
+
+		orderMenu.cancelTimeAndStatus();
+
+		orderMenuMapper.cancelOrderMenu(orderMenu);
+
+		Menu getMenu = menuMapper.getMenu(menu.getMenu_code());
+
+		getMenu.IncreaseMenuStockQuantity(orderMenu.getTotal_order_count());
+
+		menuMapper.changeMenuStockQuantity(getMenu);
+
+		// 세션 값
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		CustomUser userInfo = (CustomUser)principal;
+		int member_code = userInfo.getMember().getMember_code();
+
+		Membership getMembership = membershipService.getMembership(member_code);
+
+		membershipService.minusMembershipPoint(getMembership, orderMenu.getTotal_order_price_point());
 		
 		return "redirect:/CafeHi-MyPageOrderMenuList";
 	}

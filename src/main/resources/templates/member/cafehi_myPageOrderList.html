@@ -63,6 +63,10 @@
 				<td th:if="${#strings.equals(OrderMenu.order.order_status, '주문완료')}">
 				<form th:action="@{/CancelOrder}" method="post" >
 					<input type="hidden" th:name="order_code" th:value="${OrderMenu.order.order_code}"/>
+					<input type="hidden" th:name="menu_code" th:value="${OrderMenu.menu.menu_code}"/>
+					<input type="hidden" th:name="order_menu_code" th:value="${OrderMenu.order_menu_code}"/>
+					<input type="hidden" th:name="total_order_price_point" th:value="${OrderMenu.total_order_price_point}"/>
+					<input type="hidden" th:name="total_order_count" th:value="${OrderMenu.total_order_count}"/>
 					<input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }"/>
 					<input type="submit"  class="btn btn-success btn-sm" value="주문 취소"/>	
 				</form>

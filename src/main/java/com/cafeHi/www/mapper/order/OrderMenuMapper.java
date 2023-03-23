@@ -12,6 +12,6 @@ public interface OrderMenuMapper {
 	public void insertOrderMenu(OrderMenu orderMenu);
 
 	public List<OrderMenu> findOrderMenuList(int member_code);
-	
-	
+
+    void cancelOrderMenu(OrderMenu orderMenu);
 }

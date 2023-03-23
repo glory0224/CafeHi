@@ -21,9 +21,21 @@ public class Menu {
 	public void setMenu_code(int menu_code) {
 		this.menu_code = menu_code;
 	}
-	
-	
-	
 
-	
+	public void setMenu_stock_quantity(int menu_stock_quantity) {
+		this.menu_stock_quantity = menu_stock_quantity;
+	}
+
+	// 메뉴 재고 수량 감소
+
+	public void DecreaseMenuStockQuantity(int orderCount) {
+		this.menu_stock_quantity = menu_stock_quantity - orderCount;
+	}
+
+	// 메뉴 재고 수량 증가
+
+	public void IncreaseMenuStockQuantity(int orderCount) {
+		this.menu_stock_quantity = menu_stock_quantity + orderCount;
+	}
+
 }

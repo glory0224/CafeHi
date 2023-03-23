@@ -32,6 +32,7 @@
 
                 <form action="" th:action="@{/CafehiOrder}" method="get"> <!-- ?? 왜 form을 사용해놓고 get으로 넘겼지?  -->
                   <input type="hidden" th:name="menu_code" th:value="${beverageList0.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList0.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount0" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
@@ -68,6 +69,7 @@
 
                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList1.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList1.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount1" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
@@ -104,6 +106,7 @@
 
                 <form action="" method="get" th:action="@{/CafehiOrder}">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList2.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList2.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount2" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
@@ -139,12 +142,14 @@
 
                  <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList3.menu_code }">
+                   <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList3.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount3" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
 
                   <form action="" th:action="@{/insertCart}" method="post">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList3.menu_code }">
+                    <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList0.getMenu_stock_quantity()}">
                   <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
                   <input id="beverageCartAmount3" type="hidden" th:name="toCartAmount" th:value="0">
                   <div class="d-flex justify-content-between">
@@ -175,6 +180,7 @@
 
                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList4.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList4.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount4" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
@@ -211,6 +217,7 @@
 
                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList5.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList5.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount5" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
@@ -247,6 +254,7 @@
 
                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList6.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList6.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount6" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
@@ -283,6 +291,7 @@
 
                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList7.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList7.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount7" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
@@ -319,6 +328,7 @@
 
                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${beverageList8.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${beverageList8.getMenu_stock_quantity()}">
                   <input id="beverageOrderAmount8" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
