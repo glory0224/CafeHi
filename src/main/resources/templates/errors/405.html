@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Test Error Page!</title>
+    <link rel="stylesheet" href="/css/405.css">
+</head>
+<body>
+<section class="page_405">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 ">
+                <div class="col-sm-10 col-sm-offset-1" style="text-align: center">
+
+                    <div class="four_zero_four_bg">
+                        <h1 class="text-center ">405</h1>
+
+
+                    </div>
+                    <br>
+                    <div class="contant_box_405" >
+                        <h1>Error Code = 405</h1>
+                        <h3 class="h2">
+                            올바른 접근 방식이 아닙니다!
+                        </h3>
+
+                        <p>죄송합니다. 요청하신 접근을 수행할 수 없습니다.</p>
+
+                        <a th:href="@{/}" class="link_405">공식 홈페이지로 돌아가기</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+</html>
