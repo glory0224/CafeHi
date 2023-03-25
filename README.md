@@ -2,7 +2,9 @@
 
 ### 사용된 기술 스택
 
-<li>프로그래밍 언어 : Java 11 , thymeleaf </li>
+<li>프로그래밍 언어 : Java 11 </li>
+
+<li> 템플릿 엔진 : Thymeleaf </li>
 
 <li>데이터베이스 : Oracle 11g </li>
 
