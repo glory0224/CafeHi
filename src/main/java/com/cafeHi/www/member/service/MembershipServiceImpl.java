@@ -11,10 +11,12 @@ import com.cafeHi.www.member.dto.Membership;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class MembershipServiceImpl implements MembershipService{
 	
 	private final MembershipMapper membershipMapper;
@@ -35,14 +37,12 @@ public class MembershipServiceImpl implements MembershipService{
 		// 새로운 포인트(int 형변환으로 소수점 버림) + 기존 포인트
 		double totalPoint = Math.floor(membership.getMembership_point() + membership.getMembership_new_point());
 		
-		log.info("totalPoint = {}", totalPoint);
-		
+
 		// 회원 Grade 변경 로직
 
 		changeGrade(membership, totalPoint);
 
-		log.info("total membership point = {}", membership.getMembership_point());
-		
+
 		int result =  membershipMapper.updateMembershipPoint(membership);
 		
 		log.info("updateResult = {}", result);
@@ -55,7 +55,6 @@ public class MembershipServiceImpl implements MembershipService{
 
 		int returnPoint = getMembership.getMembership_point() - total_order_price_point;
 
-		log.info("returnPoint = {}", returnPoint);
 
 		changeGrade(getMembership, returnPoint);
 

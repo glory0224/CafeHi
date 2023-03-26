@@ -46,43 +46,19 @@ public class QnaController {
 
 		qna.setMember(mem);
 
-		
-		if (!uploadfile.isEmpty()) {
-		
-		UploadFile attachFile = fileStore.storFile(uploadfile);
-		
-		// 서버용 파일명
-		String storeFile = attachFile.getStoreFileName();
-		
-		qna.setStore_file_name(storeFile);
-		
-		// 클라이언트 파일명
-		String uploadFile = attachFile.getUploadFileName();
-		
-		qna.setUpload_file_name(uploadFile);
-		
-		// 전체 경로
-		String fullPath = fileStore.getFullPath(storeFile);
-		
-		qna.setUpload_path(fullPath);
-		
-		} else {
-			
-			// 파일을 등록 안하는 경우
-			qna.setStore_file_name("none");
-			qna.setUpload_file_name("없음");
-			qna.setUpload_path("none");
-		}
-		
-		log.info("qna.member.member_code = {}", qna.getMember().getMember_code());
+
+		AttachUploadFile(uploadfile, qna);
+
 
 		qnaMapper.writeQnA(qna);
 		
 		
 		return "redirect:/CafeHi-QnAList";
 	}
-	
-	
+
+
+
+
 	@PostMapping("/CafeHi-UpdateQnA")
 	public String UpdateQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, SearchCriteria scri) throws IllegalStateException, IOException {
 		
@@ -97,64 +73,14 @@ public class QnaController {
 			
 			File file = new File(qna.getUpload_path());
 			file.delete();
-			
-			if (!uploadfile.isEmpty()) {
-				
-			UploadFile attachFile = fileStore.storFile(uploadfile);
-			
-			// 서버용 파일명
-			String storeFile = attachFile.getStoreFileName();
-			
-			qna.setStore_file_name(storeFile);
-			
-			// 클라이언트 파일명
-			String uploadFile = attachFile.getUploadFileName();
-			
-			qna.setUpload_file_name(uploadFile);
-			
-			// 전체 경로
-			String fullPath = fileStore.getFullPath(storeFile);
-			
-			qna.setUpload_path(fullPath);
-			
-			} else {
-				
-				// 파일을 등록 안하는 경우
-				qna.setStore_file_name("none");
-				qna.setUpload_file_name("없음");
-				qna.setUpload_path("none");
-			}
-			
+
+			AttachUploadFile(uploadfile, qna);
+
 		}else {
 			
 			// 이전에 게시글에 파일이 존재하지 않았다면 그냥 새로운 파일을 넣거나 none 
-			
-			if (!uploadfile.isEmpty()) {
-				
-				UploadFile attachFile = fileStore.storFile(uploadfile);
-				
-				// 서버용 파일명
-				String storeFile = attachFile.getStoreFileName();
-				
-				qna.setStore_file_name(storeFile);
-				
-				// 클라이언트 파일명
-				String uploadFile = attachFile.getUploadFileName();
-				
-				qna.setUpload_file_name(uploadFile);
-				
-				// 전체 경로
-				String fullPath = fileStore.getFullPath(storeFile);
-				
-				qna.setUpload_path(fullPath);
-				
-				} else {
-					
-					// 파일을 등록 안하는 경우
-					qna.setStore_file_name("none");
-					qna.setUpload_file_name("없음");
-					qna.setUpload_path("none");
-				}
+
+			AttachUploadFile(uploadfile, qna);
 		}
 		
 		// 날짜 수정
@@ -267,7 +193,35 @@ public class QnaController {
 
 		return "common/cafehi_qnaContent";
 	}
-	
-	
+
+
+	private void AttachUploadFile(MultipartFile uploadfile, QnA qna) throws IOException {
+		if (!uploadfile.isEmpty()) {
+
+			UploadFile attachFile = fileStore.storFile(uploadfile);
+
+			// 서버용 파일명
+			String storeFile = attachFile.getStoreFileName();
+
+			qna.setStore_file_name(storeFile);
+
+			// 클라이언트 파일명
+			String uploadFile = attachFile.getUploadFileName();
+
+			qna.setUpload_file_name(uploadFile);
+
+			// 전체 경로
+			String fullPath = fileStore.getFullPath(storeFile);
+
+			qna.setUpload_path(fullPath);
+
+		} else {
+
+			// 파일을 등록 안하는 경우
+			qna.setStore_file_name("none");
+			qna.setUpload_file_name("없음");
+			qna.setUpload_path("none");
+		}
+	}
 	
 }

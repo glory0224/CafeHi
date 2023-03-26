@@ -31,15 +31,10 @@ public class MemberController {
 	
 		@PostMapping("/updateMemberName")
 		public String updateUserName(Member member) {
-			log.info("Controller!");
-			log.info("member_code : {} ", member.getMember_code());
-			log.info("member_name : {} ", member.getMember_name());
-			
 			
 			// db 정보 변경
-			int result = memberMapper.updateMemberName(member);
-			
-			log.info("result : {}", result);
+		 	memberMapper.updateMemberName(member);
+
 			
 			// spring security session 정보 변경 
 			 Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

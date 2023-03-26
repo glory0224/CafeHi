@@ -92,8 +92,6 @@ public class SignUpController {
 	@PostMapping("/IdCheck")
 	public @ResponseBody int IdCheck(String member_id) {
 		
-		log.info("member_id = {} ", member_id);
-		
 		int result = memberMapper.idCheck(member_id);
 		return result;
 	}
@@ -101,12 +99,9 @@ public class SignUpController {
 	// 이메일 중복 체크 
 	@PostMapping("/EmailCheck")
 	public @ResponseBody int EmailCheck(String member_email) {
-		
-		log.info("member_email = {} " , member_email);
-		
+
 		int result = memberMapper.checkEmail(member_email);
-		
-		log.info("result = {}", result);
+
 		return result;
 	}
 	
@@ -115,18 +110,14 @@ public class SignUpController {
 	@GetMapping("/EmailAuth")
 	@ResponseBody
 	public String mailAuth(String email) {
-		
-		log.info("이메일 데이터 전송 확인");
-		log.info("전송한 이메일 주소 : {} " , email);
+
 		
 		/* 인증번호(난수) 생성 */
 		Random random = new Random();
 		// 111111 ~ 999999 범위의 숫자를 얻기 위해서 nextInt(888888) + 111111
 		int checkNum = random.nextInt(888888) + 111111;
-		
-		log.info("인증 번호 : {} " , checkNum);
-		
-		
+
+
 		/* 이메일 보내기 */
 		
 		String setFrom = "CafeHi1004@gmail.com";

@@ -95,9 +95,6 @@ public class OrderController {
 
 		newOrder.setOrderInfo(member_code, include_delivery);
 
-		log.info("membership_point = {}", membership_point);
-		log.info("membership_new_point = {}", membership_new_point);
-
 		newMembership.setMembershipPointInfo(member_code, membership_point, membership_new_point);
 
 		
@@ -150,9 +147,7 @@ public class OrderController {
 	
 	@GetMapping("/CafeHi-MyPageOrderMenuList")
 	public String CafehiOrderListView(Model model) {
-		
-		log.info("CafehiOrderList Controller!!");
-		
+
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CustomUser userInfo = (CustomUser)principal;
 		int member_code = userInfo.getMember().getMember_code();
@@ -161,14 +156,7 @@ public class OrderController {
 		// primitive type 은  null 이 들어올 수 없기 때문에 0으로 체크하는 것이 옳은가?
 		if(member_code != 0) {
 			List<OrderMenu> orderMenuList = orderMenuMapper.findOrderMenuList(member_code);
-			
-			log.info("orderMenuListSize = {}", orderMenuList.size());
-			
-			for (OrderMenu orderMenu : orderMenuList) {
-				log.info("orderMenu.order.order_code = {}", orderMenu.getOrder().getOrder_code());
-			}
-				
-			
+
 			model.addAttribute("OrderMenuList", orderMenuList);
 			model.addAttribute("OrderMenuListCount", orderMenuList.size());
 			
