@@ -12,10 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 public class LoginController {
 	
 	@GetMapping("/login")
-	public String loginView(Model model, String error, String logout) {
+	public String loginView(Model model, String error) {
 
-		  if (error != null) { model.addAttribute("msg", "아이디 또는 비밀번호를 확인해주세요!");
-		  model.addAttribute("url", "login"); 
+		  if (error != null) {
+			  model.addAttribute("msg", "아이디 또는 비밀번호를 확인해주세요!");
+			  model.addAttribute("url", "login");
 		  return "common/alert"; }
 		
 		return "common/login";

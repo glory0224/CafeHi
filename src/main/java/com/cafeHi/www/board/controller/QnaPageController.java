@@ -56,17 +56,11 @@ public class QnaPageController {
 	  
 	    int member_code = getMember.getMember_code();
 
-
-	    
 	    Map<String , Object> myPageQnAMap = new ConcurrentHashMap<>();
 	    
 	    myPageQnAMap.put("member_code", member_code);
 		myPageQnAMap.put("scri", scri);
 		List<QnA> MyQnaList = qnaMapper.getMyQnAList(myPageQnAMap);
-
-		for (QnA qnA : MyQnaList) {
-			log.info("MyQna info = {}", qnA);
-		}
 
 		model.addAttribute("MyQnaList", MyQnaList);
 		model.addAttribute("MyQnaListSize", MyQnaList.size());
@@ -78,7 +72,6 @@ public class QnaPageController {
 		model.addAttribute("pageMaker", pageMaker);
 		model.addAttribute("scri", scri);
 
-		log.info("getMyQnANum = {}", qnaMapper.getMyQnANum(myPageQnAMap));
 
 		return "member/cafehi_myPageQnA";
 	}

@@ -8,6 +8,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.cafeHi.www.common.CommonUtils;
 import com.cafeHi.www.common.page.PageMaker;
 import com.cafeHi.www.common.page.SearchCriteria;
 import com.cafeHi.www.member.dto.Member;
@@ -39,8 +40,18 @@ public class QnaController {
 	private final FileStore fileStore;
 	
 	@PostMapping("WriteQnA")
-	public String WriteQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, Member mem) throws IOException {
-		
+	public String WriteQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, Member mem, HttpServletRequest request) throws IOException {
+
+		if(CommonUtils.isEmpty(qna.getQna_title()) || CommonUtils.isEmpty(qna.getQna_content())) {
+
+			// 널(null)이거나 공백(빈칸)일 경우 실행
+
+			request.setAttribute("msg", "제목과 내용은 모두 작성해야 합니다!");
+
+			return "common/goBackAlert";
+		}
+
+
 		// 등록 및 수정 날짜 초기화 메서드
 		qna.setQnADateTime();
 
@@ -60,9 +71,18 @@ public class QnaController {
 
 
 	@PostMapping("/CafeHi-UpdateQnA")
-	public String UpdateQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, SearchCriteria scri) throws IllegalStateException, IOException {
-		
-		
+	public String UpdateQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, SearchCriteria scri, HttpServletRequest request) throws IllegalStateException, IOException {
+
+
+		if(CommonUtils.isEmpty(qna.getQna_title()) || CommonUtils.isEmpty(qna.getQna_content())) {
+
+			// 널(null)이거나 공백(빈칸)일 경우 실행
+
+			request.setAttribute("msg", "제목과 내용은 모두 작성해야 합니다!");
+
+			return "common/goBackAlert";
+		}
+
 		// 수정 - 애초에 uploadfile 이 안넘어오거나, 새로운 파일이 넘어온다.
 		
 		// 이전에 있던 게시글 파일 존재 여부 확인 후
@@ -110,17 +130,14 @@ public class QnaController {
 			File file = new File(getQnA.getUpload_path());
 			file.delete();
 			}
-			
-//			request.setAttribute("msg", "삭제가 완료되었습니다.");
-//			request.setAttribute("url", "CafeHi-QnAList");
 
 			return "redirect:/CafeHi-QnAList?page=" + scri.getPage() + "&perPageNum=" + scri.getPerPageNum() + "&searchType=" + scri.getSearchType() + "&keyword=" + scri.getKeyword();
 		}else {
 			
 			request.setAttribute("msg", "삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
-			request.setAttribute("url", "history.back()");
+
 			
-			return "common/alert";
+			return "common/goBackAlert";
 		}
 		
 	}
@@ -131,18 +148,11 @@ public class QnaController {
 
 		List<QnA> qnaList = qnaMapper.getQnAList(scri);
 
-		for(QnA qna : qnaList) {
-			log.info("qna = {}", qna);
-			log.info("qna.member_id = {}", qna.getMember().getMember_id());
-		}
-
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("qnaListSize", qnaList.size());
 
 		PageMaker pageMaker = new PageMaker();
 		pageMaker.setCri(scri);
-
-		log.info("QnASearchNum = {}", qnaMapper.getQnASearchNum(scri));
 
 		pageMaker.setTotalCount(qnaMapper.getQnASearchNum(scri));
 

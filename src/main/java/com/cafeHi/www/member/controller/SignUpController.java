@@ -4,7 +4,9 @@ import java.util.Random;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
 
+import com.cafeHi.www.common.CommonUtils;
 import com.cafeHi.www.member.service.MembershipService;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -47,7 +49,20 @@ public class SignUpController {
 	}
 	
 	@PostMapping("/signup")
-	public String signUp(Member member, MemberAuth memberAuth, Membership membership) {
+	public String signUp(Member member, MemberAuth memberAuth, Membership membership, HttpServletRequest request) {
+
+		if (CommonUtils.isEmpty(member.getMember_id())
+			|| CommonUtils.isEmpty(member.getMember_name())
+			|| CommonUtils.isEmpty(member.getMember_pw())
+			|| CommonUtils.isEmpty(member.getMember_contact())
+			|| CommonUtils.isEmpty(member.getMember_email())
+			|| CommonUtils.isEmpty(member.getMember_detail_address())
+		) {
+
+			request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
+
+			return "common/goBackAlert";
+		}
 
 		String encodepw = pwdEncoder.encode(member.getMember_pw());
 		member.setMember_pw(encodepw);
@@ -129,11 +144,7 @@ public class SignUpController {
 					    "인증 번호는 " + checkNum + "입니다." +
 					    "<br>" + 
 					    "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
-		
-		
-		// 컨트롤러에서 에러를 잡아주는 것이 맞나?
-		// 컨트롤러에 역할이 너무 많이지는 것이 아닌가?
-		// AOP로 해결이 불가능할까? ->  
+
 		
 		try {
 			MimeMessage message = mailSender.createMimeMessage();

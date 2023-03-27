@@ -3,6 +3,7 @@ package com.cafeHi.www.member.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.cafeHi.www.common.CommonUtils;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -52,7 +53,6 @@ public class Member {
 		this.member_updatetime = member_updatetime;
 
 	}
-
 
 	
 

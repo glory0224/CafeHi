@@ -5,6 +5,7 @@ package com.cafeHi.www.member.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.cafeHi.www.common.CommonUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -30,8 +31,18 @@ public class MemberController {
 	// 회원 수정
 	
 		@PostMapping("/updateMemberName")
-		public String updateUserName(Member member) {
-			
+		public String updateUserName(Member member, HttpServletRequest request) {
+
+			Boolean checkMember = memberNullEmptyCheck(member);
+
+			if (checkMember) {
+
+				request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
+
+				return "common/goBackAlert";
+
+			}
+
 			// db 정보 변경
 		 	memberMapper.updateMemberName(member);
 
@@ -44,10 +55,23 @@ public class MemberController {
 			return "member/cafehi_memberInfo";
 			
 		}
-		
-		@PostMapping("/updateMemberContact")
-		public String updateUserContact(Member member) {
-			// db 정보 변경 
+
+
+
+	@PostMapping("/updateMemberContact")
+		public String updateUserContact(Member member, HttpServletRequest request) {
+
+		Boolean checkMember = memberNullEmptyCheck(member);
+
+		if (checkMember) {
+
+			request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
+
+			return "common/goBackAlert";
+
+		}
+
+			// db 정보 변경
 			memberMapper.updateMemberContact(member);
 			
 			// spring security session 정보 변경 
@@ -61,8 +85,18 @@ public class MemberController {
 		
 		
 		@PostMapping("/updateMemberEmail")
-		public String updateUserEmail(Member member) {
-			
+		public String updateUserEmail(Member member, HttpServletRequest request) {
+
+			Boolean checkMember = memberNullEmptyCheck(member);
+
+			if (checkMember) {
+
+				request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
+
+				return "common/goBackAlert";
+
+			}
+
 			// db 정보 변경 
 			memberMapper.updateMemberEmail(member);
 			
@@ -76,8 +110,18 @@ public class MemberController {
 		}
 		
 		@PostMapping("/updateMemberAddress")
-		public String updateUserAddress(Member member) {
-			
+		public String updateUserAddress(Member member, HttpServletRequest request) {
+
+			Boolean checkMember = memberNullEmptyCheck(member);
+
+			if (checkMember) {
+
+				request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
+
+				return "common/goBackAlert";
+
+			}
+
 			// db 정보 변경 
 			memberMapper.updateMemberAddress(member);
 			
@@ -93,7 +137,18 @@ public class MemberController {
 		}
 		
 		@PostMapping("/updateMemberDetailAddress")
-		public String updateUserDetailAddress(Member member) {
+		public String updateUserDetailAddress(Member member, HttpServletRequest request) {
+
+			Boolean checkMember = memberNullEmptyCheck(member);
+
+			if (checkMember) {
+
+				request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
+
+				return "common/goBackAlert";
+
+			}
+
 			memberMapper.updateMemberDetailAddress(member);
 			
 			// spring security session 정보 변경 
@@ -146,6 +201,36 @@ public class MemberController {
 
 
 		}
+
+
+	private static Boolean memberNullEmptyCheck(Member member) {
+
+		if(CommonUtils.isEmpty(member.getMember_id())) {
+			return true;
+		}
+
+		if(CommonUtils.isEmpty(member.getMember_name())) {
+			return true;
+		}
+
+		if(CommonUtils.isEmpty(member.getMember_pw())) {
+			return true;
+		}
+
+		if(CommonUtils.isEmpty(member.getMember_contact())) {
+			return true;
+		}
+
+		if(CommonUtils.isEmpty(member.getMember_email())) {
+			return true;
+		}
+
+		if(CommonUtils.isEmpty(member.getMember_detail_address())) {
+			return true;
+		}
+
+		return false;
+	}
 		
 	
 }

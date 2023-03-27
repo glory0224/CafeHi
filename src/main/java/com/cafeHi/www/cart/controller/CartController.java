@@ -59,7 +59,7 @@ public class CartController {
 	
 	
 	@PostMapping("/insertCart")
-	public String CartInsert(@AuthenticationPrincipal CustomUser customUser, @RequestParam(required = false) int toCartAmount, Cart cart, HttpServletRequest request) {
+	public String CartInsert(@AuthenticationPrincipal CustomUser customUser, @RequestParam int toCartAmount, Cart cart, HttpServletRequest request) {
 		
 		if(toCartAmount == 0) {
 			request.setAttribute("msg", "수량은 1개 이상 담을 수 있습니다.");
