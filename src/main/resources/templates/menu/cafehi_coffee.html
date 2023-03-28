@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -22,7 +22,7 @@
       
         <div class="col">
           <div class="card shadow-sm">
-			<img alt="" src="${coffeeList0.menu_img_path }" th:src="@{ |${coffeeList0.menu_img_path}| }" width="100%" height="400">
+			<img alt="" src="" th:src="@{ |${coffeeList0.menu_img_path}| }" width="100%" height="400">
             <div class="card-body">
             	
               <p class="card-text text-center" th:text="${coffeeList0.menu_name }"></p>
@@ -31,13 +31,14 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                 
-                <form action="CafehiOrder.do" th:action="@{/CafehiOrder}" method="get"> <!-- ?? 왜 form을 사용해놓고 get으로 넘겼지?  -->
+                <form action="" th:action="@{/CafehiOrder}" method="get"> <!-- ?? 왜 form을 사용해놓고 get으로 넘겼지?  -->
                   <input type="hidden" th:name="menu_code" th:value="${coffeeList0.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${coffeeList0.getMenu_stock_quantity()}">
                   <input id="coffeeOrderAmount0" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form> 
                 
-                  <form action="insertCart.do" th:action="@{/insertCart}" method="post">
+                  <form action="" th:action="@{/insertCart}" method="post">
                   <input type="hidden" th:name="menu_code" th:value="${coffeeList0.menu_code }">
                   <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
                   <input id="coffeeCartAmount0" type="hidden" th:name="toCartAmount" th:value="0">
@@ -58,7 +59,7 @@
         </div>
         <div class="col">
           <div class="card shadow-sm">
-			<img alt="" src="${coffeeList1.menu_img_path }" th:src="@{ |${coffeeList1.menu_img_path}| }" width="100%" height="400">
+			<img alt="" src="" th:src="@{ |${coffeeList1.menu_img_path}| }" width="100%" height="400">
             <div class="card-body">
             	
               <p class="card-text text-center" th:text="${coffeeList1.menu_name }"></p>
@@ -67,13 +68,14 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                 
-                <form action="CafehiOrder.do" th:action="@{/CafehiOrder}" method="get">
+                <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${coffeeList1.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${coffeeList1.getMenu_stock_quantity()}">
                   <input id="coffeeOrderAmount1" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
                 
-                  <form action="insertCart.do" th:action="@{/insertCart}" method="post">
+                  <form action="" th:action="@{/insertCart}" method="post">
                   <input type="hidden" name="menu_code" th:value="${coffeeList1.menu_code }">
                   <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
                   <input id="coffeeCartAmount1" type="hidden" th:name="toCartAmount" th:value="0">
@@ -94,7 +96,7 @@
         </div>
         <div class="col">
           <div class="card shadow-sm">
-			<img alt="" src="${coffeeList2.menu_img_path }" th:src="@{ |${coffeeList2.menu_img_path}| }" width="100%" height="400">
+			<img alt="" src="" th:src="@{ |${coffeeList2.menu_img_path}| }" width="100%" height="400">
             <div class="card-body">
             	
               <p class="card-text text-center" th:text="${coffeeList2.menu_name }"></p>
@@ -103,13 +105,14 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                 
-                <form action="CafehiOrder.do" method="get" th:action="@{/CafehiOrder}">
+                <form action="" method="get" th:action="@{/CafehiOrder}">
                   <input type="hidden" th:name="menu_code" th:value="${coffeeList2.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${coffeeList2.getMenu_stock_quantity()}">
                   <input id="coffeeOrderAmount2" type="hidden" th:name="toOrderAmount" value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
                 
-                  <form action="insertCart.do" th:action="@{/insertCart}"  method="post">
+                  <form action="" th:action="@{/insertCart}"  method="post">
                   <input type="hidden" th:name="menu_code" th:value="${coffeeList2.menu_code }">
                   <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
                   <input id="coffeeCartAmount2" type="hidden" th:name="toCartAmount" th:value="0">
@@ -128,7 +131,7 @@
         </div>
         <div class="col">
           <div class="card shadow-sm">
-			<img alt="" src="${coffeeList3.menu_img_path }" th:src="@{ |${coffeeList3.menu_img_path}| }" width="100%" height="400">
+			<img alt="" src="" th:src="@{ |${coffeeList3.menu_img_path}| }" width="100%" height="400">
             <div class="card-body">
             	
               <p class="card-text text-center" th:text="${coffeeList3.menu_name }"></p>
@@ -137,13 +140,14 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                 
-                 <form action="CafehiOrder.do" th:action="@{/CafehiOrder}" method="get">
+                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${coffeeList3.menu_code }">
+                   <input type="hidden" th:name="menu_stock_quantity" th:value="${coffeeList3.getMenu_stock_quantity()}">
                   <input id="coffeeOrderAmount3" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
                 
-                  <form action="insertCart.do" th:action="@{/insertCart}" method="post">
+                  <form action="" th:action="@{/insertCart}" method="post">
                   <input type="hidden" name="menu_code" th:value="${coffeeList3.menu_code }">
                   <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
                   <input id="coffeeCartAmount3" type="hidden" th:name="toCartAmount" th:value="0">
@@ -164,7 +168,7 @@
         </div>
         <div class="col">
           <div class="card shadow-sm">
-			<img alt="" src="${coffeeList4.menu_img_path }" th:src="@{ |${coffeeList4.menu_img_path}| }" width="100%" height="400">
+			<img alt="" src="" th:src="@{ |${coffeeList4.menu_img_path}| }" width="100%" height="400">
             <div class="card-body">
             	
               <p class="card-text text-center" th:text="${coffeeList4.menu_name }"></p>
@@ -173,13 +177,14 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                 
-                <form action="CafehiOrder.do" th:action="@{/CafehiOrder}" method="get">
+                <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${coffeeList4.menu_code }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${coffeeList4.getMenu_stock_quantity()}">
                   <input id="coffeeOrderAmount4" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
                 </form>
                 
-                  <form action="insertCart.do" th:action="@{/insertCart}" method="post">
+                  <form action="" th:action="@{/insertCart}" method="post">
                   <input type="hidden" th:name="menu_code" th:value="${coffeeList4.menu_code }">
                   <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
                   <input id="coffeeCartAmount4" type="hidden" th:name="toCartAmount" th:value="0">
