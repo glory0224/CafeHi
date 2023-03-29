@@ -3,8 +3,10 @@ package com.cafeHi.www.menu.dto;
 import java.time.LocalDateTime;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class Menu {
 	
 	private int menu_code; // 메뉴 코드 

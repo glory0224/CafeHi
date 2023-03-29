@@ -34,7 +34,7 @@
 
 <select id="getTeaList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'tea' </select>
 
-<select id="getMenu" resultType="com.cafeHi.www.menu.dto.Menu" parameterType="int">SELECT * FROM cafehi_menu WHERE menu_code = #{menuCode} </select>
+<select id="getMenu" resultType="com.cafeHi.www.menu.dto.Menu" parameterType="int">SELECT * FROM cafehi_menu WHERE menu_code = #{menu_code} </select>
 
 	<update id="changeMenuStockQuantity" parameterType="com.cafeHi.www.menu.dto.Menu" >
 		UPDATE cafehi_menu

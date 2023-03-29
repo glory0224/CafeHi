@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.cafeHi.www.menu.service.MenuService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cafeHi.www.mapper.member.MembershipMapper;
 import com.cafeHi.www.mapper.menu.MenuMapper;
 import com.cafeHi.www.mapper.order.OrderMapper;
 import com.cafeHi.www.mapper.order.OrderMenuMapper;
@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class OrderController {
 	
-	private final MenuMapper menuMapper;
+	private final MenuService menuService;
 	
 	private final MembershipService membershipService;
 	
@@ -67,8 +67,8 @@ public class OrderController {
 	    CustomUser userInfo = (CustomUser)principal;
 	    int member_code = userInfo.getMember().getMember_code();
 		
-	    
-		model.addAttribute("Menu", menuMapper.getMenu(menu.getMenu_code()));
+
+		model.addAttribute("Menu", menuService.getMenu(menu.getMenu_code()));
 		model.addAttribute("orderAmount", toOrderAmount);
 		model.addAttribute("Membership", membershipService.getMembership(member_code));
 		
@@ -97,12 +97,11 @@ public class OrderController {
 
 		newMembership.setMembershipPointInfo(member_code, membership_point, membership_new_point);
 
+		// 트랜잭션 적용을 위한 인터페이스 도입
 		
-		Menu getMenu = menuMapper.getMenu(menu_code);
+		Menu getMenu = menuService.getMenu(menu_code);
 
-		getMenu.DecreaseMenuStockQuantity(total_order_count);
-
-		menuMapper.changeMenuStockQuantity(getMenu);
+		menuService.DecreaseMenuStockQuantity(getMenu, total_order_count);
 
 
 		if (deliveryFee != 0 & newOrder.getInclude_delivery()) {
@@ -178,11 +177,9 @@ public class OrderController {
 
 		orderMenuMapper.cancelOrderMenu(orderMenu);
 
-		Menu getMenu = menuMapper.getMenu(menu.getMenu_code());
+		Menu getMenu = menuService.getMenu(menu.getMenu_code());
 
-		getMenu.IncreaseMenuStockQuantity(orderMenu.getTotal_order_count());
-
-		menuMapper.changeMenuStockQuantity(getMenu);
+		menuService.IncreaseMenuStockQuantity(getMenu, orderMenu.getTotal_order_count());
 
 		// 세션 값
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
