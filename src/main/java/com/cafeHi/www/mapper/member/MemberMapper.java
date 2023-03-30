@@ -9,23 +9,23 @@ import com.cafeHi.www.member.dto.Member;
 @Mapper
 public interface MemberMapper {
 	
-	public int insertMember(Member member);
+	 int insertMember(Member member);
 	
-	public int updateMemberName(Member member);
-	public void updateMemberContact(Member member);
-	public void updateMemberEmail(Member member);
-	public void updateMemberAddress(Member member);
-	public void updateMemberDetailAddress(Member member);
+	 void updateMemberName(Member member);
+	 void updateMemberContact(Member member);
+	 void updateMemberEmail(Member member);
+	 void updateMemberAddress(Member member);
+	 void updateMemberDetailAddress(Member member);
 	
-	public int deleteMember(int member_code);
+	 int deleteMember(int member_code);
 	
-	public Member getMember(int member_code);
+	 Member getMember(int member_code);
 
-	public Member findMemberById(String member_id);
+	 Member findMemberById(String member_id);
 
-	public int idCheck(String member_id);
+	 int idCheck(String member_id);
 
-	public int checkEmail(String member_email);
+	 int checkEmail(String member_email);
 	
 
 	 

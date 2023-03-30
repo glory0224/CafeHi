@@ -7,6 +7,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import com.cafeHi.www.common.CommonUtils;
+import com.cafeHi.www.member.service.MemberService;
 import com.cafeHi.www.member.service.MembershipService;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -33,7 +34,7 @@ public class SignUpController {
 	
 	private final MemberAuthMapper memberAuthMapper;
 	
-	private final MemberMapper memberMapper;
+	private final MemberService memberService;
 	
 	private final MembershipService membershipService;
 	
@@ -78,7 +79,7 @@ public class SignUpController {
 
 		// 멤버 정보 등록
 
-		memberMapper.insertMember(member);
+		memberService.insertMember(member);
 
 		int member_code = member.getMember_code(); // MyBatis 기본키 반환 방식 이용
 
@@ -107,7 +108,7 @@ public class SignUpController {
 	@PostMapping("/IdCheck")
 	public @ResponseBody int IdCheck(String member_id) {
 		
-		int result = memberMapper.idCheck(member_id);
+		int result = memberService.idCheck(member_id);
 		return result;
 	}
 	
@@ -115,7 +116,7 @@ public class SignUpController {
 	@PostMapping("/EmailCheck")
 	public @ResponseBody int EmailCheck(String member_email) {
 
-		int result = memberMapper.checkEmail(member_email);
+		int result = memberService.checkEmail(member_email);
 
 		return result;
 	}

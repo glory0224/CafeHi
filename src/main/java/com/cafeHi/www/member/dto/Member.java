@@ -4,13 +4,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import com.cafeHi.www.common.CommonUtils;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter @Setter
 @NoArgsConstructor
+@ToString
 public class Member {
 	
 	private int member_code;  // 사용자 코드(기본키)
