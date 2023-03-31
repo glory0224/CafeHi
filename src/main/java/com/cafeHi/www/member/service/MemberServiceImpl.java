@@ -1,7 +1,9 @@
 package com.cafeHi.www.member.service;
 
+import com.cafeHi.www.mapper.member.MemberAuthMapper;
 import com.cafeHi.www.mapper.member.MemberMapper;
 import com.cafeHi.www.member.dto.Member;
+import com.cafeHi.www.member.dto.MemberAuth;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,10 +14,18 @@ public class MemberServiceImpl implements MemberService{
 
     private final MemberMapper memberMapper;
 
+    private final MemberAuthMapper memberAuthMapper;
+
     @Override
     @Transactional
     public int insertMember(Member member) {
         return memberMapper.insertMember(member);
+    }
+
+    @Override
+    @Transactional
+    public int insertMemberAuth(MemberAuth memberAuth) {
+        return memberAuthMapper.insertMemberAuth(memberAuth);
     }
 
     @Override

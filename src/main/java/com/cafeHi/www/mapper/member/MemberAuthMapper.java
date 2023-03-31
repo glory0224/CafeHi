@@ -6,5 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface MemberAuthMapper {
 	
-	public int insertMemberAuth(MemberAuth memberAuth);
+	 int insertMemberAuth(MemberAuth memberAuth);
 }

@@ -1,10 +1,14 @@
 package com.cafeHi.www.member.service;
 
 import com.cafeHi.www.member.dto.Member;
+import com.cafeHi.www.member.dto.MemberAuth;
 
 public interface MemberService {
 
     int insertMember(Member member);
+
+    int insertMemberAuth(MemberAuth memberAuth);
+
     void updateMemberName(Member member);
     void updateMemberContact(Member member);
     void updateMemberEmail(Member member);

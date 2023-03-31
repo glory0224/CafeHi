@@ -30,10 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class SignUpController {
-	
-	
-	private final MemberAuthMapper memberAuthMapper;
-	
+
 	private final MemberService memberService;
 	
 	private final MembershipService membershipService;
@@ -91,7 +88,7 @@ public class SignUpController {
 
 		// 멤버 권한 등록
 
-		memberAuthMapper.insertMemberAuth(memberAuth);
+		memberService.insertMemberAuth(memberAuth);
 
 		// 멤버쉽 생성
 
