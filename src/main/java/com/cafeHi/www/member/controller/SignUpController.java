@@ -80,8 +80,6 @@ public class SignUpController {
 
 		int member_code = member.getMember_code(); // MyBatis 기본키 반환 방식 이용
 
-		log.info("member_code = {}", member_code);
-
 		// 멤버 권한 생성
 
 		memberAuth.setMemberAuthInfo(member_code);

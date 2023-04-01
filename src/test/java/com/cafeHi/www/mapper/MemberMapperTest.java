@@ -47,8 +47,6 @@ public class MemberMapperTest {
 
 		int member_code = member.getMember_code();
 
-		log.info("member_code = {}", member_code);
-
 		MemberAuth memberAuth = new MemberAuth();
 
 		memberAuth.setMemberAuthInfo(member_code);

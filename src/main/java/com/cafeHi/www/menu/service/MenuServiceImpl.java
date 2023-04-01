@@ -61,9 +61,6 @@ public class MenuServiceImpl implements MenuService{
 
     @Override
     public Menu getMenu(int menu_code) {
-        Menu menu = menuMapper.getMenu(menu_code);
-
-        log.info("menu = {}", menu);
 
         return menuMapper.getMenu(menu_code);
     }

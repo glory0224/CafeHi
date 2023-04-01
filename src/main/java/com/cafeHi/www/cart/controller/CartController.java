@@ -7,7 +7,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.springframework.security.core.Authentication;
+import com.cafeHi.www.board.service.CartService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -26,7 +26,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CartController {
 	
-	private final CartMapper cartMapper;
+	private final CartService cartService;
 	
 	@GetMapping("/CafeHi-MyPageCart")
 	public String myPageCartView(Model model) {
@@ -38,8 +38,8 @@ public class CartController {
 	    int member_code = userInfo.getMember().getMember_code();
 		
 	    if (member_code != 0) {
-			List<Cart> getCartList = cartMapper.getCartList(member_code); // 장바구니 목록
-			int sumMoney = cartMapper.sumMoney(member_code); // 금액 합계
+			List<Cart> getCartList = cartService.getCartList(member_code); // 장바구니 목록
+			int sumMoney = cartService.sumMoney(member_code); // 금액 합계
 			// 배송료 계산
 			// 30000원이 넘으면 배송료가 0원, 안넘으면 2500원
 			int fee=sumMoney >= 30000? 0 : 2500;
@@ -83,7 +83,7 @@ public class CartController {
 		cart.setCart_writetime(LocalDateTime.now());
 		cart.setCart_updatetime(LocalDateTime.now());
 		
-		cartMapper.insertCart(cart);
+		cartService.insertCart(cart);
 		return "redirect:/CafeHi-MyPageCart";
 		
 	}
@@ -93,7 +93,7 @@ public class CartController {
 	@PostMapping("/deleteCart")
 	public String CartDelete(Cart cart) {
 		
-		cartMapper.deleteCart(cart.getCart_code());
+		cartService.deleteCart(cart.getCart_code());
 		
 		return "redirect:/CafeHi-MyPageCart";
 	}
@@ -102,7 +102,7 @@ public class CartController {
 		@PostMapping("/modifyCart")
 		public String CartModify(Cart cart) {
 					
-			cartMapper.modifyCart(cart);
+			cartService.modifyCart(cart);
 			
 			return "redirect:/CafeHi-MyPageCart";
 			
@@ -117,7 +117,7 @@ public class CartController {
 			int member_code = userInfo.getMember().getMember_code();
 			
 			
-			cartMapper.deleteAllCart(member_code);
+			cartService.deleteAllCart(member_code);
 			
 			return "redirect:/CafeHi-MyPageCart";
 			

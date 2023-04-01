@@ -43,9 +43,8 @@ public class MembershipServiceImpl implements MembershipService{
 		changeGrade(membership, totalPoint);
 
 
-		int result =  membershipMapper.updateMembershipPoint(membership);
+		membershipMapper.updateMembershipPoint(membership);
 		
-		log.info("updateResult = {}", result);
 	}
 
 
@@ -58,9 +57,7 @@ public class MembershipServiceImpl implements MembershipService{
 
 		changeGrade(getMembership, returnPoint);
 
-		int result =  membershipMapper.updateMembershipPoint(getMembership);
-
-		log.info("updateResult = {}", result);
+		membershipMapper.updateMembershipPoint(getMembership);
 
 	}
 

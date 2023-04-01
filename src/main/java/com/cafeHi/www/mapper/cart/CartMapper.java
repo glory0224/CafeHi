@@ -9,19 +9,19 @@ import com.cafeHi.www.cart.dto.Cart;
 @Mapper
 public interface CartMapper {
 	
-	public List<Cart> getCartList(int member_code);
+	List<Cart> getCartList(int member_code);
 	
-	public int insertCart(Cart cart);
+	int insertCart(Cart cart);
 	
-	public void modifyCart(Cart cart);
+	void modifyCart(Cart cart);
 	
-	public void deleteCart(int cart_code);
+	void deleteCart(int cart_code);
 	
-	public void deleteAllCart(int member_code);
+	void deleteAllCart(int member_code);
 	
 	
 	
-	public int sumMoney(int member_code);
+	int sumMoney(int member_code);
 
 	
 

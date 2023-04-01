@@ -8,8 +8,8 @@ import com.cafeHi.www.order.dto.Orders;
 @Mapper
 public interface OrderMapper {
 
-	public int insertOrder(Orders order);
+	int insertOrder(Orders order);
 
-	public void cancelOrder(Orders order);
+	void cancelOrder(Orders order);
 	
 }

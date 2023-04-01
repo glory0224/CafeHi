@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.cafeHi.www.menu.service.MenuService;
+import com.cafeHi.www.order.service.OrderMenuService;
+import com.cafeHi.www.order.service.OrderService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,8 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cafeHi.www.mapper.menu.MenuMapper;
-import com.cafeHi.www.mapper.order.OrderMapper;
 import com.cafeHi.www.mapper.order.OrderMenuMapper;
 import com.cafeHi.www.member.dto.CustomUser;
 import com.cafeHi.www.member.dto.Membership;
@@ -35,9 +35,9 @@ public class OrderController {
 	
 	private final MembershipService membershipService;
 	
-	private final OrderMapper orderMapper;
+	private final OrderService orderService;
 	
-	private final OrderMenuMapper orderMenuMapper;
+	private final OrderMenuService orderMenuService;
 	
 	
 	@GetMapping("/CafehiOrder")
@@ -106,7 +106,7 @@ public class OrderController {
 
 		if (deliveryFee != 0 & newOrder.getInclude_delivery()) {
 			
-			orderMapper.insertOrder(newOrder);			
+			orderService.insertOrder(newOrder);
 			
 			int total_order_price = newOrderMenu.CalTotalPrice(deliveryFee, getMenu.getMenu_price(), total_order_count); // 배송비 포함 총 비용
 			
@@ -115,7 +115,7 @@ public class OrderController {
 			newOrderMenu.setOrderMenuInfo(membership_new_point, total_order_price, total_order_count);
 
 
-			orderMenuMapper.insertOrderMenu(newOrderMenu);
+			orderMenuService.insertOrderMenu(newOrderMenu);
 
 			// 주문 포인트 적립
 			membershipService.updateMembershipPoint(newMembership);
@@ -124,7 +124,7 @@ public class OrderController {
 			
 		} else {
 			
-			orderMapper.insertOrder(newOrder);
+			orderService.insertOrder(newOrder);
 			
 			int total_order_price = newOrderMenu.CalTotalPrice(getMenu.getMenu_price(), total_order_count); // 배송비 미포함 총 비용
 			
@@ -132,7 +132,7 @@ public class OrderController {
 
 			newOrderMenu.setOrderMenuInfo(membership_new_point, total_order_price, total_order_count);
 				
-			orderMenuMapper.insertOrderMenu(newOrderMenu);
+			orderMenuService.insertOrderMenu(newOrderMenu);
 
 			// 주문 포인트 적립
 			membershipService.updateMembershipPoint(newMembership);
@@ -154,7 +154,7 @@ public class OrderController {
 		// 0으로 체크하는 것이 맞나?
 		// primitive type 은  null 이 들어올 수 없기 때문에 0으로 체크하는 것이 옳은가?
 		if(member_code != 0) {
-			List<OrderMenu> orderMenuList = orderMenuMapper.findOrderMenuList(member_code);
+			List<OrderMenu> orderMenuList = orderMenuService.findOrderMenuList(member_code);
 
 			model.addAttribute("OrderMenuList", orderMenuList);
 			model.addAttribute("OrderMenuListCount", orderMenuList.size());
@@ -171,11 +171,11 @@ public class OrderController {
 	public String CafehiOrderCancel(Orders order, OrderMenu orderMenu, Menu menu) {
 		order.cancelTimeAndStatus();
 
-		orderMapper.cancelOrder(order);
+		orderService.cancelOrder(order);
 
 		orderMenu.cancelTimeAndStatus();
 
-		orderMenuMapper.cancelOrderMenu(orderMenu);
+		orderMenuService.cancelOrderMenu(orderMenu);
 
 		Menu getMenu = menuService.getMenu(menu.getMenu_code());
 

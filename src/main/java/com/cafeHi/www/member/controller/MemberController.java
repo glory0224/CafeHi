@@ -33,7 +33,6 @@ public class MemberController {
 		@PostMapping("/updateMemberName")
 		public String updateUserName(Member member, HttpServletRequest request) {
 
-			log.info("member = {}", member);
 
 			if (CommonUtils.isEmpty(member.getMember_name())) {
 

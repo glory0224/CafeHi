@@ -27,13 +27,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @SpringBootTest
-//@Transactional
 @AutoConfigureMockMvc
 public class QnAMapperTest {
 
-	@Autowired
-	private MockMvc mockMvc;
-	
 	@Autowired
 	QnaMapper qnaMapper;
 	
@@ -42,32 +38,6 @@ public class QnAMapperTest {
 	
 	@Autowired
 	FileStore fileStore;
-	
-	// 파일 다운로드 관련 블로그 - https://wordbe.tistory.com/entry/Spring-Web-MVC-%ED%8C%8C%EC%9D%BC%EC%97%85%EB%A1%9C%EB%93%9C-%ED%8C%8C%EC%9D%BC%EB%8B%A4%EC%9A%B4%EB%A1%9C%EB%93%9C
-	// test file 을 mock을 활용했다. (참고)
-//	@Test
-//	public void insertQnA() throws Exception {
-//		
-//		// 파일 업로드 관련
-//		MockMultipartFile file = new MockMultipartFile(
-//				"file",
-//				"test.txt",
-//				"text/plain",
-//				"For test".getBytes());
-//		
-//		// When
-//	    this.mockMvc.perform(multipart("/files").file(file))
-//	      .andDo(print())
-//	      .andExpect(status().is3xxRedirection())
-//	      ;
-//		
-//		
-//		//QnA qna = new QnA("test title", "없음", "test content", LocalDateTime.now(), 0, 1, "upload_path", null , "store_file_name", "upload_file_name", null);
-//		
-//		//int qna_num = qnaMapper.writeQnA(qna);
-//		
-//		//log.info("qna_num = {} " , qna_num);		
-//	}
 	
 	@Test
 	public void insertQnA() {
