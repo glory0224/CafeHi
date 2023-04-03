@@ -22,7 +22,7 @@ public interface MenuService {
 
     List<Menu> getTeaList();
 
-    Menu getMenu(int menu_code);
+    Menu getMenu(Long menu_code);
 
     void DecreaseMenuStockQuantity(Menu getMenu, int total_order_count);
 

@@ -11,7 +11,7 @@ public interface OrderMenuMapper {
 
 	void insertOrderMenu(OrderMenu orderMenu);
 
-	List<OrderMenu> findOrderMenuList(int member_code);
+	List<OrderMenu> findOrderMenuList(Long member_code);
 
     void cancelOrderMenu(OrderMenu orderMenu);
 }

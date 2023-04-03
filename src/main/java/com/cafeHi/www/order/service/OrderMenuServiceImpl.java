@@ -27,7 +27,7 @@ public class OrderMenuServiceImpl implements OrderMenuService{
     }
 
     @Override
-    public List<OrderMenu> findOrderMenuList(int member_code) {
+    public List<OrderMenu> findOrderMenuList(Long member_code) {
         return orderMenuMapper.findOrderMenuList(member_code);
     }
 

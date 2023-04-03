@@ -12,15 +12,15 @@ import lombok.ToString;
 @NoArgsConstructor
 public class MemberAuth {
 	
-	private int member_auth_code; // 사용자 정보 권한 코드
-	private int member_code;	// 사용자 코드
+	private Long member_auth_code; // 사용자 정보 권한 코드
+	private Long member_code;	// 사용자 코드
 	private String member_auth; // 스프링 시큐리티 사용자 권한 : ROLE_USER, ROLE_ADMIN ...
 	private LocalDateTime member_auth_writetime; // 사용자 정보 권한 등록일
 	private LocalDateTime member_auth_updatetime; // 사용자 정보 권한 수정일
 	
 	
 	// 멤버 권한 설정 메서드
-	public void setMemberAuthInfo(int member_code) {
+	public void setMemberAuthInfo(Long member_code) {
 		this.member_code = member_code;
 		this.member_auth = MemberAuthName.ROLE_USER.toString();
 		this.member_auth_writetime = LocalDateTime.now();

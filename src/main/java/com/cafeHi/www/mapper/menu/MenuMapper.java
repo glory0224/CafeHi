@@ -25,7 +25,7 @@ public interface MenuMapper {
 
 	List<Menu> getTeaList();
 
-	Menu getMenu(int menu_code);
+	Menu getMenu(Long menu_code);
 
     void changeMenuStockQuantity(Menu getMenu);
 }

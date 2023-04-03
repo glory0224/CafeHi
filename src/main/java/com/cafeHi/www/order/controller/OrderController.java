@@ -65,7 +65,7 @@ public class OrderController {
 		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    CustomUser userInfo = (CustomUser)principal;
-	    int member_code = userInfo.getMember().getMember_code();
+	    Long member_code = userInfo.getMember().getMember_code();
 		
 
 		model.addAttribute("Menu", menuService.getMenu(menu.getMenu_code()));
@@ -80,9 +80,9 @@ public class OrderController {
 	@PostMapping("/CafehiOrder")
 	public String CafeHiOrder(
 			@RequestParam(value="deliveryFee") int deliveryFee,
-			@RequestParam("menu_code") int menu_code,
+			@RequestParam("menu_code") Long menu_code,
 			@RequestParam("include_delivery") Boolean include_delivery,
-			@RequestParam("member_code") int member_code,
+			@RequestParam("member_code") Long member_code,
 			@RequestParam("total_order_count") int total_order_count,
 			@RequestParam("membership_point") int membership_point,
 			@RequestParam("membership_new_point") double membership_new_point
@@ -149,7 +149,7 @@ public class OrderController {
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CustomUser userInfo = (CustomUser)principal;
-		int member_code = userInfo.getMember().getMember_code();
+		Long member_code = userInfo.getMember().getMember_code();
 		
 		// 0으로 체크하는 것이 맞나?
 		// primitive type 은  null 이 들어올 수 없기 때문에 0으로 체크하는 것이 옳은가?
@@ -184,7 +184,7 @@ public class OrderController {
 		// 세션 값
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CustomUser userInfo = (CustomUser)principal;
-		int member_code = userInfo.getMember().getMember_code();
+		Long member_code = userInfo.getMember().getMember_code();
 
 		Membership getMembership = membershipService.getMembership(member_code);
 

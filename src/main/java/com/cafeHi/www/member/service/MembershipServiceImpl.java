@@ -27,7 +27,8 @@ public class MembershipServiceImpl implements MembershipService{
 	}
 	
 	@Override
-	public Membership getMembership(int member_code) {
+	public Membership getMembership(Long member_code) {
+
 		return membershipMapper.getMembership(member_code);
 	}
 

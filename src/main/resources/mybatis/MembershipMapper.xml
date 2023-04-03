@@ -48,7 +48,7 @@
 		VALUES(seq_membership.nextval, #{member_code}, #{membership_grade} , 0, #{membership_writetime}, #{membership_updatetime})
 	</insert>
 	
-	<select id="getMembership" parameterType="int" resultType="com.cafeHi.www.member.dto.Membership">
+	<select id="getMembership" parameterType="long" resultType="com.cafeHi.www.member.dto.Membership">
 
 		SELECT member_code ,membership_grade, membership_point FROM cafehi_membership
 		WHERE member_code = #{member_code}

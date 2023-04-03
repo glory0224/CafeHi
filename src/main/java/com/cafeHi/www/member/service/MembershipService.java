@@ -6,7 +6,7 @@ import com.cafeHi.www.order.dto.OrderMenu;
 public interface MembershipService {
 	
 	void insertMembership(Membership membership);
-	Membership getMembership(int member_code);
+	Membership getMembership(Long member_code);
 	
 	void updateMembershipPoint(Membership membership);
 

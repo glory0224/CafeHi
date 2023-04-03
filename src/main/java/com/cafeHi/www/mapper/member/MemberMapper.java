@@ -9,7 +9,7 @@ import com.cafeHi.www.member.dto.Member;
 @Mapper
 public interface MemberMapper {
 	
-	 int insertMember(Member member);
+	 Long insertMember(Member member);
 	
 	 void updateMemberName(Member member);
 	 void updateMemberContact(Member member);
@@ -17,9 +17,9 @@ public interface MemberMapper {
 	 void updateMemberAddress(Member member);
 	 void updateMemberDetailAddress(Member member);
 	
-	 int deleteMember(int member_code);
+	 int deleteMember(Long member_code);
 	
-	 Member getMember(int member_code);
+	 Member getMember(Long member_code);
 
 	 Member findMemberById(String member_id);
 

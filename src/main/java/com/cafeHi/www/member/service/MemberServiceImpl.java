@@ -18,13 +18,14 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional
-    public int insertMember(Member member) {
+    public Long insertMember(Member member) {
         return memberMapper.insertMember(member);
     }
 
     @Override
     @Transactional
-    public int insertMemberAuth(MemberAuth memberAuth) {
+    public Long insertMemberAuth(MemberAuth memberAuth) {
+
         return memberAuthMapper.insertMemberAuth(memberAuth);
     }
 
@@ -60,14 +61,14 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional
-    public int deleteMember(int member_code) {
+    public int deleteMember(Long member_code) {
 
         return memberMapper.deleteMember(member_code);
     }
 
 
     @Override
-    public Member getMember(int member_code) {
+    public Member getMember(Long member_code) {
         return memberMapper.getMember(member_code);
     }
 

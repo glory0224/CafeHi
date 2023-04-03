@@ -5,9 +5,9 @@ import com.cafeHi.www.member.dto.MemberAuth;
 
 public interface MemberService {
 
-    int insertMember(Member member);
+    Long insertMember(Member member);
 
-    int insertMemberAuth(MemberAuth memberAuth);
+    Long insertMemberAuth(MemberAuth memberAuth);
 
     void updateMemberName(Member member);
     void updateMemberContact(Member member);
@@ -15,9 +15,9 @@ public interface MemberService {
     void updateMemberAddress(Member member);
     void updateMemberDetailAddress(Member member);
 
-    int deleteMember(int member_code);
+    int deleteMember(Long member_code);
 
-    Member getMember(int member_code);
+    Member getMember(Long member_code);
 
     Member findMemberById(String member_id);
 

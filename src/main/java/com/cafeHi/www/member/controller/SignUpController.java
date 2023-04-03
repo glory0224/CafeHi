@@ -78,7 +78,7 @@ public class SignUpController {
 
 		memberService.insertMember(member);
 
-		int member_code = member.getMember_code(); // MyBatis 기본키 반환 방식 이용
+		Long member_code = member.getMember_code(); // MyBatis 기본키 반환 방식 이용
 
 		// 멤버 권한 생성
 

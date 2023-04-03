@@ -35,7 +35,7 @@ public class CartController {
 		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    CustomUser userInfo = (CustomUser)principal;
-	    int member_code = userInfo.getMember().getMember_code();
+	    Long member_code = userInfo.getMember().getMember_code();
 		
 	    if (member_code != 0) {
 			List<Cart> getCartList = cartService.getCartList(member_code); // 장바구니 목록
@@ -78,7 +78,7 @@ public class CartController {
 //		구글 서치를 통해 @AuthenticationPrincipal를 이용하여 CustomUser 객체를 인자에 넘겨주는 방식을 사용하여 해결했다. 
 		
 
-		int member_code = customUser.getMember().getMember_code();
+		Long member_code = customUser.getMember().getMember_code();
 		cart.setMember_code(member_code);
 		cart.setCart_writetime(LocalDateTime.now());
 		cart.setCart_updatetime(LocalDateTime.now());
@@ -114,7 +114,7 @@ public class CartController {
 			
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CustomUser userInfo = (CustomUser) principal;
-			int member_code = userInfo.getMember().getMember_code();
+			Long member_code = userInfo.getMember().getMember_code();
 			
 			
 			cartService.deleteAllCart(member_code);

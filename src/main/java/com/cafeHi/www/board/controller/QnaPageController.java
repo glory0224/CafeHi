@@ -54,7 +54,7 @@ public class QnaPageController {
 		CustomUser userInfo = (CustomUser) principal;
 	    Member getMember = userInfo.getMember();
 	  
-	    int member_code = getMember.getMember_code();
+	    Long member_code = getMember.getMember_code();
 
 	    Map<String , Object> myPageQnAMap = new ConcurrentHashMap<>();
 	    

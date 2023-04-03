@@ -11,8 +11,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Membership {
 	
-	private int membership_code;
-	private int member_code; // 멤버 정보
+	private Long membership_code;
+	private Long member_code; // 멤버 정보
 	private String membership_grade;
 	private int membership_point;
 	private double membership_new_point;
@@ -21,7 +21,7 @@ public class Membership {
 	
 	
 	// 회원 멤버쉽 생성
-	public void createMembership(int member_code) {
+	public void createMembership(Long member_code) {
 		this.member_code = member_code;
 		this.membership_grade = MembershipGrade.STANDARD.toString();
 		this.membership_point = 0;
@@ -29,7 +29,7 @@ public class Membership {
 		this.membership_updatetime = LocalDateTime.now();
 	}
 
-	public void setMembershipPointInfo(int member_code, int membership_point, double membership_new_point) {
+	public void setMembershipPointInfo(Long member_code, int membership_point, double membership_new_point) {
 		this.member_code = member_code;
 		this.membership_point = membership_point;
 		this.membership_new_point = membership_new_point;

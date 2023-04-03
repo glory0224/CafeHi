@@ -11,7 +11,7 @@ import lombok.*;
 @ToString
 public class Member {
 	
-	private int member_code;  // 사용자 코드(기본키)
+	private Long member_code;  // 사용자 코드(기본키)
 	private String member_id; // 사용자 아이디
 	private String member_pw; // 사용자 비밀번호
 	private String member_name; // 사용자 이름 

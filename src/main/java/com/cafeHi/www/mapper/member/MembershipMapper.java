@@ -7,9 +7,9 @@ import com.cafeHi.www.member.dto.Membership;
 @Mapper
 public interface MembershipMapper {
 	
-	public void insertMembership(Membership membership);
+	void insertMembership(Membership membership);
 	
-	public Membership getMembership(int member_code);
+	Membership getMembership(Long member_code);
 
 	public int updateMembershipPoint(Membership membership);
 	

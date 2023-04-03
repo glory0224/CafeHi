@@ -7,8 +7,8 @@ import lombok.Data;
 @Data
 public class Cart {
 	
-	private int cart_code; // 장바구니 코드 (기본키)
-	private int member_code; // 사용자 코드 
+	private Long cart_code; // 장바구니 코드 (기본키)
+	private Long member_code; // 사용자 코드
 	private String member_name; // 사용자 이름
 	private int menu_code; // 메뉴 코드 
 	private String menu_name; // 메뉴 이름

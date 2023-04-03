@@ -13,8 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Orders {
 
-	private int order_code;	// 기본키
-	private int member_code;	// 멤버 기본키 
+	private Long order_code;	// 기본키
+	private Long member_code;	// 멤버 기본키
 	private OrderState order_status; // 주문 상태
 	private LocalDateTime order_writetime;	// 주문 날짜
 	private LocalDateTime order_updatetime; // 수정 날짜 
@@ -32,7 +32,7 @@ public class Orders {
 		this.order_updatetime = LocalDateTime.now();	
 	}
 
-	public void setOrderInfo(int member_code, boolean include_delivery) {
+	public void setOrderInfo(Long member_code, boolean include_delivery) {
 		this.member_code = member_code;
 		this.order_status = OrderState.주문완료;
 		this.order_writetime = LocalDateTime.now();
@@ -56,11 +56,12 @@ public class Orders {
 	
 	// 주문 정보 전달용 setter
 
-	public void setMember_code(int member_code) {
+	public void setMember_code(Long member_code) {
 		this.member_code = member_code;
 	}
 
-	public void setOrder_code(int order_code) {
+	public void setOrder_code(Long order_code) {
+
 		this.order_code = order_code;
 	}
 }

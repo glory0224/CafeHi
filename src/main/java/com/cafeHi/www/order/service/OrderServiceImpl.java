@@ -14,7 +14,7 @@ public class OrderServiceImpl implements OrderService{
     private final OrderMapper orderMapper;
 
     @Override
-    public int insertOrder(Orders order) {
+    public Long insertOrder(Orders order) {
         return orderMapper.insertOrder(order);
     }
 

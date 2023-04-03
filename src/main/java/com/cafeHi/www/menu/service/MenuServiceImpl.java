@@ -60,7 +60,7 @@ public class MenuServiceImpl implements MenuService{
     }
 
     @Override
-    public Menu getMenu(int menu_code) {
+    public Menu getMenu(Long menu_code) {
 
         return menuMapper.getMenu(menu_code);
     }

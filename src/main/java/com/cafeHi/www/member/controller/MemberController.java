@@ -179,7 +179,7 @@ public class MemberController {
 			// 입력받은 계정 정보와 세션 정보 비교
 			if(MemberId.equals(securityId) && pwdEncoder.matches(MemberPw, securityPw)) {
 
-				int member_code = userInfo.getMember().getMember_code();
+				Long member_code = userInfo.getMember().getMember_code();
 				memberService.deleteMember(member_code);
 
 				session.invalidate(); // 세션 정보 삭제

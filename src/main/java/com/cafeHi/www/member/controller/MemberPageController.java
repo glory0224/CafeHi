@@ -1,5 +1,6 @@
 package com.cafeHi.www.member.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -46,8 +47,9 @@ public class MemberPageController {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CustomUser userInfo = (CustomUser) principal;
 		
-		int member_code = userInfo.getMember().getMember_code();
-		
+		Long member_code = userInfo.getMember().getMember_code();
+
+
 		Membership getMembership = membershipService.getMembership(member_code);
 		
 		model.addAttribute("MembershipGrade", getMembership.getMembership_grade());

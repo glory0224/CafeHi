@@ -15,13 +15,13 @@ public class CartServiceImpl implements CartService{
     private final CartMapper cartMapper;
 
     @Override
-    public List<Cart> getCartList(int member_code) {
+    public List<Cart> getCartList(Long member_code) {
         return cartMapper.getCartList(member_code);
     }
 
     @Override
     @Transactional
-    public int insertCart(Cart cart) {
+    public Long insertCart(Cart cart) {
         return cartMapper.insertCart(cart);
     }
 
@@ -33,18 +33,18 @@ public class CartServiceImpl implements CartService{
 
     @Override
     @Transactional
-    public void deleteCart(int cart_code) {
+    public void deleteCart(Long cart_code) {
         cartMapper.deleteCart(cart_code);
     }
 
     @Override
     @Transactional
-    public void deleteAllCart(int member_code) {
+    public void deleteAllCart(Long member_code) {
         cartMapper.deleteAllCart(member_code);
     }
 
     @Override
-    public int sumMoney(int member_code) {
+    public int sumMoney(Long member_code) {
         return cartMapper.sumMoney(member_code);
     }
 }

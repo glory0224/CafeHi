@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class Menu {
 	
-	private int menu_code; // 메뉴 코드 
+	private Long menu_code; // 메뉴 코드
 	private int menu_price; // 메뉴 가격
 	private String menu_type; // 메뉴 종류
 	private String menu_name;	// 메뉴 이름
@@ -20,7 +20,8 @@ public class Menu {
 	private LocalDateTime menu_updatetime; // 메뉴 수정일
 	
 	// 메뉴 정보 반환용 setter
-	public void setMenu_code(int menu_code) {
+	public void setMenu_code(Long menu_code) {
+
 		this.menu_code = menu_code;
 	}
 
