@@ -73,7 +73,7 @@
 	<!-- QnAEntity CRUD -->
 	<insert id="writeQnA" parameterType="com.cafeHi.www.board.dto.QnADTO">
 		INSERT INTO cafehi_qna (qna_num, qna_title, qna_title_classification, qna_writetime, qna_updatetime, qna_hit, member_code , qna_content, upload_path, store_file_name, upload_file_name)
-		VALUES(seq_qna.nextval, #{qna_title}, #{qna_title_classification}, #{qna_writetime}, #{qna_updatetime}, #{qna_hit}, #{memberDTO.member_code}, #{qna_content}, #{upload_path}, #{store_file_name}, #{upload_file_name})
+		VALUES(seq_qna.nextval, #{qna_title}, #{qna_title_classification}, #{qna_writetime}, #{qna_updatetime}, #{qna_hit}, #{member.member_code}, #{qna_content}, #{upload_path}, #{store_file_name}, #{upload_file_name})
 	</insert>
 
 	<!-- 게시글 수정  -->
