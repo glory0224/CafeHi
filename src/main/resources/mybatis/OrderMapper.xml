@@ -5,7 +5,7 @@
         
 <mapper namespace="com.cafeHi.www.mapper.order.OrderMapper">
 	
-	<resultMap type="com.cafeHi.www.order.dto.Orders" id="OrdersResult">
+	<resultMap type="com.cafeHi.www.order.dto.OrdersDTO" id="OrdersResult">
 		<id property="order_code" column="ORDER_CODE"/>
 		<result property="member_code" column="MEMBER_CODE"/>
 		<result property="order_status" column="ORDER_STATUS"/>
@@ -16,7 +16,7 @@
 	</resultMap>	
 	
 	
-	<resultMap type="com.cafeHi.www.order.dto.OrderMenu" id="OrderMenuResult">
+	<resultMap type="com.cafeHi.www.order.dto.OrderMenuDTO" id="OrderMenuResult">
 
 	<id  property="order_menu_code" column="ORDER_MENU_CODE"/>
 
@@ -35,13 +35,13 @@
 	</resultMap>
 
 
-<insert id="insertOrder" parameterType="com.cafeHi.www.order.dto.Orders">
+<insert id="insertOrder" parameterType="com.cafeHi.www.order.dto.OrdersDTO">
 	INSERT INTO cafehi_order(order_code, member_code, include_delivery, order_status, order_writetime, order_updatetime)
 	VALUES(seq_order.nextval, #{member_code}, #{include_delivery}, #{order_status}, #{order_writetime}, #{order_updatetime})	
 
 </insert>
 
-<update id="cancelOrder" parameterType="com.cafeHi.www.order.dto.Orders">
+<update id="cancelOrder" parameterType="com.cafeHi.www.order.dto.OrdersDTO">
 	UPDATE cafehi_order SET order_status = #{order_status}, order_updatetime = #{order_updatetime}
 	WHERE order_code = #{order_code} 
 </update>

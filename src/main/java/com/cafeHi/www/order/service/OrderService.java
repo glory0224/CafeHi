@@ -1,10 +1,10 @@
 package com.cafeHi.www.order.service;
 
-import com.cafeHi.www.order.dto.Orders;
+import com.cafeHi.www.order.dto.OrdersDTO;
 
 public interface OrderService {
-    Long insertOrder(Orders order);
+    Long insertOrder(OrdersDTO order);
 
-    void cancelOrder(Orders order);
+    void cancelOrder(OrdersDTO order);
 
 }

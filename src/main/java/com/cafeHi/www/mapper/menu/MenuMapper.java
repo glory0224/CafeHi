@@ -2,30 +2,29 @@ package com.cafeHi.www.mapper.menu;
 
 import java.util.List;
 
+import com.cafeHi.www.menu.dto.MenuDTO;
 import org.apache.ibatis.annotations.Mapper;
-
-import com.cafeHi.www.menu.dto.Menu;
 
 @Mapper
 public interface MenuMapper {
 
-	List<Menu> getCoffeeList();
+	List<MenuDTO> getCoffeeList();
 
-	List<Menu> getColdBrewList();
+	List<MenuDTO> getColdBrewList();
 
-	List<Menu> getLatteList();
+	List<MenuDTO> getLatteList();
 
-	List<Menu> getSmoothieList();
+	List<MenuDTO> getSmoothieList();
 
-	List<Menu> getSideList();
+	List<MenuDTO> getSideList();
 
-	List<Menu> getBeverageList();
+	List<MenuDTO> getBeverageList();
 
-	List<Menu> getFruitJuiceList();
+	List<MenuDTO> getFruitJuiceList();
 
-	List<Menu> getTeaList();
+	List<MenuDTO> getTeaList();
 
-	Menu getMenu(Long menu_code);
+	MenuDTO getMenu(Long menu_code);
 
-    void changeMenuStockQuantity(Menu getMenu);
+    void changeMenuStockQuantity(MenuDTO getMenuDTO);
 }

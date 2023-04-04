@@ -2,12 +2,12 @@ package com.cafeHi.www.menu.controller;
 
 import java.util.List;
 
+import com.cafeHi.www.menu.dto.MenuDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.cafeHi.www.mapper.menu.MenuMapper;
-import com.cafeHi.www.menu.dto.Menu;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +21,7 @@ public class MenuController {
 	
 	@GetMapping("/coffeeList") 
 	  public String coffeeListView(Model model) {
-		  List<Menu> coffeeList = menuMapper.getCoffeeList();
+		  List<MenuDTO> coffeeList = menuMapper.getCoffeeList();
 		  
 		  
 		  
@@ -40,7 +40,7 @@ public class MenuController {
 	
 	@GetMapping("/coldbrewList")
 	public String coldbrewListView(Model model) {
-		List<Menu> coldbrewList =  menuMapper.getColdBrewList();
+		List<MenuDTO> coldbrewList =  menuMapper.getColdBrewList();
 		
 		model.addAttribute("coldbrewList0", coldbrewList.get(0));
 		model.addAttribute("coldbrewList1", coldbrewList.get(1));
@@ -53,7 +53,7 @@ public class MenuController {
 	
 	@GetMapping("/fruitJuiceList")
 	public String fruitJuiceListView(Model model) {
-		List<Menu> fruitJuiceList =  menuMapper.getFruitJuiceList();
+		List<MenuDTO> fruitJuiceList =  menuMapper.getFruitJuiceList();
 		
 		model.addAttribute("fruitJuiceList0", fruitJuiceList.get(0));
 		model.addAttribute("fruitJuiceList1", fruitJuiceList.get(1));
@@ -64,7 +64,7 @@ public class MenuController {
 	@GetMapping("/beverageList")
 	public String beverageListView(Model model) {
 		
-		List<Menu> beverageList =  menuMapper.getBeverageList();
+		List<MenuDTO> beverageList =  menuMapper.getBeverageList();
 		
 		model.addAttribute("beverageList0", beverageList.get(0));
 		model.addAttribute("beverageList1", beverageList.get(1));
@@ -81,7 +81,7 @@ public class MenuController {
 	
 	@GetMapping("/latteList")
 	public String latteListView(Model model) {
-		List<Menu> latteList =  menuMapper.getLatteList();
+		List<MenuDTO> latteList =  menuMapper.getLatteList();
 		
 		model.addAttribute("latteList0", latteList.get(0));
 		model.addAttribute("latteList1", latteList.get(1));
@@ -96,7 +96,7 @@ public class MenuController {
 	
 	@GetMapping("/sideList")
 	public String sideListView(Model model) {
-		List<Menu> sideList =  menuMapper.getSideList();
+		List<MenuDTO> sideList =  menuMapper.getSideList();
 		
 		model.addAttribute("sideList0", sideList.get(0));
 		model.addAttribute("sideList1", sideList.get(1));
@@ -108,7 +108,7 @@ public class MenuController {
 	
 	@GetMapping("/smoothieList")
 	public String smoothieListView(Model model) {
-		List<Menu> smoothieList =  menuMapper.getSmoothieList();
+		List<MenuDTO> smoothieList =  menuMapper.getSmoothieList();
 		
 		model.addAttribute("smoothieList0", smoothieList.get(0));
 		model.addAttribute("smoothieList1", smoothieList.get(1));
@@ -122,7 +122,7 @@ public class MenuController {
 	
 	@GetMapping("/teaList")
 	public String teaListView(Model model) {
-		List<Menu> teaList =  menuMapper.getTeaList();
+		List<MenuDTO> teaList =  menuMapper.getTeaList();
 		
 		model.addAttribute("teaList0", teaList.get(0));
 		model.addAttribute("teaList1", teaList.get(1));

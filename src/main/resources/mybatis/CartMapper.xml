@@ -10,7 +10,7 @@
 	VALUES (seq_cart.nextval, #{member_code}, #{menu_code}, #{cart_amount}, #{cart_writetime}, #{cart_updatetime})
 </insert>
 
-<select id="getCartList" resultType="com.cafeHi.www.cart.dto.Cart">
+<select id="getCartList" resultType="com.cafeHi.www.cart.dto.CartDTO">
 		
 
 

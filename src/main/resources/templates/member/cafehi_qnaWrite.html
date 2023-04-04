@@ -27,7 +27,7 @@
 			<div class="card mb-4">
 				<form action="" th:action="@{/WriteQnA}" method="post" 
 					 enctype="multipart/form-data" >
-					 <input type="hidden" name="member_code" th:value="${#authentication.Principal.member.member_code}">
+					 <input type="hidden" name="member_code" th:value="${#authentication.Principal.memberDTO.member_code}">
 					 <input type="hidden" name="qna_hit" th:value="0">
 					 <input type="hidden" sec:authorize="hasAnyRole('ROLE_USER')" name="qna_title_classification" value="none"/>
 					 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
@@ -36,7 +36,7 @@
 							
 							<tr>
 								<th>작성자</th>
-								<td><input type="text" th:value="${#authentication.Principal.member.member_id}"
+								<td><input type="text" th:value="${#authentication.Principal.memberDTO.member_id}"
 									readonly="readonly"></td>
 								
 							</tr>

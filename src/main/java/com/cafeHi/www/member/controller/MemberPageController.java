@@ -1,13 +1,12 @@
 package com.cafeHi.www.member.controller;
 
-import lombok.extern.slf4j.Slf4j;
+import com.cafeHi.www.member.dto.MembershipDTO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.cafeHi.www.member.dto.CustomUser;
-import com.cafeHi.www.member.dto.Membership;
 import com.cafeHi.www.member.service.MembershipServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -47,13 +46,13 @@ public class MemberPageController {
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CustomUser userInfo = (CustomUser) principal;
 		
-		Long member_code = userInfo.getMember().getMember_code();
+		Long member_code = userInfo.getMemberDTO().getMember_code();
 
 
-		Membership getMembership = membershipService.getMembership(member_code);
+		MembershipDTO getMembershipDTO = membershipService.getMembership(member_code);
 		
-		model.addAttribute("MembershipGrade", getMembership.getMembership_grade());
-		model.addAttribute("MemebershipPoint", getMembership.getMembership_point());
+		model.addAttribute("MembershipGrade", getMembershipDTO.getMembership_grade());
+		model.addAttribute("MemebershipPoint", getMembershipDTO.getMembership_point());
 		
 		return "member/cafehi_myMembership";
 	}

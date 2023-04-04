@@ -5,18 +5,18 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.cafeHi.www.board.dto.QnADTO;
 import com.cafeHi.www.common.page.PageMaker;
 import com.cafeHi.www.common.page.SearchCriteria;
+import com.cafeHi.www.member.dto.MemberDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.cafeHi.www.board.dto.QnA;
 import com.cafeHi.www.mapper.board.QnaMapper;
 import com.cafeHi.www.member.dto.CustomUser;
-import com.cafeHi.www.member.dto.Member;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +37,7 @@ public class QnaPageController {
 	}
 	
 	@GetMapping("/CafeHi-UpdateQnA")
-	public String QnAUpdateView(QnA qna,SearchCriteria scri, Model model) {
+	public String QnAUpdateView(QnADTO qna, SearchCriteria scri, Model model) {
 		
 		model.addAttribute("qna", qnaMapper.getQnA(qna));
 		model.addAttribute("modifyDate", LocalDateTime.now());
@@ -46,21 +46,21 @@ public class QnaPageController {
 	}
 	
 	
-	// 회원이 쓴 QnA List
+	// 회원이 쓴 QnAEntity List
 	@RequestMapping("/CafeHi-MyPageQnA")
 	public String MyPageQnAView(SearchCriteria scri, Model model) {
 		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CustomUser userInfo = (CustomUser) principal;
-	    Member getMember = userInfo.getMember();
+	    MemberDTO getMemberDTO = userInfo.getMemberDTO();
 	  
-	    Long member_code = getMember.getMember_code();
+	    Long member_code = getMemberDTO.getMember_code();
 
 	    Map<String , Object> myPageQnAMap = new ConcurrentHashMap<>();
 	    
 	    myPageQnAMap.put("member_code", member_code);
 		myPageQnAMap.put("scri", scri);
-		List<QnA> MyQnaList = qnaMapper.getMyQnAList(myPageQnAMap);
+		List<QnADTO> MyQnaList = qnaMapper.getMyQnAList(myPageQnAMap);
 
 		model.addAttribute("MyQnaList", MyQnaList);
 		model.addAttribute("MyQnaListSize", MyQnaList.size());

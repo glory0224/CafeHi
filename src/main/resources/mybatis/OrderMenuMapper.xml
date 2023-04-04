@@ -6,7 +6,7 @@
 <mapper namespace="com.cafeHi.www.mapper.order.OrderMenuMapper">
 
 
-    <resultMap type="com.cafeHi.www.order.dto.OrderMenu" id="OrderMenuResult">
+    <resultMap type="com.cafeHi.www.order.dto.OrderMenuDTO" id="OrderMenuResult">
 
         <id property="order_menu_code" column="ORDER_MENU_CODE"/>
 
@@ -22,7 +22,7 @@
 
         <result property="order_menu_status" column="ORDER_MENU_STATUS"/>
 
-        <association property="menu" javaType="com.cafeHi.www.menu.dto.Menu">
+        <association property="menu" javaType="com.cafeHi.www.menu.dto.MenuDTO">
 
             <result property="menu_code" column="MENU_CODE"/>
 
@@ -40,7 +40,7 @@
 
         </association>
 
-        <association property="order" javaType="com.cafeHi.www.order.dto.Orders">
+        <association property="order" javaType="com.cafeHi.www.order.dto.OrdersDTO">
             <id property="order_code" column="ORDER_CODE"/>
             <result property="member_code" column="MEMBER_CODE"/>
             <result property="order_status" column="ORDER_STATUS"/>
@@ -52,7 +52,7 @@
 
     </resultMap>
 
-    <insert id="insertOrderMenu" parameterType="com.cafeHi.www.order.dto.OrderMenu">
+    <insert id="insertOrderMenu" parameterType="com.cafeHi.www.order.dto.OrderMenuDTO">
         INSERT INTO cafehi_order_menu
 
         VALUES (seq_order_menu.nextval, seq_order.currval, #{menu.menu_code}, #{total_order_count},#{total_order_price}, #{total_order_price_point},
@@ -60,7 +60,7 @@
 
     </insert>
 
-    <update id="cancelOrderMenu" parameterType="com.cafeHi.www.order.dto.OrderMenu">
+    <update id="cancelOrderMenu" parameterType="com.cafeHi.www.order.dto.OrderMenuDTO">
         UPDATE cafehi_order_menu
         SET order_menu_status = #{order_menu_status}, order_menu_updatetime = #{order_menu_updatetime}
         WHERE order_menu_code = #{order_menu_code}

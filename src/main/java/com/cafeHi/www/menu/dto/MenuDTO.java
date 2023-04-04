@@ -7,7 +7,7 @@ import lombok.ToString;
 
 @Getter
 @ToString
-public class Menu {
+public class MenuDTO {
 	
 	private Long menu_code; // 메뉴 코드
 	private int menu_price; // 메뉴 가격

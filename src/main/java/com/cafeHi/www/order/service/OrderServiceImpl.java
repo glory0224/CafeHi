@@ -1,7 +1,7 @@
 package com.cafeHi.www.order.service;
 
 import com.cafeHi.www.mapper.order.OrderMapper;
-import com.cafeHi.www.order.dto.Orders;
+import com.cafeHi.www.order.dto.OrdersDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,12 +14,12 @@ public class OrderServiceImpl implements OrderService{
     private final OrderMapper orderMapper;
 
     @Override
-    public Long insertOrder(Orders order) {
+    public Long insertOrder(OrdersDTO order) {
         return orderMapper.insertOrder(order);
     }
 
     @Override
-    public void cancelOrder(Orders order) {
+    public void cancelOrder(OrdersDTO order) {
         orderMapper.cancelOrder(order);
     }
 }

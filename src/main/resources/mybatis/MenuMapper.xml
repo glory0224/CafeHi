@@ -5,7 +5,7 @@
         
 <mapper namespace="com.cafeHi.www.mapper.menu.MenuMapper">
 	
-	<resultMap type="com.cafeHi.www.menu.dto.Menu" id="MenuResult">
+	<resultMap type="com.cafeHi.www.menu.dto.MenuDTO" id="MenuResult">
 		<result property="menu_code" column="menu_code" />
 		<result property="menu_price" column="menu_price" />
 		<result property="menu_type" column="menu_type" />
@@ -34,9 +34,9 @@
 
 <select id="getTeaList" resultMap="MenuResult">SELECT * FROM cafehi_menu WHERE menu_type = 'tea' </select>
 
-<select id="getMenu" resultType="com.cafeHi.www.menu.dto.Menu" parameterType="long">SELECT * FROM cafehi_menu WHERE menu_code = #{menu_code} </select>
+<select id="getMenuDTO" resultType="com.cafeHi.www.menu.dto.MenuDTO" parameterType="long">SELECT *FROM cafehi_menu WHERE menu_code = #{menu_code} </select>
 
-	<update id="changeMenuStockQuantity" parameterType="com.cafeHi.www.menu.dto.Menu" >
+	<update id="changeMenuStockQuantity" parameterType="com.cafeHi.www.menu.dto.MenuDTO" >
 		UPDATE cafehi_menu
 		SET menu_stock_quantity = #{menu_stock_quantity}
 		WHERE menu_code = #{menu_code}

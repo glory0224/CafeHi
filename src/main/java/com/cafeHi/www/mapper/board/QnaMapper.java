@@ -6,24 +6,24 @@ import java.util.Map;
 import com.cafeHi.www.common.page.SearchCriteria;
 import org.apache.ibatis.annotations.Mapper;
 
-import com.cafeHi.www.board.dto.QnA;
+import com.cafeHi.www.board.dto.QnADTO;
 import com.cafeHi.www.common.page.Criteria;
 
 @Mapper
 public interface QnaMapper {
 	
-	// QnA 게시글 CRUD
-	public int writeQnA(QnA qna);
-	public List<QnA> getQnAList(SearchCriteria scri);
-	public int modifyQnA(QnA qna);
-	public void modifyHit(QnA qna);
-	public int deleteQnA(QnA qna);
+	// QnAEntity 게시글 CRUD
+	public int writeQnA(QnADTO qna);
+	public List<QnADTO> getQnAList(SearchCriteria scri);
+	public int modifyQnA(QnADTO qna);
+	public void modifyHit(QnADTO qna);
+	public int deleteQnA(QnADTO qna);
 	public int getQnASearchNum(SearchCriteria scri);
-	public QnA getQnA(QnA qna);
+	public QnADTO getQnA(QnADTO qna);
 	
-	// 멤버 QnA 게시글 조회
+	// 멤버 QnAEntity 게시글 조회
 	public int getMyQnANum(Map<String , Object> myPageQnAMap);
-	public List<QnA> getMyQnAList(Map<String , Object> myPageQnAMap);
+	public List<QnADTO> getMyQnAList(Map<String , Object> myPageQnAMap);
 	
 	
 }

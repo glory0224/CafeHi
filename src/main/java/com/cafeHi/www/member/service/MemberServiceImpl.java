@@ -2,8 +2,8 @@ package com.cafeHi.www.member.service;
 
 import com.cafeHi.www.mapper.member.MemberAuthMapper;
 import com.cafeHi.www.mapper.member.MemberMapper;
-import com.cafeHi.www.member.dto.Member;
-import com.cafeHi.www.member.dto.MemberAuth;
+import com.cafeHi.www.member.dto.MemberDTO;
+import com.cafeHi.www.member.dto.MemberAuthDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,45 +18,45 @@ public class MemberServiceImpl implements MemberService{
 
     @Override
     @Transactional
-    public Long insertMember(Member member) {
-        return memberMapper.insertMember(member);
+    public Long insertMember(MemberDTO memberDTO) {
+        return memberMapper.insertMember(memberDTO);
     }
 
     @Override
     @Transactional
-    public Long insertMemberAuth(MemberAuth memberAuth) {
+    public Long insertMemberAuth(MemberAuthDTO memberAuthDTO) {
 
-        return memberAuthMapper.insertMemberAuth(memberAuth);
+        return memberAuthMapper.insertMemberAuth(memberAuthDTO);
     }
 
     @Override
     @Transactional
-    public void updateMemberName(Member member) {
-        memberMapper.updateMemberName(member);
+    public void updateMemberName(MemberDTO memberDTO) {
+        memberMapper.updateMemberName(memberDTO);
     }
 
     @Override
     @Transactional
-    public void updateMemberContact(Member member) {
-        memberMapper.updateMemberContact(member);
+    public void updateMemberContact(MemberDTO memberDTO) {
+        memberMapper.updateMemberContact(memberDTO);
     }
 
     @Override
     @Transactional
-    public void updateMemberEmail(Member member) {
-        memberMapper.updateMemberEmail(member);
+    public void updateMemberEmail(MemberDTO memberDTO) {
+        memberMapper.updateMemberEmail(memberDTO);
     }
 
     @Override
     @Transactional
-    public void updateMemberAddress(Member member) {
-        memberMapper.updateMemberAddress(member);
+    public void updateMemberAddress(MemberDTO memberDTO) {
+        memberMapper.updateMemberAddress(memberDTO);
     }
 
     @Override
     @Transactional
-    public void updateMemberDetailAddress(Member member) {
-        memberMapper.updateMemberDetailAddress(member);
+    public void updateMemberDetailAddress(MemberDTO memberDTO) {
+        memberMapper.updateMemberDetailAddress(memberDTO);
     }
 
     @Override
@@ -68,12 +68,12 @@ public class MemberServiceImpl implements MemberService{
 
 
     @Override
-    public Member getMember(Long member_code) {
+    public MemberDTO getMember(Long member_code) {
         return memberMapper.getMember(member_code);
     }
 
     @Override
-    public Member findMemberById(String member_id) {
+    public MemberDTO findMemberById(String member_id) {
         return memberMapper.findMemberById(member_id);
     }
 

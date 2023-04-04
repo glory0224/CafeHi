@@ -7,7 +7,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
-import com.cafeHi.www.board.service.CartService;
+import com.cafeHi.www.cart.dto.CartDTO;
+import com.cafeHi.www.cart.service.CartService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cafeHi.www.cart.dto.Cart;
-import com.cafeHi.www.mapper.cart.CartMapper;
 import com.cafeHi.www.member.dto.CustomUser;
 
 import lombok.RequiredArgsConstructor;
@@ -35,10 +34,10 @@ public class CartController {
 		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    CustomUser userInfo = (CustomUser)principal;
-	    Long member_code = userInfo.getMember().getMember_code();
+	    Long member_code = userInfo.getMemberDTO().getMember_code();
 		
 	    if (member_code != 0) {
-			List<Cart> getCartList = cartService.getCartList(member_code); // 장바구니 목록
+			List<CartDTO> getCartListDTO = cartService.getCartList(member_code); // 장바구니 목록
 			int sumMoney = cartService.sumMoney(member_code); // 금액 합계
 			// 배송료 계산
 			// 30000원이 넘으면 배송료가 0원, 안넘으면 2500원
@@ -47,8 +46,8 @@ public class CartController {
 			myPageCartMap.put("sumMoney", sumMoney);
 			myPageCartMap.put("fee", fee); //배송료
 			myPageCartMap.put("sum", sumMoney+fee); // 전체 금액
-			myPageCartMap.put("CartList", getCartList); // 장바구니 목록
-			myPageCartMap.put("CartListSize", getCartList.size()); // 레코드 개수
+			myPageCartMap.put("CartList", getCartListDTO); // 장바구니 목록
+			myPageCartMap.put("CartListSize", getCartListDTO.size()); // 레코드 개수
 			
 			model.addAttribute("myPageCartMap", myPageCartMap);
 		}
@@ -59,7 +58,7 @@ public class CartController {
 	
 	
 	@PostMapping("/insertCart")
-	public String CartInsert(@AuthenticationPrincipal CustomUser customUser, @RequestParam int toCartAmount, Cart cart, HttpServletRequest request) {
+	public String CartInsert(@AuthenticationPrincipal CustomUser customUser, @RequestParam int toCartAmount, CartDTO cartDTO, HttpServletRequest request) {
 		
 		if(toCartAmount == 0) {
 			request.setAttribute("msg", "수량은 1개 이상 담을 수 있습니다.");
@@ -70,7 +69,7 @@ public class CartController {
 		}
 				
 		
-		cart.setCart_amount(toCartAmount);
+		cartDTO.setCart_amount(toCartAmount);
 
 //		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		CustomUser userInfo = (CustomUser) principal; 		
@@ -78,12 +77,12 @@ public class CartController {
 //		구글 서치를 통해 @AuthenticationPrincipal를 이용하여 CustomUser 객체를 인자에 넘겨주는 방식을 사용하여 해결했다. 
 		
 
-		Long member_code = customUser.getMember().getMember_code();
-		cart.setMember_code(member_code);
-		cart.setCart_writetime(LocalDateTime.now());
-		cart.setCart_updatetime(LocalDateTime.now());
+		Long member_code = customUser.getMemberDTO().getMember_code();
+		cartDTO.setMember_code(member_code);
+		cartDTO.setCart_writetime(LocalDateTime.now());
+		cartDTO.setCart_updatetime(LocalDateTime.now());
 		
-		cartService.insertCart(cart);
+		cartService.insertCart(cartDTO);
 		return "redirect:/CafeHi-MyPageCart";
 		
 	}
@@ -91,18 +90,18 @@ public class CartController {
 	
 	// 장바구니 메뉴 항목 삭제 
 	@PostMapping("/deleteCart")
-	public String CartDelete(Cart cart) {
+	public String CartDelete(CartDTO cartDTO) {
 		
-		cartService.deleteCart(cart.getCart_code());
+		cartService.deleteCart(cartDTO.getCart_code());
 		
 		return "redirect:/CafeHi-MyPageCart";
 	}
 	
 	// 장바구니 수정 
 		@PostMapping("/modifyCart")
-		public String CartModify(Cart cart) {
+		public String CartModify(CartDTO cartDTO) {
 					
-			cartService.modifyCart(cart);
+			cartService.modifyCart(cartDTO);
 			
 			return "redirect:/CafeHi-MyPageCart";
 			
@@ -114,7 +113,7 @@ public class CartController {
 			
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CustomUser userInfo = (CustomUser) principal;
-			Long member_code = userInfo.getMember().getMember_code();
+			Long member_code = userInfo.getMemberDTO().getMember_code();
 			
 			
 			cartService.deleteAllCart(member_code);

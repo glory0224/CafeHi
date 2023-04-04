@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
-public class Membership {
+public class MembershipDTO {
 	
 	private Long membership_code;
 	private Long member_code; // 멤버 정보

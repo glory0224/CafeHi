@@ -2,7 +2,7 @@ package com.cafeHi.www.order.dto;
 
 import java.time.LocalDateTime;
 
-import com.cafeHi.www.menu.dto.Menu;
+import com.cafeHi.www.menu.dto.MenuDTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,10 +12,10 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderMenu {
+public class OrderMenuDTO {
 	private int order_menu_code;	// 기본키 
-	private Menu menu;	// 메뉴 정보 
-	private Orders order;	// 주문 정보 
+	private MenuDTO menu;	// 메뉴 정보
+	private OrdersDTO order;	// 주문 정보
 	private int total_order_price; // 총 가격
 	private int total_order_count;	// 주문 총 수량
 	private LocalDateTime order_menu_writetime; // 주문 메뉴 등록일
@@ -56,12 +56,12 @@ public class OrderMenu {
 		this.order_menu_updatetime = LocalDateTime.now();
 	}
 
-	public void setMenu(Menu menu) {
+	public void setMenuDTO(MenuDTO menu) {
 		this.menu = menu;
 	}
 
 
-	public void setOrder(Orders order) {
+	public void setOrder(OrdersDTO order) {
 		this.order = order;
 	}
 

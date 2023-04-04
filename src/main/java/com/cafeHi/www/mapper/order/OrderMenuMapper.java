@@ -2,16 +2,15 @@ package com.cafeHi.www.mapper.order;
 
 import java.util.List;
 
+import com.cafeHi.www.order.dto.OrderMenuDTO;
 import org.apache.ibatis.annotations.Mapper;
-
-import com.cafeHi.www.order.dto.OrderMenu;
 
 @Mapper
 public interface OrderMenuMapper {
 
-	void insertOrderMenu(OrderMenu orderMenu);
+	void insertOrderMenu(OrderMenuDTO orderMenuDTO);
 
-	List<OrderMenu> findOrderMenuList(Long member_code);
+	List<OrderMenuDTO> findOrderMenuList(Long member_code);
 
-    void cancelOrderMenu(OrderMenu orderMenu);
+    void cancelOrderMenu(OrderMenuDTO orderMenuDTO);
 }

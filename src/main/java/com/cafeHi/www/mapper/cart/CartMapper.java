@@ -4,16 +4,16 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.cafeHi.www.cart.dto.Cart;
+import com.cafeHi.www.cart.dto.CartDTO;
 
 @Mapper
 public interface CartMapper {
 	
-	List<Cart> getCartList(Long member_code);
+	List<CartDTO> getCartList(Long member_code);
 	
-	Long insertCart(Cart cart);
+	Long insertCart(CartDTO cartDTO);
 	
-	void modifyCart(Cart cart);
+	void modifyCart(CartDTO cartDTO);
 	
 	void deleteCart(Long cart_code);
 	

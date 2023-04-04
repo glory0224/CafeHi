@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import lombok.Data;
 
 @Data
-public class Cart {
+public class CartDTO {
 	
 	private Long cart_code; // 장바구니 코드 (기본키)
 	private Long member_code; // 사용자 코드

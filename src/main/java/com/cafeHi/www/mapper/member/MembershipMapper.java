@@ -1,16 +1,15 @@
 package com.cafeHi.www.mapper.member;
 
+import com.cafeHi.www.member.dto.MembershipDTO;
 import org.apache.ibatis.annotations.Mapper;
-
-import com.cafeHi.www.member.dto.Membership;
 
 @Mapper
 public interface MembershipMapper {
 	
-	void insertMembership(Membership membership);
+	void insertMembership(MembershipDTO membershipDTO);
 	
-	Membership getMembership(Long member_code);
+	MembershipDTO getMembership(Long member_code);
 
-	public int updateMembershipPoint(Membership membership);
+	public int updateMembershipPoint(MembershipDTO membershipDTO);
 	
 }

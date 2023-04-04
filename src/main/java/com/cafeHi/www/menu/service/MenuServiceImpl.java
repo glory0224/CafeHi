@@ -1,7 +1,7 @@
 package com.cafeHi.www.menu.service;
 
 import com.cafeHi.www.mapper.menu.MenuMapper;
-import com.cafeHi.www.menu.dto.Menu;
+import com.cafeHi.www.menu.dto.MenuDTO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,68 +18,68 @@ public class MenuServiceImpl implements MenuService{
 
 
     @Override
-    public List<Menu> getCoffeeList() {
+    public List<MenuDTO> getCoffeeList() {
 
         return menuMapper.getCoffeeList();
     }
 
     @Override
-    public List<Menu> getColdBrewList() {
+    public List<MenuDTO> getColdBrewList() {
 
         return menuMapper.getColdBrewList();
     }
 
     @Override
-    public List<Menu> getLatteList() {
+    public List<MenuDTO> getLatteList() {
         return menuMapper.getLatteList();
     }
 
     @Override
-    public List<Menu> getSmoothieList() {
+    public List<MenuDTO> getSmoothieList() {
         return menuMapper.getSmoothieList();
     }
 
     @Override
-    public List<Menu> getSideList() {
+    public List<MenuDTO> getSideList() {
         return menuMapper.getSideList();
     }
 
     @Override
-    public List<Menu> getBeverageList() {
+    public List<MenuDTO> getBeverageList() {
         return menuMapper.getBeverageList();
     }
 
     @Override
-    public List<Menu> getFruitJuiceList() {
+    public List<MenuDTO> getFruitJuiceList() {
         return menuMapper.getFruitJuiceList();
     }
 
     @Override
-    public List<Menu> getTeaList() {
+    public List<MenuDTO> getTeaList() {
         return menuMapper.getTeaList();
     }
 
     @Override
-    public Menu getMenu(Long menu_code) {
+    public MenuDTO getMenu(Long menu_code) {
 
         return menuMapper.getMenu(menu_code);
     }
 
     @Override
     @Transactional
-    public void DecreaseMenuStockQuantity(Menu getMenu, int total_order_count) {
+    public void DecreaseMenuStockQuantity(MenuDTO getMenuDTO, int total_order_count) {
 
-        getMenu.DecreaseMenuStockQuantity(total_order_count);
+        getMenuDTO.DecreaseMenuStockQuantity(total_order_count);
 
-        menuMapper.changeMenuStockQuantity(getMenu);
+        menuMapper.changeMenuStockQuantity(getMenuDTO);
     }
 
     @Override
     @Transactional
-    public void IncreaseMenuStockQuantity(Menu getMenu, int total_order_count) {
+    public void IncreaseMenuStockQuantity(MenuDTO getMenuDTO, int total_order_count) {
 
-        getMenu.IncreaseMenuStockQuantity(total_order_count);
+        getMenuDTO.IncreaseMenuStockQuantity(total_order_count);
 
-        menuMapper.changeMenuStockQuantity(getMenu);
+        menuMapper.changeMenuStockQuantity(getMenuDTO);
     }
 }

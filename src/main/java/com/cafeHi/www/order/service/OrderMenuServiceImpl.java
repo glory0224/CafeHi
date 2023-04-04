@@ -1,7 +1,7 @@
 package com.cafeHi.www.order.service;
 
 import com.cafeHi.www.mapper.order.OrderMenuMapper;
-import com.cafeHi.www.order.dto.OrderMenu;
+import com.cafeHi.www.order.dto.OrderMenuDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,18 +16,18 @@ public class OrderMenuServiceImpl implements OrderMenuService{
 
     @Override
     @Transactional
-    public void insertOrderMenu(OrderMenu orderMenu) {
-        orderMenuMapper.insertOrderMenu(orderMenu);
+    public void insertOrderMenu(OrderMenuDTO orderMenuDTO) {
+        orderMenuMapper.insertOrderMenu(orderMenuDTO);
     }
 
     @Override
     @Transactional
-    public void cancelOrderMenu(OrderMenu orderMenu) {
-        orderMenuMapper.cancelOrderMenu(orderMenu);
+    public void cancelOrderMenu(OrderMenuDTO orderMenuDTO) {
+        orderMenuMapper.cancelOrderMenu(orderMenuDTO);
     }
 
     @Override
-    public List<OrderMenu> findOrderMenuList(Long member_code) {
+    public List<OrderMenuDTO> findOrderMenuList(Long member_code) {
         return orderMenuMapper.findOrderMenuList(member_code);
     }
 

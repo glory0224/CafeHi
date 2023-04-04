@@ -11,14 +11,14 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Orders {
+public class OrdersDTO {
 
 	private Long order_code;	// 기본키
 	private Long member_code;	// 멤버 기본키
 	private OrderState order_status; // 주문 상태
 	private LocalDateTime order_writetime;	// 주문 날짜
 	private LocalDateTime order_updatetime; // 수정 날짜 
-	private OrderMenu orderMenu; // 주문 메뉴 
+	private OrderMenuDTO orderMenu; // 주문 메뉴
 	private Boolean include_delivery; // 배송비 포함 여부
 	
 	

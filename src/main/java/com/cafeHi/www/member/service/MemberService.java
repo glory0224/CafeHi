@@ -1,25 +1,25 @@
 package com.cafeHi.www.member.service;
 
-import com.cafeHi.www.member.dto.Member;
-import com.cafeHi.www.member.dto.MemberAuth;
+import com.cafeHi.www.member.dto.MemberDTO;
+import com.cafeHi.www.member.dto.MemberAuthDTO;
 
 public interface MemberService {
 
-    Long insertMember(Member member);
+    Long insertMember(MemberDTO memberDTO);
 
-    Long insertMemberAuth(MemberAuth memberAuth);
+    Long insertMemberAuth(MemberAuthDTO memberAuthDTO);
 
-    void updateMemberName(Member member);
-    void updateMemberContact(Member member);
-    void updateMemberEmail(Member member);
-    void updateMemberAddress(Member member);
-    void updateMemberDetailAddress(Member member);
+    void updateMemberName(MemberDTO memberDTO);
+    void updateMemberContact(MemberDTO memberDTO);
+    void updateMemberEmail(MemberDTO memberDTO);
+    void updateMemberAddress(MemberDTO memberDTO);
+    void updateMemberDetailAddress(MemberDTO memberDTO);
 
     int deleteMember(Long member_code);
 
-    Member getMember(Long member_code);
+    MemberDTO getMember(Long member_code);
 
-    Member findMemberById(String member_id);
+    MemberDTO findMemberById(String member_id);
 
     int idCheck(String member_id);
 

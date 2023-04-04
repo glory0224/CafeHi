@@ -6,11 +6,10 @@ import com.cafeHi.www.member.MemberAuthName;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
-public class MemberAuth {
+public class MemberAuthDTO {
 	
 	private Long member_auth_code; // 사용자 정보 권한 코드
 	private Long member_code;	// 사용자 코드

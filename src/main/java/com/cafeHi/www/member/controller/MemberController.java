@@ -6,15 +6,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.cafeHi.www.common.CommonUtils;
+import com.cafeHi.www.member.dto.MemberDTO;
 import com.cafeHi.www.member.service.MemberService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import com.cafeHi.www.mapper.member.MemberMapper;
 import com.cafeHi.www.member.dto.CustomUser;
-import com.cafeHi.www.member.dto.Member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,10 +30,10 @@ public class MemberController {
 	// 회원 수정
 	
 		@PostMapping("/updateMemberName")
-		public String updateUserName(Member member, HttpServletRequest request) {
+		public String updateUserName(MemberDTO memberDTO, HttpServletRequest request) {
 
 
-			if (CommonUtils.isEmpty(member.getMember_name())) {
+			if (CommonUtils.isEmpty(memberDTO.getMember_name())) {
 
 				request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
 
@@ -43,13 +42,13 @@ public class MemberController {
 			}
 
 			// db 정보 변경
-		 	memberService.updateMemberName(member);
+		 	memberService.updateMemberName(memberDTO);
 
 			
 			// spring security session 정보 변경 
 			 Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			 CustomUser userInfo = (CustomUser)principal;
-			 userInfo.getMember().setMember_name(member.getMember_name());
+			 userInfo.getMemberDTO().setMember_name(memberDTO.getMember_name());
 			
 			return "member/cafehi_memberInfo";
 			
@@ -58,10 +57,10 @@ public class MemberController {
 
 
 	@PostMapping("/updateMemberContact")
-		public String updateUserContact(Member member, HttpServletRequest request) {
+		public String updateUserContact(MemberDTO memberDTO, HttpServletRequest request) {
 
 
-		if (CommonUtils.isEmpty(member.getMember_contact())) {
+		if (CommonUtils.isEmpty(memberDTO.getMember_contact())) {
 
 			request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
 
@@ -70,12 +69,12 @@ public class MemberController {
 		}
 
 			// db 정보 변경
-			memberService.updateMemberContact(member);
+			memberService.updateMemberContact(memberDTO);
 			
 			// spring security session 정보 변경 
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CustomUser userInfo = (CustomUser) principal;
-			userInfo.getMember().setMember_contact(member.getMember_contact());
+			userInfo.getMemberDTO().setMember_contact(memberDTO.getMember_contact());
 			
 			
 			return "member/cafehi_memberInfo";
@@ -83,10 +82,10 @@ public class MemberController {
 		
 		
 		@PostMapping("/updateMemberEmail")
-		public String updateUserEmail(Member member, HttpServletRequest request) {
+		public String updateUserEmail(MemberDTO memberDTO, HttpServletRequest request) {
 
 
-			if (CommonUtils.isEmpty(member.getMember_email())) {
+			if (CommonUtils.isEmpty(memberDTO.getMember_email())) {
 
 				request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
 
@@ -95,42 +94,42 @@ public class MemberController {
 			}
 
 			// db 정보 변경 
-			memberService.updateMemberEmail(member);
+			memberService.updateMemberEmail(memberDTO);
 			
 			// spring security session 정보 변경 
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CustomUser userInfo = (CustomUser) principal;
-			userInfo.getMember().setMember_email(member.getMember_email());
+			userInfo.getMemberDTO().setMember_email(memberDTO.getMember_email());
 
 			
 			return "member/cafehi_memberInfo";
 		}
 		
 		@PostMapping("/updateMemberAddress")
-		public String updateUserAddress(Member member, HttpServletRequest request) {
+		public String updateUserAddress(MemberDTO memberDTO, HttpServletRequest request) {
 
 
-			if (CommonUtils.isEmpty(member.getMember_jibun_address())) {
+			if (CommonUtils.isEmpty(memberDTO.getMember_jibun_address())) {
 
-				member.setMember_jibun_address("없음");
+				memberDTO.setMember_jibun_address("없음");
 
-			}else if(CommonUtils.isEmpty(member.getMember_road_address())) {
+			}else if(CommonUtils.isEmpty(memberDTO.getMember_road_address())) {
 
-				member.setMember_road_address("없음");
+				memberDTO.setMember_road_address("없음");
 
-			}else if(CommonUtils.isEmpty(member.getMember_jibun_address()) || CommonUtils.isEmpty(member.getMember_road_address())){
+			}else if(CommonUtils.isEmpty(memberDTO.getMember_jibun_address()) || CommonUtils.isEmpty(memberDTO.getMember_road_address())){
 				request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
 				return "common/goBackAlert";
 			}
 
 			// db 정보 변경 
-			memberService.updateMemberAddress(member);
+			memberService.updateMemberAddress(memberDTO);
 			
 			// spring security session 정보 변경 
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CustomUser userInfo = (CustomUser) principal;
-			userInfo.getMember().setMember_road_address(member.getMember_road_address());
-			userInfo.getMember().setMember_jibun_address(member.getMember_jibun_address());
+			userInfo.getMemberDTO().setMember_road_address(memberDTO.getMember_road_address());
+			userInfo.getMemberDTO().setMember_jibun_address(memberDTO.getMember_jibun_address());
 
 			
 			
@@ -138,10 +137,10 @@ public class MemberController {
 		}
 		
 		@PostMapping("/updateMemberDetailAddress")
-		public String updateUserDetailAddress(Member member, HttpServletRequest request) {
+		public String updateUserDetailAddress(MemberDTO memberDTO, HttpServletRequest request) {
 
 
-			if (CommonUtils.isEmpty(member.getMember_detail_address())) {
+			if (CommonUtils.isEmpty(memberDTO.getMember_detail_address())) {
 
 				request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
 
@@ -149,12 +148,12 @@ public class MemberController {
 
 			}
 
-			memberService.updateMemberDetailAddress(member);
+			memberService.updateMemberDetailAddress(memberDTO);
 			
 			// spring security session 정보 변경 
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CustomUser userInfo = (CustomUser) principal;
-			userInfo.getMember().setMember_detail_address(member.getMember_detail_address());
+			userInfo.getMemberDTO().setMember_detail_address(memberDTO.getMember_detail_address());
 			
 			
 			return "member/cafehi_memberInfo";
@@ -162,10 +161,10 @@ public class MemberController {
 		
 		
 		@PostMapping("/deleteMember")
-		public String deleteMember(Member member, HttpSession session, HttpServletRequest request) {
+		public String deleteMember(MemberDTO memberDTO, HttpSession session, HttpServletRequest request) {
 			
-			String MemberId = member.getMember_id();
-			String MemberPw = member.getMember_pw();
+			String MemberId = memberDTO.getMember_id();
+			String MemberPw = memberDTO.getMember_pw();
 
 
 			//spring security session 정보 변경
@@ -173,13 +172,13 @@ public class MemberController {
 			CustomUser userInfo = (CustomUser) principal;
 			
 			String securityId = userInfo.getUsername();
-			String securityPw = userInfo.getMember().getMember_pw();
+			String securityPw = userInfo.getMemberDTO().getMember_pw();
 			
 
 			// 입력받은 계정 정보와 세션 정보 비교
 			if(MemberId.equals(securityId) && pwdEncoder.matches(MemberPw, securityPw)) {
 
-				Long member_code = userInfo.getMember().getMember_code();
+				Long member_code = userInfo.getMemberDTO().getMember_code();
 				memberService.deleteMember(member_code);
 
 				session.invalidate(); // 세션 정보 삭제

@@ -5,7 +5,10 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.cafeHi.www.member.dto.MembershipDTO;
 import com.cafeHi.www.menu.service.MenuService;
+import com.cafeHi.www.order.dto.OrderMenuDTO;
+import com.cafeHi.www.order.dto.OrdersDTO;
 import com.cafeHi.www.order.service.OrderMenuService;
 import com.cafeHi.www.order.service.OrderService;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -15,13 +18,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.cafeHi.www.mapper.order.OrderMenuMapper;
 import com.cafeHi.www.member.dto.CustomUser;
-import com.cafeHi.www.member.dto.Membership;
 import com.cafeHi.www.member.service.MembershipService;
-import com.cafeHi.www.menu.dto.Menu;
-import com.cafeHi.www.order.dto.OrderMenu;
-import com.cafeHi.www.order.dto.Orders;
+import com.cafeHi.www.menu.dto.MenuDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,10 +40,10 @@ public class OrderController {
 	
 	
 	@GetMapping("/CafehiOrder")
-	public String CafeHiOrderView(@RequestParam(required = false) Integer toOrderAmount, Menu menu, Model model, HttpServletRequest request) {
+	public String CafeHiOrderView(@RequestParam(required = false) Integer toOrderAmount, MenuDTO menuDTO, Model model, HttpServletRequest request) {
 
 		// 재고가 다 소진된 경우
-		if (menu.getMenu_stock_quantity() == 0) {
+		if (menuDTO.getMenu_stock_quantity() == 0) {
 			request.setAttribute("msg", "재고가 다 소진되었습니다.");
 			return "common/goBackAlert"; // 이전페이지 이동
 		}
@@ -65,10 +64,10 @@ public class OrderController {
 		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    CustomUser userInfo = (CustomUser)principal;
-	    Long member_code = userInfo.getMember().getMember_code();
+	    Long member_code = userInfo.getMemberDTO().getMember_code();
 		
 
-		model.addAttribute("Menu", menuService.getMenu(menu.getMenu_code()));
+		model.addAttribute("Menu", menuService.getMenu(menuDTO.getMenu_code()));
 		model.addAttribute("orderAmount", toOrderAmount);
 		model.addAttribute("Membership", membershipService.getMembership(member_code));
 		
@@ -88,37 +87,37 @@ public class OrderController {
 			@RequestParam("membership_new_point") double membership_new_point
 			)  {
 		
-		Orders newOrder = new Orders();
-		OrderMenu newOrderMenu = new OrderMenu();
-		Membership newMembership = new Membership();
+		OrdersDTO newOrder = new OrdersDTO();
+		OrderMenuDTO newOrderMenuDTO = new OrderMenuDTO();
+		MembershipDTO newMembershipDTO = new MembershipDTO();
 
 
 		newOrder.setOrderInfo(member_code, include_delivery);
 
-		newMembership.setMembershipPointInfo(member_code, membership_point, membership_new_point);
+		newMembershipDTO.setMembershipPointInfo(member_code, membership_point, membership_new_point);
 
 		// 트랜잭션 적용을 위한 인터페이스 도입
 		
-		Menu getMenu = menuService.getMenu(menu_code);
+		MenuDTO getMenuDTO = menuService.getMenu(menu_code);
 
-		menuService.DecreaseMenuStockQuantity(getMenu, total_order_count);
+		menuService.DecreaseMenuStockQuantity(getMenuDTO, total_order_count);
 
 
 		if (deliveryFee != 0 & newOrder.getInclude_delivery()) {
 			
 			orderService.insertOrder(newOrder);
 			
-			int total_order_price = newOrderMenu.CalTotalPrice(deliveryFee, getMenu.getMenu_price(), total_order_count); // 배송비 포함 총 비용
+			int total_order_price = newOrderMenuDTO.CalTotalPrice(deliveryFee, getMenuDTO.getMenu_price(), total_order_count); // 배송비 포함 총 비용
 			
-			newOrderMenu.setMenu(getMenu);
+			newOrderMenuDTO.setMenuDTO(getMenuDTO);
 
-			newOrderMenu.setOrderMenuInfo(membership_new_point, total_order_price, total_order_count);
+			newOrderMenuDTO.setOrderMenuInfo(membership_new_point, total_order_price, total_order_count);
 
 
-			orderMenuService.insertOrderMenu(newOrderMenu);
+			orderMenuService.insertOrderMenu(newOrderMenuDTO);
 
 			// 주문 포인트 적립
-			membershipService.updateMembershipPoint(newMembership);
+			membershipService.updateMembershipPoint(newMembershipDTO);
 			
 			return "redirect:/CafeHi-MyPageOrderMenuList";
 			
@@ -126,16 +125,16 @@ public class OrderController {
 			
 			orderService.insertOrder(newOrder);
 			
-			int total_order_price = newOrderMenu.CalTotalPrice(getMenu.getMenu_price(), total_order_count); // 배송비 미포함 총 비용
+			int total_order_price = newOrderMenuDTO.CalTotalPrice(getMenuDTO.getMenu_price(), total_order_count); // 배송비 미포함 총 비용
 			
-			newOrderMenu.setMenu(getMenu);
+			newOrderMenuDTO.setMenuDTO(getMenuDTO);
 
-			newOrderMenu.setOrderMenuInfo(membership_new_point, total_order_price, total_order_count);
+			newOrderMenuDTO.setOrderMenuInfo(membership_new_point, total_order_price, total_order_count);
 				
-			orderMenuService.insertOrderMenu(newOrderMenu);
+			orderMenuService.insertOrderMenu(newOrderMenuDTO);
 
 			// 주문 포인트 적립
-			membershipService.updateMembershipPoint(newMembership);
+			membershipService.updateMembershipPoint(newMembershipDTO);
 			
 			return "redirect:/CafeHi-MyPageOrderMenuList";
 		}
@@ -149,15 +148,15 @@ public class OrderController {
 
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CustomUser userInfo = (CustomUser)principal;
-		Long member_code = userInfo.getMember().getMember_code();
+		Long member_code = userInfo.getMemberDTO().getMember_code();
 		
 		// 0으로 체크하는 것이 맞나?
 		// primitive type 은  null 이 들어올 수 없기 때문에 0으로 체크하는 것이 옳은가?
 		if(member_code != 0) {
-			List<OrderMenu> orderMenuList = orderMenuService.findOrderMenuList(member_code);
+			List<OrderMenuDTO> orderMenuDTOList = orderMenuService.findOrderMenuList(member_code);
 
-			model.addAttribute("OrderMenuList", orderMenuList);
-			model.addAttribute("OrderMenuListCount", orderMenuList.size());
+			model.addAttribute("OrderMenuList", orderMenuDTOList);
+			model.addAttribute("OrderMenuListCount", orderMenuDTOList.size());
 			
 		}
 		
@@ -168,27 +167,27 @@ public class OrderController {
 	
 	
 	@PostMapping("/CancelOrder")
-	public String CafehiOrderCancel(Orders order, OrderMenu orderMenu, Menu menu) {
+	public String CafehiOrderCancel(OrdersDTO order, OrderMenuDTO orderMenuDTO, MenuDTO menuDTO) {
 		order.cancelTimeAndStatus();
 
 		orderService.cancelOrder(order);
 
-		orderMenu.cancelTimeAndStatus();
+		orderMenuDTO.cancelTimeAndStatus();
 
-		orderMenuService.cancelOrderMenu(orderMenu);
+		orderMenuService.cancelOrderMenu(orderMenuDTO);
 
-		Menu getMenu = menuService.getMenu(menu.getMenu_code());
+		MenuDTO getMenuDTO = menuService.getMenu(menuDTO.getMenu_code());
 
-		menuService.IncreaseMenuStockQuantity(getMenu, orderMenu.getTotal_order_count());
+		menuService.IncreaseMenuStockQuantity(getMenuDTO, orderMenuDTO.getTotal_order_count());
 
 		// 세션 값
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		CustomUser userInfo = (CustomUser)principal;
-		Long member_code = userInfo.getMember().getMember_code();
+		Long member_code = userInfo.getMemberDTO().getMember_code();
 
-		Membership getMembership = membershipService.getMembership(member_code);
+		MembershipDTO getMembershipDTO = membershipService.getMembership(member_code);
 
-		membershipService.minusMembershipPoint(getMembership, orderMenu.getTotal_order_price_point());
+		membershipService.minusMembershipPoint(getMembershipDTO, orderMenuDTO.getTotal_order_price_point());
 		
 		return "redirect:/CafeHi-MyPageOrderMenuList";
 	}

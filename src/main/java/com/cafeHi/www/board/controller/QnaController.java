@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.cafeHi.www.common.CommonUtils;
 import com.cafeHi.www.common.page.PageMaker;
 import com.cafeHi.www.common.page.SearchCriteria;
-import com.cafeHi.www.member.dto.Member;
+import com.cafeHi.www.member.dto.MemberDTO;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cafeHi.www.board.dto.QnA;
+import com.cafeHi.www.board.dto.QnADTO;
 import com.cafeHi.www.common.file.FileStore;
 import com.cafeHi.www.common.file.UploadFile;
 import com.cafeHi.www.mapper.board.QnaMapper;
@@ -40,7 +40,7 @@ public class QnaController {
 	private final FileStore fileStore;
 	
 	@PostMapping("WriteQnA")
-	public String WriteQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, Member mem, HttpServletRequest request) throws IOException {
+	public String WriteQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnADTO qna, MemberDTO mem, HttpServletRequest request) throws IOException {
 
 		if(CommonUtils.isEmpty(qna.getQna_title()) || CommonUtils.isEmpty(qna.getQna_content())) {
 
@@ -71,7 +71,7 @@ public class QnaController {
 
 
 	@PostMapping("/CafeHi-UpdateQnA")
-	public String UpdateQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnA qna, SearchCriteria scri, HttpServletRequest request) throws IllegalStateException, IOException {
+	public String UpdateQnA(@RequestParam(value = "uploadfile", required = false) MultipartFile uploadfile, QnADTO qna, SearchCriteria scri, HttpServletRequest request) throws IllegalStateException, IOException {
 
 
 		if(CommonUtils.isEmpty(qna.getQna_title()) || CommonUtils.isEmpty(qna.getQna_content())) {
@@ -86,7 +86,7 @@ public class QnaController {
 		// 수정 - 애초에 uploadfile 이 안넘어오거나, 새로운 파일이 넘어온다.
 		
 		// 이전에 있던 게시글 파일 존재 여부 확인 후
-		QnA getQnA = qnaMapper.getQnA(qna);
+		QnADTO getQnA = qnaMapper.getQnA(qna);
 		
 		// 이전에 게시글에 파일이 존재 했다면 파일을 삭제, 새로운 파일을 넣거나 none	
 		if (getQnA.getUpload_path() != "none") {
@@ -117,14 +117,13 @@ public class QnaController {
 	
 	
 	@PostMapping("/CafeHi-DeleteQnA")
-	public String DeleteQnA(QnA qna, HttpServletRequest request, SearchCriteria scri) {
+	public String DeleteQnA(QnADTO qna, HttpServletRequest request, SearchCriteria scri) {
 		
-		QnA getQnA = qnaMapper.getQnA(qna);
+		QnADTO getQnA = qnaMapper.getQnA(qna);
 		
 		int result = qnaMapper.deleteQnA(getQnA);
 		
 		if(result != 0) {
-			
 			if(getQnA.getUpload_path() != "none") {
 			// 저장된 경로가 none이 아니라면 해당 경로의 파일도 삭제
 			File file = new File(getQnA.getUpload_path());
@@ -132,6 +131,7 @@ public class QnaController {
 			}
 
 			return "redirect:/CafeHi-QnAList?page=" + scri.getPage() + "&perPageNum=" + scri.getPerPageNum() + "&searchType=" + scri.getSearchType() + "&keyword=" + scri.getKeyword();
+
 		}else {
 			
 			request.setAttribute("msg", "삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
@@ -146,7 +146,7 @@ public class QnaController {
 	@RequestMapping("/CafeHi-QnAList")
 	public String QnaListView(SearchCriteria scri, Model model) {
 
-		List<QnA> qnaList = qnaMapper.getQnAList(scri);
+		List<QnADTO> qnaList = qnaMapper.getQnAList(scri);
 
 		model.addAttribute("qnaList", qnaList);
 		model.addAttribute("qnaListSize", qnaList.size());
@@ -163,7 +163,7 @@ public class QnaController {
 	}
 	
 	@GetMapping("CafeHi-QnA")
-	public String QnAView(HttpServletRequest request, HttpServletResponse response, QnA qna,SearchCriteria scri, Model model) {
+	public String QnAView(HttpServletRequest request, HttpServletResponse response, QnADTO qna,SearchCriteria scri, Model model) {
 		
 		// 쿠키 생성으로 방문 했던 게시글 새로고침 할 때 계속 조회수 증가하는 현상 방지
 		 Cookie oldCookie = null;
@@ -205,7 +205,7 @@ public class QnaController {
 	}
 
 
-	private void AttachUploadFile(MultipartFile uploadfile, QnA qna) throws IOException {
+	private void AttachUploadFile(MultipartFile uploadfile, QnADTO qna) throws IOException {
 		if (!uploadfile.isEmpty()) {
 
 			UploadFile attachFile = fileStore.storFile(uploadfile);

@@ -1,31 +1,31 @@
 package com.cafeHi.www.menu.service;
 
-import com.cafeHi.www.menu.dto.Menu;
+import com.cafeHi.www.menu.dto.MenuDTO;
 
 import java.util.List;
 
 public interface MenuService {
 
-    List<Menu> getCoffeeList();
+    List<MenuDTO> getCoffeeList();
 
-    List<Menu> getColdBrewList();
+    List<MenuDTO> getColdBrewList();
 
-    List<Menu> getLatteList();
+    List<MenuDTO> getLatteList();
 
-    List<Menu> getSmoothieList();
+    List<MenuDTO> getSmoothieList();
 
-    List<Menu> getSideList();
+    List<MenuDTO> getSideList();
 
-    List<Menu> getBeverageList();
+    List<MenuDTO> getBeverageList();
 
-    List<Menu> getFruitJuiceList();
+    List<MenuDTO> getFruitJuiceList();
 
-    List<Menu> getTeaList();
+    List<MenuDTO> getTeaList();
 
-    Menu getMenu(Long menu_code);
+    MenuDTO getMenu(Long menu_code);
 
-    void DecreaseMenuStockQuantity(Menu getMenu, int total_order_count);
+    void DecreaseMenuStockQuantity(MenuDTO getMenuDTO, int total_order_count);
 
-    void IncreaseMenuStockQuantity(Menu getMenu, int total_order_count);
+    void IncreaseMenuStockQuantity(MenuDTO getMenuDTO, int total_order_count);
 
 }

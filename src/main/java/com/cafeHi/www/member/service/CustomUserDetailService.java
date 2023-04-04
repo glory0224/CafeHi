@@ -1,5 +1,6 @@
 package com.cafeHi.www.member.service;
 
+import com.cafeHi.www.member.dto.MemberDTO;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -7,7 +8,6 @@ import org.springframework.stereotype.Component;
 
 import com.cafeHi.www.mapper.member.MemberMapper;
 import com.cafeHi.www.member.dto.CustomUser;
-import com.cafeHi.www.member.dto.Member;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +25,7 @@ public class CustomUserDetailService implements UserDetailsService{
 		
 		log.warn("Load User By UserName : " + username);
 		
-		Member mem = memberMapper.findMemberById(username); // 시큐리티 검증
+		MemberDTO mem = memberMapper.findMemberById(username); // 시큐리티 검증
 
 		return mem ==  null ? null : new CustomUser(mem);
 		

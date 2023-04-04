@@ -17,11 +17,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.cafeHi.www.mapper.member.MemberAuthMapper;
-import com.cafeHi.www.mapper.member.MemberMapper;
-import com.cafeHi.www.member.dto.Member;
-import com.cafeHi.www.member.dto.MemberAuth;
-import com.cafeHi.www.member.dto.Membership;
+import com.cafeHi.www.member.dto.MemberDTO;
+import com.cafeHi.www.member.dto.MemberAuthDTO;
+import com.cafeHi.www.member.dto.MembershipDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,14 +45,14 @@ public class SignUpController {
 	}
 	
 	@PostMapping("/signup")
-	public String signUp(Member member, MemberAuth memberAuth, Membership membership, HttpServletRequest request) {
+	public String signUp(MemberDTO memberDTO, MemberAuthDTO memberAuthDTO, MembershipDTO membershipDTO, HttpServletRequest request) {
 
-		if (CommonUtils.isEmpty(member.getMember_id())
-			|| CommonUtils.isEmpty(member.getMember_name())
-			|| CommonUtils.isEmpty(member.getMember_pw())
-			|| CommonUtils.isEmpty(member.getMember_contact())
-			|| CommonUtils.isEmpty(member.getMember_email())
-			|| CommonUtils.isEmpty(member.getMember_detail_address())
+		if (CommonUtils.isEmpty(memberDTO.getMember_id())
+			|| CommonUtils.isEmpty(memberDTO.getMember_name())
+			|| CommonUtils.isEmpty(memberDTO.getMember_pw())
+			|| CommonUtils.isEmpty(memberDTO.getMember_contact())
+			|| CommonUtils.isEmpty(memberDTO.getMember_email())
+			|| CommonUtils.isEmpty(memberDTO.getMember_detail_address())
 		) {
 
 			request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
@@ -62,37 +60,37 @@ public class SignUpController {
 			return "common/goBackAlert";
 		}
 
-		String encodepw = pwdEncoder.encode(member.getMember_pw());
-		member.setMember_pw(encodepw);
+		String encodepw = pwdEncoder.encode(memberDTO.getMember_pw());
+		memberDTO.setMember_pw(encodepw);
 		// '-'을 입력한 정보일 경우
-		if(member.getMember_contact().contains("-")) {
-			String[] nums = member.getMember_contact().split("-");
+		if(memberDTO.getMember_contact().contains("-")) {
+			String[] nums = memberDTO.getMember_contact().split("-");
 			String join_nums = String.join("", nums);
-			member.setMember_contact(join_nums);
+			memberDTO.setMember_contact(join_nums);
 		}
 
 		// 등록 및 수정 날짜 초기화 메서드
-		member.setMemberDateTime();
+		memberDTO.setMemberDateTime();
 
 		// 멤버 정보 등록
 
-		memberService.insertMember(member);
+		memberService.insertMember(memberDTO);
 
-		Long member_code = member.getMember_code(); // MyBatis 기본키 반환 방식 이용
+		Long member_code = memberDTO.getMember_code(); // MyBatis 기본키 반환 방식 이용
 
 		// 멤버 권한 생성
 
-		memberAuth.setMemberAuthInfo(member_code);
+		memberAuthDTO.setMemberAuthInfo(member_code);
 
 		// 멤버 권한 등록
 
-		memberService.insertMemberAuth(memberAuth);
+		memberService.insertMemberAuth(memberAuthDTO);
 
 		// 멤버쉽 생성
 
-		membership.createMembership(member_code);
+		membershipDTO.createMembership(member_code);
 
-		membershipService.insertMembership(membership);
+		membershipService.insertMembership(membershipDTO);
 
 		return "redirect:/login";
 				

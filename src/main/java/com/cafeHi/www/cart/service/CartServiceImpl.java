@@ -1,6 +1,6 @@
-package com.cafeHi.www.board.service;
+package com.cafeHi.www.cart.service;
 
-import com.cafeHi.www.cart.dto.Cart;
+import com.cafeHi.www.cart.dto.CartDTO;
 import com.cafeHi.www.mapper.cart.CartMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,20 +15,20 @@ public class CartServiceImpl implements CartService{
     private final CartMapper cartMapper;
 
     @Override
-    public List<Cart> getCartList(Long member_code) {
+    public List<CartDTO> getCartList(Long member_code) {
         return cartMapper.getCartList(member_code);
     }
 
     @Override
     @Transactional
-    public Long insertCart(Cart cart) {
-        return cartMapper.insertCart(cart);
+    public Long insertCart(CartDTO cartDTO) {
+        return cartMapper.insertCart(cartDTO);
     }
 
     @Override
     @Transactional
-    public void modifyCart(Cart cart) {
-        cartMapper.modifyCart(cart);
+    public void modifyCart(CartDTO cartDTO) {
+        cartMapper.modifyCart(cartDTO);
     }
 
     @Override

@@ -25,7 +25,7 @@
     <label class="form-label">아이디</label>
     <div class="d-flex justify-content-between">
     <!-- thymeleaf security custom login session 정보를 value 값에 넣고 싶을 때 아래와 같이 넣는다. -->
-  	<input type="text"  class="form-control" th:value="${#authentication.Principal.member.member_id}" readonly="readonly"> 
+  	<input type="text"  class="form-control" th:value="${#authentication.Principal.memberDTO.member_id}" readonly="readonly">
   	<div class="ms-3">
 	</div>
 	</div>
@@ -33,7 +33,7 @@
     <div class="m-5">
     <label class="form-label">이름</label>
   	<div class="d-flex justify-content-between">
-  	<input type="text" class="form-control" th:value="${#authentication.Principal.member.member_name}"  readonly="readonly">
+  	<input type="text" class="form-control" th:value="${#authentication.Principal.memberDTO.member_name}"  readonly="readonly">
   	<div class="ms-3">
 	<input class="btn btn-md btn-success " data-bs-toggle="modal" data-bs-target="#member_name_modal" type="button" value="변경">
 	</div>
@@ -42,7 +42,7 @@
   <div class="m-5">
     <label class="form-label">연락처</label>
  	<div class="d-flex justify-content-between">
-  	<input type="text" class="form-control" th:value="${#authentication.Principal.member.member_contact}" readonly="readonly">
+  	<input type="text" class="form-control" th:value="${#authentication.Principal.memberDTO.member_contact}" readonly="readonly">
   	<div class="ms-3">
 	<input class="btn btn-md btn-success " data-bs-toggle="modal" data-bs-target="#member_contact_modal" type="button" value="변경">
 	</div>
@@ -51,7 +51,7 @@
   <div class="m-5">
     <label class="form-label">메일</label>
  	<div class="d-flex justify-content-between">
-  	<input type="text" class="form-control" th:value="${#authentication.Principal.member.member_email}" readonly="readonly">
+  	<input type="text" class="form-control" th:value="${#authentication.Principal.memberDTO.member_email}" readonly="readonly">
   	<div class="ms-3">
 	<input class="btn btn-md btn-success " data-bs-toggle="modal" data-bs-target="#member_email_modal" type="button" value="변경">
 	</div>
@@ -59,8 +59,8 @@
   </div>
   <div class="m-5">
     <label class="form-label">주소</label>
-  	<input type="text"  class="form-control"  th:value="${#authentication.Principal.member.member_road_address}" readonly="readonly"><br>
-  	<input type="text"  class="form-control"  th:value="${#authentication.Principal.member.member_jibun_address}" readonly="readonly">
+  	<input type="text"  class="form-control"  th:value="${#authentication.Principal.memberDTO.member_road_address}" readonly="readonly"><br>
+  	<input type="text"  class="form-control"  th:value="${#authentication.Principal.memberDTO.member_jibun_address}" readonly="readonly">
   	<div class="d-flex justify-content-end mt-3">
 	<input class="btn btn-md btn-success " data-bs-toggle="modal" data-bs-target="#member_address_modal" type="button" value="변경" >
 	</div>
@@ -69,7 +69,7 @@
   <div class="m-5">
     <label class="form-label">상세 주소</label>
   	<div class="d-flex justify-content-between">
-  	<input type="text" class="form-control" th:value="${#authentication.Principal.member.member_detail_address}" readonly="readonly">
+  	<input type="text" class="form-control" th:value="${#authentication.Principal.memberDTO.member_detail_address}" readonly="readonly">
   	<div class="ms-3">
 	<input class="btn btn-md btn-success " data-bs-toggle="modal" data-bs-target="#member_address_detail_modal" type="button" value="변경">
 	</div>
@@ -88,16 +88,16 @@
     <form action="" th:action="@{/updateMemberName}" method="post" id="memberUpdateNameForm">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5"><b sec:authentication="principal.member.member_name"></b>님의 회원정보 중 이름을 수정하기 <br> 위한 페이지입니다.</h1>
+        <h1 class="modal-title fs-5"><b sec:authentication="principal.memberDTO.member_name"></b>님의 회원정보 중 이름을 수정하기 <br> 위한 페이지입니다.</h1>
         <div class="ms-3">
         <button type="button" class="btn-close btn-success " data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       </div>
       <div class="modal-body">
       	<label class="form-label">변경할 이름을 입력하세요.</label>
-      	<input name="member_code" th:value="${#authentication.Principal.member.member_code}" type="hidden"/>
+      	<input name="member_code" th:value="${#authentication.Principal.memberDTO.member_code}" type="hidden"/>
       	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" /> 
-        <input type="text" id="memberName" class="form-control" name="member_name" th:value="${#authentication.Principal.member.member_name}"/>
+        <input type="text" id="memberName" class="form-control" name="member_name" th:value="${#authentication.Principal.memberDTO.member_name}"/>
       </div>
       <div class="modal-footer">
      
@@ -114,16 +114,16 @@
     <form action="" th:action="@{/updateMemberContact}" method="post" id="memberUpdateContactForm">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5"><b sec:authentication="principal.member.member_name"></b>님의 회원정보 중 연락처를 수정하기 <br> 위한 페이지입니다.</h1>
+        <h1 class="modal-title fs-5"><b sec:authentication="principal.memberDTO.member_name"></b>님의 회원정보 중 연락처를 수정하기 <br> 위한 페이지입니다.</h1>
         <div class="ms-3">
         <button type="button" class="btn-close btn-success " data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       </div>
       <div class="modal-body">
       	<label class="form-label">변경할 전화번호를 입력하세요.</label>
-      	<input name="member_code" th:value="${#authentication.Principal.member.member_code}" type="hidden" /> 
+      	<input name="member_code" th:value="${#authentication.Principal.memberDTO.member_code}" type="hidden" />
       	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
-        <input type="text" id="memberContact" class="form-control" name="member_contact" th:value="${#authentication.Principal.member.member_contact}">
+        <input type="text" id="memberContact" class="form-control" name="member_contact" th:value="${#authentication.Principal.memberDTO.member_contact}">
       </div>
       <div class="modal-footer">
      
@@ -140,17 +140,17 @@
     <form action="" th:action="@{/updateMemberEmail}" method="post" id="memberUpdateEmailForm">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5"><b sec:authentication="principal.member.member_name"></b>님의 회원정보 중 이메일을 수정하기 <br> 위한 페이지입니다.</h1>
+        <h1 class="modal-title fs-5"><b sec:authentication="principal.memberDTO.member_name"></b>님의 회원정보 중 이메일을 수정하기 <br> 위한 페이지입니다.</h1>
         <div class="ms-3">
         <button type="button" class="btn-close btn-success " data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       </div>
       <div class="modal-body">
       	<label class="form-label">변경할 이메일을 입력하세요.</label>
-      	<input name="member_code" th:value="${#authentication.Principal.member.member_code}" type="hidden" />
+      	<input name="member_code" th:value="${#authentication.Principal.memberDTO.member_code}" type="hidden" />
       	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
       	<div class="d-flex justify-content-between">
-        <input type="text" id="memberEmail" class="form-control" name="member_email" th:value="${#authentication.Principal.member.member_email}">
+        <input type="text" id="memberEmail" class="form-control" name="member_email" th:value="${#authentication.Principal.memberDTO.member_email}">
     	</div>      
       </div>
       <div class="modal-footer">
@@ -168,17 +168,17 @@
     <form action="" th:action="@{/updateMemberAddress}" method="post" id="memberUpdateAddressForm">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5"><b sec:authentication="principal.member.member_name"></b>님의 회원정보 중 주소를 수정하기 <br> 위한 페이지입니다.</h1>
+        <h1 class="modal-title fs-5"><b sec:authentication="principal.memberDTO.member_name"></b>님의 회원정보 중 주소를 수정하기 <br> 위한 페이지입니다.</h1>
         <div class="ms-3">
         <button type="button" class="btn-close btn-success " data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       </div>
       <div class="modal-body">
       	<label class="form-label">변경할 주소를 입력하세요.</label>
-      	<input name="member_code" th:value="${#authentication.Principal.member.member_code}" type="hidden" />
+      	<input name="member_code" th:value="${#authentication.Principal.memberDTO.member_code}" type="hidden" />
       	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
-        <input type="text" id="memberRoadAddress" class="form-control" name="member_road_address" th:value="${#authentication.Principal.member.member_road_address}" readonly="readonly"><br>
-  		<input type="text" id="memberJibunAddress" class="form-control" name="member_jibun_address" th:value="${#authentication.Principal.member.member_jibun_address}" readonly="readonly"><br>
+        <input type="text" id="memberRoadAddress" class="form-control" name="member_road_address" th:value="${#authentication.Principal.memberDTO.member_road_address}" readonly="readonly"><br>
+  		<input type="text" id="memberJibunAddress" class="form-control" name="member_jibun_address" th:value="${#authentication.Principal.memberDTO.member_jibun_address}" readonly="readonly"><br>
   		<input class="btn btn-sm btn-success float-end" type="button" onclick="find_address()" value="주소 찾기">
       </div>
       <div class="modal-footer">
@@ -196,16 +196,16 @@
     <form action="" th:action="@{/updateMemberDetailAddress}" method="post" id="memberUpdateDetailAddressForm">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="staticBackdropLabel"><b sec:authentication="principal.member.member_name"></b>님의 회원정보 중 상제 주소를 수정하기 <br> 위한 페이지입니다.</h1>
+        <h1 class="modal-title fs-5" id="staticBackdropLabel"><b sec:authentication="principal.memberDTO.member_name"></b>님의 회원정보 중 상제 주소를 수정하기 <br> 위한 페이지입니다.</h1>
         <div class="ms-3">
         <button type="button" class="btn-close btn-success " data-bs-dismiss="modal" aria-label="Close"></button>
       	</div>
       </div>
       <div class="modal-body">
       	<label class="form-label">변경할 상세 주소를 입력하세요.</label>
-      	<input name="member_code" th:value="${#authentication.Principal.member.member_code}" type="hidden" />
+      	<input name="member_code" th:value="${#authentication.Principal.memberDTO.member_code}" type="hidden" />
       	<input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
-        <input type="text" id="memberDetailAddress" class="form-control" name="member_detail_address" th:value="${#authentication.Principal.member.member_detail_address}">
+        <input type="text" id="memberDetailAddress" class="form-control" name="member_detail_address" th:value="${#authentication.Principal.memberDTO.member_detail_address}">
       </div>
       <div class="modal-footer">
      

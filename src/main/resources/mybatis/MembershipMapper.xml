@@ -5,7 +5,7 @@
 
 <mapper namespace="com.cafeHi.www.mapper.member.MembershipMapper">
 
-	<resultMap type="com.cafeHi.www.member.dto.Membership" id="MembershipResult">
+	<resultMap type="com.cafeHi.www.member.dto.MembershipDTO" id="MembershipResult">
 
 		<result property="membership_code" column="MEMBERSHIP_CODE"/>
 		<result property="membership_grade" column="MEMBERSHIP_GRADE"/>
@@ -13,14 +13,14 @@
 		<result property="membership_writetime" column="MEMBERSHIP_WRITETIME"/>
 		<result property="membership_updatetime" column="MEMBERSHIP_UPDATETIME"/>
 
-		<association property="member" javaType="com.cafeHi.www.member.dto.Member" resultMap="MemberResult">
+		<association property="memberDTO" javaType="com.cafeHi.www.member.dto.MemberDTO" resultMap="MemberResult">
 		</association>
 
 	</resultMap>
 
 
 
-	<resultMap type="com.cafeHi.www.member.dto.Member" id="MemberResult">
+	<resultMap type="com.cafeHi.www.member.dto.MemberDTO" id="MemberResult">
 		<id property="member_code" column="MEMBER_CODE"/>
 		<result property="member_code" column="MEMBER_CODE"/>
 		<result property="member_id" column="MEMBER_ID"/>
@@ -37,7 +37,7 @@
 		</collection>
 	</resultMap>
 
-	<resultMap type="com.cafeHi.www.member.dto.MemberAuth" id="AuthResult">
+	<resultMap type="com.cafeHi.www.member.dto.MemberAuthDTO" id="AuthResult">
 		<result property="member_auth_code" column = "MEMBER_AUTH_CODE" />
 		<result property="member_code" column="MEMBER_CODE"/>
 		<result property="auth" column="AUTH"/>
@@ -48,14 +48,14 @@
 		VALUES(seq_membership.nextval, #{member_code}, #{membership_grade} , 0, #{membership_writetime}, #{membership_updatetime})
 	</insert>
 	
-	<select id="getMembership" parameterType="long" resultType="com.cafeHi.www.member.dto.Membership">
+	<select id="getMembership" parameterType="long" resultType="com.cafeHi.www.member.dto.MembershipDTO">
 
 		SELECT member_code ,membership_grade, membership_point FROM cafehi_membership
 		WHERE member_code = #{member_code}
 	
 	</select>
 	
-	<update id="updateMembershipPoint" parameterType="com.cafeHi.www.member.dto.Membership">
+	<update id="updateMembershipPoint" parameterType="com.cafeHi.www.member.dto.MembershipDTO">
 		UPDATE cafehi_membership SET membership_grade = #{membership_grade} , membership_point = #{membership_point}, membership_updatetime = #{membership_updatetime}
 		WHERE member_code = #{member_code}
 	</update>
