@@ -13,17 +13,17 @@ import com.cafeHi.www.common.page.Criteria;
 public interface QnaMapper {
 	
 	// QnAEntity 게시글 CRUD
-	public int writeQnA(QnADTO qna);
-	public List<QnADTO> getQnAList(SearchCriteria scri);
-	public int modifyQnA(QnADTO qna);
-	public void modifyHit(QnADTO qna);
-	public int deleteQnA(QnADTO qna);
-	public int getQnASearchNum(SearchCriteria scri);
-	public QnADTO getQnA(QnADTO qna);
+	int writeQnA(QnADTO qna);
+	List<QnADTO> getQnAList(SearchCriteria scri);
+	int modifyQnA(QnADTO qna);
+	void modifyHit(QnADTO qna);
+	int deleteQnA(QnADTO qna);
+	int getQnASearchNum(SearchCriteria scri);
+	QnADTO getQnA(QnADTO qna);
 	
 	// 멤버 QnAEntity 게시글 조회
-	public int getMyQnANum(Map<String , Object> myPageQnAMap);
-	public List<QnADTO> getMyQnAList(Map<String , Object> myPageQnAMap);
+	int getMyQnANum(Map<String , Object> myPageQnAMap);
+	List<QnADTO> getMyQnAList(Map<String , Object> myPageQnAMap);
 	
 	
 }
