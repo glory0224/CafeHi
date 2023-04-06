@@ -47,27 +47,18 @@ public class SignUpController {
 	@PostMapping("/signup")
 	public String signUp(MemberDTO memberDTO, MemberAuthDTO memberAuthDTO, MembershipDTO membershipDTO, HttpServletRequest request) {
 
-		if (CommonUtils.isEmpty(memberDTO.getMember_id())
-			|| CommonUtils.isEmpty(memberDTO.getMember_name())
-			|| CommonUtils.isEmpty(memberDTO.getMember_pw())
-			|| CommonUtils.isEmpty(memberDTO.getMember_contact())
-			|| CommonUtils.isEmpty(memberDTO.getMember_email())
-			|| CommonUtils.isEmpty(memberDTO.getMember_detail_address())
-		) {
-
+		if (!isValidInput(memberDTO)) {
 			request.setAttribute("msg", "가입 항목이 제대로 입력되지 않았습니다.");
-
 			return "common/goBackAlert";
 		}
 
-		String encodepw = pwdEncoder.encode(memberDTO.getMember_pw());
-		memberDTO.setMember_pw(encodepw);
+		String encodedPassword = pwdEncoder.encode(memberDTO.getMember_pw());
+		memberDTO.setMember_pw(encodedPassword);
+
 		// '-'을 입력한 정보일 경우
-		if(memberDTO.getMember_contact().contains("-")) {
-			String[] nums = memberDTO.getMember_contact().split("-");
-			String join_nums = String.join("", nums);
-			memberDTO.setMember_contact(join_nums);
-		}
+		String contact = memberDTO.getMember_contact().replaceAll("-", "");
+
+		memberDTO.setMember_contact(contact);
 
 		// 등록 및 수정 날짜 초기화 메서드
 		memberDTO.setMemberDateTime();
@@ -96,7 +87,7 @@ public class SignUpController {
 				
 		
 	}
-	
+
 	// 아이디 중복체크
 	@PostMapping("/IdCheck")
 	public @ResponseBody int IdCheck(String member_id) {
@@ -159,7 +150,14 @@ public class SignUpController {
 		
 	}
 	
-	
+	private boolean isValidInput(MemberDTO memberDTO) {
+		return !CommonUtils.isEmpty(memberDTO.getMember_id())
+				&& !CommonUtils.isEmpty(memberDTO.getMember_name())
+				&& !CommonUtils.isEmpty(memberDTO.getMember_pw())
+				&& !CommonUtils.isEmpty(memberDTO.getMember_contact())
+				&& !CommonUtils.isEmpty(memberDTO.getMember_email())
+				&& !CommonUtils.isEmpty(memberDTO.getMember_detail_address());
+	}
 	
 	
 	
