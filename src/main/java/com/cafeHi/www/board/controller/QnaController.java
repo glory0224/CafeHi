@@ -86,21 +86,24 @@ public class QnaController {
 		// 수정 - 애초에 uploadfile 이 안넘어오거나, 새로운 파일이 넘어온다.
 		
 		// 이전에 있던 게시글 파일 존재 여부 확인 후
-		QnADTO getQnA = qnaMapper.getQnA(qna);
+		QnADTO prevQnA = qnaMapper.getQnA(qna);
 		
-		// 이전에 게시글에 파일이 존재 했다면 파일을 삭제, 새로운 파일을 넣거나 none	
-		if (getQnA.getUpload_path() != "none") {
-			
-			File file = new File(qna.getUpload_path());
-			file.delete();
 
+		if (uploadfile != null && !uploadfile.isEmpty()) {
+			// 이전에 게시글에 파일이 존재 했다면 파일을 삭제
+			if(!prevQnA.getUpload_path().equals("none")) {
+				File file = new File(qna.getUpload_path());
+				file.delete();
+			}
+			// 새로운 파일 처리
 			AttachUploadFile(uploadfile, qna);
 
-		}else {
+		}else if (prevQnA.getUpload_path().equals("none")){
 			
-			// 이전에 게시글에 파일이 존재하지 않았다면 그냥 새로운 파일을 넣거나 none 
+			qna.setStore_file_name("none");
+			qna.setUpload_file_name("없음");
+			qna.setUpload_path("none");
 
-			AttachUploadFile(uploadfile, qna);
 		}
 		
 		// 날짜 수정
@@ -108,7 +111,9 @@ public class QnaController {
 		
 		qnaMapper.modifyQnA(qna);
 
-		return "redirect:/CafeHi-QnA?qna_num=" + qna.getQna_num() + "&page=" + scri.getPage() + "&perPageNum=" + scri.getPerPageNum() + "&searchType=" + scri.getSearchType() + "&keyword=" + scri.getKeyword();
+		String queryString = scri.getQueryString(qna.getQna_num(), scri.getPage(), scri.getPerPageNum(), scri.getSearchType(), scri.getKeyword());
+
+		return "redirect:/CafeHi-QnA" + queryString;
 
 	
 }
@@ -124,19 +129,21 @@ public class QnaController {
 		int result = qnaMapper.deleteQnA(getQnA);
 		
 		if(result != 0) {
-			if(getQnA.getUpload_path() != "none") {
-			// 저장된 경로가 none이 아니라면 해당 경로의 파일도 삭제
-			File file = new File(getQnA.getUpload_path());
-			file.delete();
-			}
+			if(!getQnA.getUpload_path().equals("none")) {
+				// 저장된 경로가 none이 아니라면 해당 경로의 파일도 삭제
+				try {
+					File file = new File(getQnA.getUpload_path());
+					file.delete();
+				}catch (Exception e) {
+					e.printStackTrace();
+				}
 
-			return "redirect:/CafeHi-QnAList?page=" + scri.getPage() + "&perPageNum=" + scri.getPerPageNum() + "&searchType=" + scri.getSearchType() + "&keyword=" + scri.getKeyword();
+			}
+			String queryString  = scri.getQueryString(scri.getPage(), scri.getPerPageNum(), scri.getSearchType(), scri.getKeyword());
+			return "redirect:/CafeHi-QnAList" + queryString;
 
 		}else {
-			
 			request.setAttribute("msg", "삭제에 실패했습니다. 잠시 후 다시 시도해주세요.");
-
-			
 			return "common/goBackAlert";
 		}
 		
@@ -164,45 +171,18 @@ public class QnaController {
 	
 	@GetMapping("CafeHi-QnA")
 	public String QnAView(HttpServletRequest request, HttpServletResponse response, QnADTO qna,SearchCriteria scri, Model model) {
-		
-		// 쿠키 생성으로 방문 했던 게시글 새로고침 할 때 계속 조회수 증가하는 현상 방지
-		 Cookie oldCookie = null;
-		 Cookie[] cookies = request.getCookies();
-		 
-		 // postView 라고 이름 지어진 쿠키가 있으면 새로운 쿠키 값을 넣는다. 
-		 if(cookies != null) {
-			 for (Cookie cookie : cookies) {
-				 if (cookie.getName().equals("postView")) {
-					 oldCookie = cookie;
-				 }
-			 }
-		 }
-		 
-		 if (oldCookie != null) {
-			 if(!oldCookie.getValue().contains("[" + qna.getQna_num() +"]")) {
-				 qnaMapper.modifyHit(qna);
-				 oldCookie.setValue(oldCookie.getValue() + "[" + qna.getQna_num() + "]");
-				 oldCookie.setPath("/");
-				 oldCookie.setMaxAge(60*60*24); // 쿠키 설정 시간 하루
-				 response.addCookie(oldCookie);
-			 }
-		 
-		 }else {
-			 	
-			 	qnaMapper.modifyHit(qna);
-			 	Cookie newCookie = new Cookie("postView", "[" + qna.getQna_num() + "]");
-			 	newCookie.setPath("/");
-			 	newCookie.setMaxAge(60 * 60 * 24);
-			 	response.addCookie(newCookie);
-		 }
-		 
-		 Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		increaseHit(request, response, qna);
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		 model.addAttribute("securityId", authentication.getName()); // 로그인 중인 사용자의 권한에 따라 보이는 항목을 다르게 하기위해 ID값 반환 
 		 model.addAttribute("qna", qnaMapper.getQnA(qna));
 		 model.addAttribute("scri", scri);
 
 		return "common/cafehi_qnaContent";
 	}
+
+
 
 
 	private void AttachUploadFile(MultipartFile uploadfile, QnADTO qna) throws IOException {
@@ -231,6 +211,40 @@ public class QnaController {
 			qna.setStore_file_name("none");
 			qna.setUpload_file_name("없음");
 			qna.setUpload_path("none");
+		}
+	}
+
+
+	private void increaseHit(HttpServletRequest request, HttpServletResponse response, QnADTO qna) {
+		// 쿠키 생성으로 방문 했던 게시글 새로고침 할 때 계속 조회수 증가하는 현상 방지
+		Cookie oldCookie = null;
+		Cookie[] cookies = request.getCookies();
+
+		// postView 라고 이름 지어진 쿠키가 있으면 새로운 쿠키 값을 넣는다.
+		if(cookies != null) {
+			for (Cookie cookie : cookies) {
+				if (cookie.getName().equals("postView")) {
+					oldCookie = cookie;
+				}
+			}
+		}
+
+		if (oldCookie != null) {
+			if(!oldCookie.getValue().contains("[" + qna.getQna_num() +"]")) {
+				qnaMapper.modifyHit(qna);
+				oldCookie.setValue(oldCookie.getValue() + "[" + qna.getQna_num() + "]");
+				oldCookie.setPath("/");
+				oldCookie.setMaxAge(60*60*24); // 쿠키 설정 시간 하루
+				response.addCookie(oldCookie);
+			}
+
+		}else {
+
+			qnaMapper.modifyHit(qna);
+			Cookie newCookie = new Cookie("postView", "[" + qna.getQna_num() + "]");
+			newCookie.setPath("/");
+			newCookie.setMaxAge(60 * 60 * 24);
+			response.addCookie(newCookie);
 		}
 	}
 	

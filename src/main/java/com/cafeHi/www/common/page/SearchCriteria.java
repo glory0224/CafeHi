@@ -1,5 +1,8 @@
 package com.cafeHi.www.common.page;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 public class SearchCriteria extends Criteria{
 	
 	 private String searchType ="";
@@ -23,6 +26,49 @@ public class SearchCriteria extends Criteria{
 	public String toString() {
 		return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + "]";
 	}
+
+	public String getQueryString(int qnaNum, int page, int perPageNum, String searchType, String keyword) {
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("?qna_num=");
+		 sb.append(qnaNum);
+		sb.append("&page=");
+		sb.append(page);
+		sb.append("&perPageNum=");
+		sb.append(perPageNum);
+		sb.append("&searchType=");
+		sb.append(searchType);
+		sb.append("&keyword=");
+		sb.append(keyword);
+
+		try {
+			sb.append(URLEncoder.encode(keyword, "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
+	}
+
+	public String getQueryString(int page, int perPageNum, String searchType, String keyword) {
+		StringBuilder sb = new StringBuilder();
+
+		sb.append("?page=");
+		sb.append(page);
+		sb.append("&perPageNum=");
+		sb.append(perPageNum);
+		sb.append("&searchType=");
+		sb.append(searchType);
+		sb.append("&keyword=");
+		sb.append(keyword);
+
+		try {
+			sb.append(URLEncoder.encode(keyword, "UTF-8"));
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		return sb.toString();
+	}
+
+
 	 
 	 
 }
