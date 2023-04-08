@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.cafeHi.www.member.dto.MembershipDTO;
 import com.cafeHi.www.menu.service.MenuService;
 import com.cafeHi.www.order.dto.OrderMenuDTO;
+import com.cafeHi.www.order.dto.OrderRequest;
 import com.cafeHi.www.order.dto.OrdersDTO;
 import com.cafeHi.www.order.service.OrderMenuService;
 import com.cafeHi.www.order.service.OrderService;
@@ -77,69 +78,46 @@ public class OrderController {
 	}
 	
 	@PostMapping("/CafehiOrder")
-	public String CafeHiOrder(
-			@RequestParam(value="deliveryFee") int deliveryFee,
-			@RequestParam("menu_code") Long menu_code,
-			@RequestParam("include_delivery") Boolean include_delivery,
-			@RequestParam("member_code") Long member_code,
-			@RequestParam("total_order_count") int total_order_count,
-			@RequestParam("membership_point") int membership_point,
-			@RequestParam("membership_new_point") double membership_new_point
-			)  {
+	public String CafeHiOrder(OrderRequest orderRequest)  {
 		
 		OrdersDTO newOrder = new OrdersDTO();
 		OrderMenuDTO newOrderMenuDTO = new OrderMenuDTO();
 		MembershipDTO newMembershipDTO = new MembershipDTO();
 
+		newOrder.setOrderInfo(orderRequest.getMember_code(), orderRequest.getInclude_delivery());
 
-		newOrder.setOrderInfo(member_code, include_delivery);
-
-		newMembershipDTO.setMembershipPointInfo(member_code, membership_point, membership_new_point);
+		newMembershipDTO.setMembershipPointInfo(orderRequest.getMember_code(), orderRequest.getMembership_point(), orderRequest.getMembership_new_point());
 
 		// 트랜잭션 적용을 위한 인터페이스 도입
 		
-		MenuDTO getMenuDTO = menuService.getMenu(menu_code);
+		MenuDTO getMenuDTO = menuService.getMenu(orderRequest.getMenu_code());
 
-		menuService.DecreaseMenuStockQuantity(getMenuDTO, total_order_count);
+		menuService.DecreaseMenuStockQuantity(getMenuDTO, orderRequest.getTotal_order_count());
 
+		int total_order_price = newOrderMenuDTO.CalTotalPrice(orderRequest.getDeliveryFee(), getMenuDTO.getMenu_price(), orderRequest.getTotal_order_count()); // 배송비 포함 총 비용
 
-		if (deliveryFee != 0 & newOrder.getInclude_delivery()) {
-			
-			orderService.insertOrder(newOrder);
-			
-			int total_order_price = newOrderMenuDTO.CalTotalPrice(deliveryFee, getMenuDTO.getMenu_price(), total_order_count); // 배송비 포함 총 비용
-			
-			newOrderMenuDTO.setMenuDTO(getMenuDTO);
+		if (!orderRequest.getInclude_delivery()) {
 
-			newOrderMenuDTO.setOrderMenuInfo(membership_new_point, total_order_price, total_order_count);
-
-
-			orderMenuService.insertOrderMenu(newOrderMenuDTO);
-
-			// 주문 포인트 적립
-			membershipService.updateMembershipPoint(newMembershipDTO);
-			
-			return "redirect:/CafeHi-MyPageOrderMenuList";
-			
-		} else {
-			
-			orderService.insertOrder(newOrder);
-			
-			int total_order_price = newOrderMenuDTO.CalTotalPrice(getMenuDTO.getMenu_price(), total_order_count); // 배송비 미포함 총 비용
-			
-			newOrderMenuDTO.setMenuDTO(getMenuDTO);
-
-			newOrderMenuDTO.setOrderMenuInfo(membership_new_point, total_order_price, total_order_count);
-				
-			orderMenuService.insertOrderMenu(newOrderMenuDTO);
-
-			// 주문 포인트 적립
-			membershipService.updateMembershipPoint(newMembershipDTO);
-			
-			return "redirect:/CafeHi-MyPageOrderMenuList";
+			total_order_price = newOrderMenuDTO.CalTotalPrice(getMenuDTO.getMenu_price(), orderRequest.getTotal_order_count());
 		}
-		
-		
+			newOrderMenuDTO.setMenuDTO(getMenuDTO);
+			newOrderMenuDTO.setOrderMenuInfo(orderRequest.getMembership_new_point(), total_order_price, orderRequest.getTotal_order_count());
+
+
+		if(orderRequest.getDeliveryFee() !=0 & newOrder.getInclude_delivery()) {
+
+			newOrder.setOrderInfo(orderRequest.getMember_code(), true);
+		} else {
+			newOrder.setOrderInfo(orderRequest.getMember_code(), false);
+		}
+
+
+		orderService.insertOrder(newOrder);
+		orderMenuService.insertOrderMenu(newOrderMenuDTO);
+		// 주문 포인트 적립
+	    membershipService.updateMembershipPoint(newMembershipDTO);
+
+		return "redirect:/CafeHi-MyPageOrderMenuList";
 	}
 	
 	
