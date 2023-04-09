@@ -9,7 +9,6 @@ import com.cafeHi.www.common.CommonUtils;
 import com.cafeHi.www.member.dto.MemberDTO;
 import com.cafeHi.www.member.service.MemberService;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -24,8 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberController {
 
 	private final MemberService memberService;
-		
-	private final BCryptPasswordEncoder pwdEncoder;
 	
 	// 회원 수정
 	
@@ -170,17 +167,16 @@ public class MemberController {
 			//spring security session 정보 변경
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			CustomUser userInfo = (CustomUser) principal;
-			
-			String securityId = userInfo.getUsername();
-			String securityPw = userInfo.getMemberDTO().getMember_pw();
-			
+			Long member_code = userInfo.getMemberDTO().getMember_code();
+
+			// 입력한 비밀번호와 현재 사용자의 비밀번호 일치 여부 확인
+			boolean isPasswordMatched = memberService.isPasswordMatched(member_code, MemberPw);
+
 
 			// 입력받은 계정 정보와 세션 정보 비교
-			if(MemberId.equals(securityId) && pwdEncoder.matches(MemberPw, securityPw)) {
+			if(MemberId.equals(userInfo.getUsername()) && isPasswordMatched) {
 
-				Long member_code = userInfo.getMemberDTO().getMember_code();
 				memberService.deleteMember(member_code);
-
 				session.invalidate(); // 세션 정보 삭제
 				SecurityContextHolder.getContext().setAuthentication(null); // 세션 권한 정보 null 초기화 
 								

@@ -23,9 +23,6 @@ public interface MemberMapper {
 	 int idCheck(String member_id);
 
 	 int checkEmail(String member_email);
-	
 
-	 
-	
-	
+    String getPasswordByMemberCode(Long member_code);
 }

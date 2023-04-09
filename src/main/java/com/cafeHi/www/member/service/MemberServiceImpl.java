@@ -5,11 +5,14 @@ import com.cafeHi.www.mapper.member.MemberMapper;
 import com.cafeHi.www.member.dto.MemberDTO;
 import com.cafeHi.www.member.dto.MemberAuthDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService{
 
     private final MemberMapper memberMapper;
@@ -85,5 +88,11 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public int checkEmail(String member_email) {
         return memberMapper.checkEmail(member_email);
+    }
+
+    @Override
+    public boolean isPasswordMatched(Long member_code, String password) {
+         String hashedPassword = memberMapper.getPasswordByMemberCode(member_code);
+         return new BCryptPasswordEncoder().matches(password, hashedPassword);
     }
 }

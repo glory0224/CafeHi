@@ -25,4 +25,6 @@ public interface MemberService {
 
     int checkEmail(String member_email);
 
+    boolean isPasswordMatched(Long member_code, String password);
+
 }

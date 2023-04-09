@@ -78,7 +78,7 @@
  	</update>
 
 
-	<delete id="deleteMember" parameterType="int">
+	<delete id="deleteMember" parameterType="long">
 		DELETE FROM cafehi_member WHERE member_code = #{member_code}
 	</delete>
  	
@@ -112,6 +112,12 @@
  	SELECT count(*) FROM cafehi_member WHERE member_email = #{member_email}
  		
  	</select>
+
+	<select id="getPasswordByMemberCode" parameterType="long" resultType="String">
+
+		select member_pw FROM cafehi_member WHERE member_code = #{member_code}
+
+	</select>
  	
  	
  	
