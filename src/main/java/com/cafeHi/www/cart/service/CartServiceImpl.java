@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @RequiredArgsConstructor
@@ -47,4 +49,20 @@ public class CartServiceImpl implements CartService{
     public int sumMoney(Long member_code) {
         return cartMapper.sumMoney(member_code);
     }
+
+    @Override
+    public Map<String, Object> getCartInfo(Long memberCode) {
+        Map<String, Object> myPageCartMap = new ConcurrentHashMap<>();
+        List<CartDTO> getCartListDTO = cartMapper.getCartList(memberCode); // 장바구니 목록
+        int sumMoney = cartMapper.sumMoney(memberCode);
+        int fee = sumMoney >= 30000 ? 0 : 2500;
+        myPageCartMap.put("sumMoney", sumMoney);
+        myPageCartMap.put("fee", fee); //배송료
+        myPageCartMap.put("sum", sumMoney+fee); // 전체 금액
+        myPageCartMap.put("CartList", getCartListDTO); // 장바구니 목록
+        myPageCartMap.put("CartListSize", getCartListDTO.size()); // 레코드 개수
+
+        return myPageCartMap;
+    }
+
 }

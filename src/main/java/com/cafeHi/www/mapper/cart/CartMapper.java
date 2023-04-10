@@ -18,9 +18,7 @@ public interface CartMapper {
 	void deleteCart(Long cart_code);
 	
 	void deleteAllCart(Long member_code);
-	
-	
-	
+
 	int sumMoney(Long member_code);
 
 	

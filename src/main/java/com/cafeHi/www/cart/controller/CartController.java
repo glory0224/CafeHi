@@ -1,5 +1,6 @@
 package com.cafeHi.www.cart.controller;
 
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -28,30 +29,15 @@ public class CartController {
 	private final CartService cartService;
 	
 	@GetMapping("/CafeHi-MyPageCart")
-	public String myPageCartView(Model model) {
-		
-		Map<String, Object> myPageCartMap = new ConcurrentHashMap<String, Object>();
-		
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-	    CustomUser userInfo = (CustomUser)principal;
-	    Long member_code = userInfo.getMemberDTO().getMember_code();
-		
-	    if (member_code != 0) {
-			List<CartDTO> getCartListDTO = cartService.getCartList(member_code); // 장바구니 목록
-			int sumMoney = cartService.sumMoney(member_code); // 금액 합계
-			// 배송료 계산
-			// 30000원이 넘으면 배송료가 0원, 안넘으면 2500원
-			int fee=sumMoney >= 30000? 0 : 2500;
-			// hash map 장바구니에 넣을 각종 값들을 저장한다.
-			myPageCartMap.put("sumMoney", sumMoney);
-			myPageCartMap.put("fee", fee); //배송료
-			myPageCartMap.put("sum", sumMoney+fee); // 전체 금액
-			myPageCartMap.put("CartList", getCartListDTO); // 장바구니 목록
-			myPageCartMap.put("CartListSize", getCartListDTO.size()); // 레코드 개수
-			
+	public String myPageCartView(Model model, Principal principal) {
+
+		if (principal != null) {
+			String username = principal.getName();
+			CustomUser userInfo = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Long memberCode = userInfo.getMemberDTO().getMember_code();
+			Map<String, Object> myPageCartMap = cartService.getCartInfo(memberCode);
 			model.addAttribute("myPageCartMap", myPageCartMap);
 		}
-	    
 	    
 		return "member/cafehi_myPageCart";
 	}
