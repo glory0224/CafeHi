@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -23,7 +24,13 @@ public class CartServiceImpl implements CartService{
 
     @Override
     @Transactional
-    public Long insertCart(CartDTO cartDTO) {
+    public Long insertCart(Long member_code, int toCartAmount, CartDTO cartDTO) {
+
+        cartDTO.setCart_amount(toCartAmount);
+        cartDTO.setMember_code(member_code);
+        cartDTO.setCart_writetime(LocalDateTime.now());
+        cartDTO.setCart_updatetime(LocalDateTime.now());
+
         return cartMapper.insertCart(cartDTO);
     }
 

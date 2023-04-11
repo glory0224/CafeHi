@@ -49,26 +49,23 @@ public class CartController {
 		if(toCartAmount == 0) {
 			request.setAttribute("msg", "수량은 1개 이상 담을 수 있습니다.");
 			request.setAttribute("url", "coffeeList");
-			System.out.println("toCartAmount : " + toCartAmount);
-			
+
 			return "common/alert";
 		}
-				
-		
-		cartDTO.setCart_amount(toCartAmount);
 
-//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//		CustomUser userInfo = (CustomUser) principal; 		
-//		CustomUser 강제 캐스팅 하는 방식에서 java.lang.classcastexception; 에러가 발생했다. 
-//		구글 서치를 통해 @AuthenticationPrincipal를 이용하여 CustomUser 객체를 인자에 넘겨주는 방식을 사용하여 해결했다. 
-		
+		//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+//		CustomUser userInfo = (CustomUser) principal;
+//		CustomUser 강제 캐스팅 하는 방식에서 java.lang.classcastexception; 에러가 발생했다.
+//		구글 서치를 통해 @AuthenticationPrincipal를 이용하여 CustomUser 객체를 인자에 넘겨주는 방식을 사용하여 해결했다.
 
-		Long member_code = customUser.getMemberDTO().getMember_code();
-		cartDTO.setMember_code(member_code);
-		cartDTO.setCart_writetime(LocalDateTime.now());
-		cartDTO.setCart_updatetime(LocalDateTime.now());
-		
-		cartService.insertCart(cartDTO);
+		try {
+			Long member_code = customUser.getMemberDTO().getMember_code();
+			cartService.insertCart(member_code, toCartAmount, cartDTO);
+		}catch (Exception e) {
+
+		}
+
+
 		return "redirect:/CafeHi-MyPageCart";
 		
 	}

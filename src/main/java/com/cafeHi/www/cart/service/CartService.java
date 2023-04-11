@@ -9,7 +9,7 @@ public interface CartService {
 
     List<CartDTO> getCartList(Long member_code);
 
-    Long insertCart(CartDTO cartDTO);
+    Long insertCart(Long member_code, int toCartAmount, CartDTO cartDTO);
 
     void modifyCart(CartDTO cartDTO);
 
