@@ -42,4 +42,8 @@
 		WHERE menu_code = #{menu_code}
 	</update>
 
+<select id="findMenuStockQuantity" parameterType="long" resultType="int">
+	SELECT menu_stock_quantity FROM cafehi_menu WHERE menu_code = #{menu_code}
+</select>
+
 </mapper>

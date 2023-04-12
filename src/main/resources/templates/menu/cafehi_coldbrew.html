@@ -32,6 +32,7 @@
                 
                 <form action="" th:action="@{/CafehiOrder}" method="get"> <!-- ?? 왜 form을 사용해놓고 get으로 넘겼지?  -->
                   <input type="hidden" th:name="menu_code" th:value="${coldbrewList0.menu_code }">
+                  <input type="hidden" th:name="returnPage" th:value="coldbrewList">
                   <input type="hidden" th:name="menu_stock_quantity" th:value="${coldbrewList0.getMenu_stock_quantity()}">
                   <input id="coldbrewOrderAmount0" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
@@ -69,6 +70,7 @@
                 
                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${coldbrewList1.menu_code }">
+                  <input type="hidden" th:name="returnPage" th:value="coldbrewList">
                   <input type="hidden" th:name="menu_stock_quantity" th:value="${coldbrewList1.getMenu_stock_quantity()}">
                   <input id="coldbrewOrderAmount1" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
@@ -106,6 +108,7 @@
                 
                 <form action="" method="get" th:action="@{/CafehiOrder}">
                   <input type="hidden" th:name="menu_code" th:value="${coldbrewList2.menu_code }">
+                  <input type="hidden" th:name="returnPage" th:value="coldbrewList">
                   <input type="hidden" th:name="menu_stock_quantity" th:value="${coldbrewList2.getMenu_stock_quantity()}">
                   <input id="coldbrewOrderAmount2" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
@@ -143,6 +146,7 @@
                 
                  <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" th:name="menu_code" th:value="${coldbrewList3.menu_code }">
+                   <input type="hidden" th:name="returnPage" th:value="coldbrewList">
                    <input type="hidden" th:name="menu_stock_quantity" th:value="${coldbrewList3.getMenu_stock_quantity()}">
                   <input id="coldbrewOrderAmount3" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
@@ -180,6 +184,7 @@
                 
                 <form action="" th:action="@{/CafehiOrder}" method="get">
                   <input type="hidden" name="menu_code" th:value="${coldbrewList4.menu_code }">
+                  <input type="hidden" th:name="returnPage" th:value="coldbrewList">
                   <input type="hidden" th:name="menu_stock_quantity" th:value="${coldbrewList4.getMenu_stock_quantity()}">
                   <input id="coldbrewOrderAmount4" type="hidden" th:name="toOrderAmount" th:value="0">
                   <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;

@@ -82,4 +82,10 @@ public class MenuServiceImpl implements MenuService{
 
         menuMapper.changeMenuStockQuantity(getMenuDTO);
     }
+
+    @Override
+    public int findMenuStockQuantity(Long menu_code) {
+
+        return menuMapper.findMenuStockQuantity(menu_code);
+    }
 }

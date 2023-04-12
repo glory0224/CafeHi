@@ -28,4 +28,6 @@ public interface MenuService {
 
     void IncreaseMenuStockQuantity(MenuDTO getMenuDTO, int total_order_count);
 
+    int findMenuStockQuantity(Long menu_code);
+
 }

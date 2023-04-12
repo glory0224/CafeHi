@@ -25,6 +25,7 @@ import com.cafeHi.www.menu.dto.MenuDTO;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,34 +42,27 @@ public class OrderController {
 	
 	
 	@GetMapping("/CafehiOrder")
-	public String CafeHiOrderView(@RequestParam(required = false) Integer toOrderAmount, MenuDTO menuDTO, Model model, HttpServletRequest request) {
+	public String CafeHiOrderView(@RequestParam(required = false) Integer toOrderAmount, @RequestParam Long menu_code, @RequestParam String returnPage, Model model, RedirectAttributes redirectAttributes) {
 
 		// 재고가 다 소진된 경우
-		if (menuDTO.getMenu_stock_quantity() == 0) {
-			request.setAttribute("msg", "재고가 다 소진되었습니다.");
-			return "common/goBackAlert"; // 이전페이지 이동
+		if (menuService.findMenuStockQuantity(menu_code) == 0) {
+			redirectAttributes.addFlashAttribute("msg", "재고가 다 소진되었습니다.");
+			return "redirect:/" + returnPage;
 		}
 
-		// 수량이 null로 넘어오는 경우
-		if(toOrderAmount == null) {
-			request.setAttribute("msg", "수량이 선택되지 않았습니다. 메뉴 페이지로 돌아갑니다.");
-			request.setAttribute("url", "/CafeHi-Menu");
-
-			return "common/alert";
+		// 수량 체크
+		if (toOrderAmount == null || toOrderAmount.equals(0)) {
+			redirectAttributes.addFlashAttribute("msg", "수량을 선택 해야 구매 가능합니다.");
+			return "redirect:/" + returnPage;
 		}
 
-		// 수량 검증 로직
-		if(toOrderAmount == 0) {
-			request.setAttribute("msg", "수량을 선택 해야 구매 가능합니다.");
-			return "common/goBackAlert"; // 이전페이지 이동
-		}
 		
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    CustomUser userInfo = (CustomUser)principal;
 	    Long member_code = userInfo.getMemberDTO().getMember_code();
 		
 
-		model.addAttribute("Menu", menuService.getMenu(menuDTO.getMenu_code()));
+		model.addAttribute("Menu", menuService.getMenu(menu_code));
 		model.addAttribute("orderAmount", toOrderAmount);
 		model.addAttribute("Membership", membershipService.getMembership(member_code));
 		

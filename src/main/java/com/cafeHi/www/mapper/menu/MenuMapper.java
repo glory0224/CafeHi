@@ -27,4 +27,6 @@ public interface MenuMapper {
 	MenuDTO getMenu(Long menu_code);
 
     void changeMenuStockQuantity(MenuDTO getMenuDTO);
+
+	int findMenuStockQuantity(Long menu_code);
 }
