@@ -215,5 +215,10 @@
 
 
 <div th:insert="~{cafeHi_module/footer :: cafeHiFooter}"></div>
+<div th:with="msg=${msg}">
+  <script th:if="${msg != null}" th:inline="javascript">
+    alert([[${msg}]]);
+  </script>
+</div>
 </body>
 </html>
