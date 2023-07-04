@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+	crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+	integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+	crossorigin="anonymous">
+<title>나의 주문목록</title>
+</head>
+<body>
+
+<div th:insert="~{cafeHi_module/header :: cafeHiHeader}"></div>
+
+<div th:replace="~{cafeHi_module/MessageCommon :: cafeHiMyPageCommon}"></div>
+
+
+<div class="d-flex justfiy-content-center">
+<div class="float-start mt-5 p-5">
+<div th:replace="~{cafeHi_module/NavCommon :: cafeHiMyPage}"></div>
+</div>
+<div class="w-50 m-auto" style="padding-top: 5%">
+	<h2 class="m-5" style="text-align: center"><b>주문 정보</b></h2>
+	<div class="mb-3">
+	<form th:action="@{/CafeHi-MyPageOrderMenuList}" method="get">
+		<label>
+			<select th:name="searchType">
+				<option th:value="주문완료" th:selected="${scri.searchType eq '주문완료'}">
+					주문완료</option>
+				<option th:value="주문취소" th:selected="${scri.searchType eq '주문취소'}">
+					주문취소</option>
+
+			</select>
+		</label>
+		<button class="btn btn-success">검색</button>
+		<div class="float-end">
+			<a class="btn btn-success" th:href="@{/CafeHi-Menu}">카페하이 메뉴 보기</a>
+		</div>
+	</form>
+	</div>
+	<div th:if="${orderList.size() == 0}">
+		<div class="m-auto">
+        	<h3>주문 목록이 없습니다.</h3>
+		</div>
+        	<br>
+	</div>
+	<div th:unless="${orderList.size() == 0}">
+		<table class="table table-striped" border="1" width="400px">
+
+			<tr align="center">
+							<th class="table-success">주문 코드</th>
+							<th class="table-success">주문 메뉴</th>
+							<th class="table-success">주문 메뉴 가격</th>
+							<th class="table-success">주문 메뉴 수량</th>
+							<th class="table-success">배송비</th>
+							<th class="table-success">주문 도로명 주소</th>
+							<th class="table-success">주문 지번 주소</th>
+							<th class="table-success">주문 상세 주소</th>
+							<th class="table-success">총 금액</th>
+<!--							<th class="table-success">적립 포인트</th>-->
+							<th class="table-success">주문 상태</th>
+							<th class="table-success">주문 날짜</th>
+							<th class="table-success">취소 날짜</th>
+							<th class="table-success">배송 시작일</th>
+							<th class="table-success">배송 도착일</th>
+							<th class="table-success">배송 상태</th>
+
+			</tr>
+			
+			<tr align="center" th:each="orderMenu : ${orderList}" th:with="OrderWriteDate=${orderMenu.orderDTO.orderWritetime}, OrderUpdateDate=${orderMenu.orderDTO.orderUpdatetime}">
+				<td th:text="${orderMenu.orderMenuCode }"></td>
+				<td th:text="${orderMenu.menuDTO.menuName }"></td>
+				<td th:text="${#numbers.formatInteger(orderMenu.menuDTO.menuPrice , 3, 'COMMA') + ' 원'}"></td>
+				<td th:text="${orderMenu.totalOrderCount} + ' 개'"></td>
+				<td th:if="${orderMenu.orderDTO.deliveryDTO.includeDeliveryFee }" th:text="|2500원|"></td>
+				<td th:unless="${orderMenu.orderDTO.deliveryDTO.includeDeliveryFee}" th:text="|없음|"></td>
+				<td th:text="${orderMenu.orderDTO.deliveryDTO.deliveryRoadAddress}" ></td>
+				<td th:text="${orderMenu.orderDTO.deliveryDTO.deliveryJibunAddress}" ></td>
+				<td th:text="${orderMenu.orderDTO.deliveryDTO.deliveryDetailAddress}" ></td>
+
+				<td th:text="${#numbers.formatInteger(orderMenu.totalOrderPrice, 3, 'COMMA') + ' 원'}"></td>
+
+<!--				<td th:text="${#numbers.formatInteger(orderMenu.totalOrderPricePoint, 3, 'COMMA') + ' 포인트'}"></td>-->
+
+				<td th:if="${#strings.equals(orderMenu.orderDTO.orderStatus, '주문완료')}" th:text="${orderMenu.orderDTO.orderStatus}"></td>
+				<td th:unless ="${#strings.equals(orderMenu.orderDTO.orderStatus, '주문완료')}"><b style="color: green;" th:text="${orderMenu.orderDTO.orderStatus}"></b></td>
+				
+			
+				<td th:text="${#temporals.format(OrderWriteDate , 'yyyy-MM-dd HH:mm:ss')}"></td>
+				 
+				<td th:if="${#strings.equals(orderMenu.orderDTO.orderStatus, '주문완료')}">
+				<form th:action="@{/CancelOrder}" method="post" >
+					<input type="hidden" th:name="orderMenu_code" th:value="${orderMenu.orderMenuCode}"/>
+					<input type="hidden" th:name="totalOrderPricePoint" th:value="${orderMenu.totalOrderPricePoint}"/>
+					<input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }"/>
+					<input type="submit"  class="btn btn-success btn-sm" value="주문 취소"/>	
+				</form>
+					
+				</td>
+				
+				<td th:unless="${#strings.equals(orderMenu.orderDTO.orderStatus, '주문완료')}">
+					<b style="color: green;"  th:text="${#temporals.format(OrderUpdateDate , 'yyyy-MM-dd HH:mm:ss')}"></b>
+				</td>
+				<td th:with="DeliveryDepartureDate=${orderMenu.deliveryDTO.deliveryStartDate}" th:text="${#temporals.format(DeliveryDepartureDate , 'yyyy-MM-dd')}"></td>
+				<td th:with="DeliveryArriveDate=${orderMenu.deliveryDTO.deliveryArriveDate}" th:text="${#temporals.format(DeliveryArriveDate , 'yyyy-MM-dd')}"></td>
+				<td th:text="${orderMenu.deliveryDTO.deliveryStatus}"></td>
+
+			</tr>
+
+
+
+		</table>
+		<br />
+		<tr align="center">
+			<td colspan=6 style="border: none; margin-top: 30px;">
+
+				<div class="container mt-3">
+					<ul class="pagination justify-content-center">
+
+						<li th:class="page-item" th:if="${pageMaker.prev}">
+							<a th:class="page-link" th:href="@{/CafeHi-MyPageOrderMenuList(page=${pageMaker.startPage - 1}, perPageNum=${scri.getPerPageNum()}, searchType=${scri.getSearchType()})}" style='text-decoration: none; color: black;'><span aria-hidden="true">&laquo;</span></a>
+						</li>
+						<li th:class="page-item" th:each="pageNum : ${#numbers.sequence(pageMaker.startPage, (pageMaker.endPage > pageMaker.totalCount ? pageMaker.totalCount : pageMaker.endPage))}">
+							<a th:class="page-link" th:href="@{/CafeHi-MyPageOrderMenuList(page=${pageNum}, perPageNum=${scri.getPerPageNum()}, searchType=${scri.getSearchType()})}" th:text="${pageNum}"
+							   th:classappend="${pageNum eq scri.page} ? 'bg-success' : 'text-dark'"
+							   style='text-decoration: none; color: white;'></a>
+						</li>
+						<li th:class="page-item" th:if="${pageMaker.next && pageMaker.endPage > 0}">
+							<a th:class="page-link" th:href="@{/CafeHi-MyPageOrderMenuList(page=${pageMaker.endPage + 1}, perPageNum=${scri.getPerPageNum()}, searchType=${scri.getSearchType()})}" style='text-decoration: none; color: black;'><span aria-hidden="true">&raquo;</span></a>
+						</li>
+
+					</ul>
+				</div>
+
+			</td>
+		</tr>
+
+	</div>
+
+
+
+
+</div>
+</div>
+
+<div th:insert="~{cafeHi_module/footer :: cafeHiFooter}"></div>
+</body>
+</html>

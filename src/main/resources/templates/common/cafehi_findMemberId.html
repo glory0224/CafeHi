@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>CAFEHi 로그인</title>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+  <style>
+    .correct{
+      color : green;
+    }
+    .incorrect{
+      color : red;
+    }
+  </style>
+</head>
+<body>
+<div th:insert="~{cafeHi_module/header :: cafeHiHeader}"></div>
+
+<div class="container">
+  <div class="m-auto w-50 p-50">
+    <main class="form-signin">
+      <form class="m-auto w-50 p-50" action="" th:action="@{/FindMemberId}" method="post" id="findIdForm">
+        <img class="mb-4" src="../assets/brand/bootstrap-logo.svg" alt="" width="72" height="57">
+
+        <h1 class="h3 mb-3 fw-normal">카페하이 아이디 찾기</h1><br>
+
+        <div class="form-floating">
+
+          <input type="text" class="form-control" id="findIdByEmail" placeholder="Email" th:name="memberEmail">
+          <label for="findIdByEmail">회원 가입한 이메일을 입력해주세요.</label>
+          <br>
+          <div class="float-end">
+          <input id="email_check_button" class="btn btn-sm btn-success" type="button" value="인증번호 전송">
+          </div>
+          <br>
+        </div><br>
+        <div class="form-floating">
+          <input type="text" class="form-control email_check_input" id="EmailAuthNumber" placeholder="EmailAuthNumber" name="password">
+          <label for="EmailAuthNumber">인증번호</label>
+          <br>
+          <p id="email_check_input_box_warn"></p>
+          <div class="float-end">
+            <input id="email_num_check" class="btn btn-sm btn-success" type="button" value="인증번호 확인">
+          </div>
+          <br>
+          <input id="email_send_boolean" type="checkbox" style="display: none" th:name="email_send_boolean">
+          <input id="email_check_boolean" type="checkbox" style="display: none" th:name="email_check_boolean">
+          <br>
+        </div>
+
+        <input class="w-100 btn btn-lg btn-success " type="button" value="아이디 찾기" onclick="findMemberIdCheck()">
+        <div class="d-flex justify-content-evenly" style="margin-top: 20px">
+          <span><a th:href="@{/CafeHi-FindMemberPw}" style="text-decoration: none; color:black">비밀번호 찾기</a></span>
+          <span><a th:href="@{/members/signup}" style="text-decoration: none; color:black">회원 가입</a></span>
+          <span><a th:href="@{/login}" style="text-decoration: none; color:black">로그인</a></span>
+        </div>
+      </form>
+
+    </main>
+  </div>
+</div>
+
+
+<div th:insert="~{cafeHi_module/footer :: cafeHiFooter}"></div>
+</body>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  function findMemberIdCheck() {
+    MemberEmail = document.getElementById('findIdByEmail');
+    EmailAuth = document.getElementById('EmailAuthNumber');
+    EmailCheck = document.getElementById('email_check_boolean');
+
+    console.log(EmailCheck)
+
+    if (MemberEmail.value == "") {
+      alert('이메일을 입력해주세요.');
+      findIdByEmail.focus();
+      return;
+    } else if (EmailAuth.value == "") {
+      alert('인증번호를 입력해주세요.');
+      EmailAuthNumber.focus();
+      return;
+    }
+
+    if (!EmailCheck.checked) {
+      alert('이메일 인증이 확인되지 않았습니다.');
+      EmailAuthNumber.focus();
+      return;
+    }
+
+    document.getElementById('findIdForm').submit();
+  }
+
+  $(document).ready(function() {
+
+    // 메일 전송
+    $("#email_check_button").click(function(){
+
+      var email = $("#findIdByEmail").val(); 		// 입력한 이메일
+      var sendBoolean = $("#email_send_boolean");   // 메일 보냄 여부
+      var emailAuthNum = $("#EmailAuthNumber");     // 이메일 인증번호
+      emailReg = new RegExp("\\w+@\\w+\\.\\w+(\\.\\w+)?");
+
+      if(email == ""){
+        alert("이메일을 입력해주세요.");
+        return false;
+      }else if(!emailReg.test(email)){
+        alert('올바른 이메일 형식을 입력하세요. \n ex) cafeHi@naver.com');
+        return false;
+      }
+
+      $.ajax({
+        type:"GET",
+        url:"http://54.180.196.204:8080/EmailAuth?email=" + email, // localhost가 아닌 실제 서버 경로로 변경
+        success:function(data){
+          alert(email + " 메일로 인증번호 전송이 완료 되었습니다.");
+          emailAuthNum.val('') // 이메일 인증번호가 있으면 초기화
+          sendBoolean.prop("checked", true)
+          code = data;
+        },
+        error : function(){
+          alert("메일 전송을 하지 못했습니다.");
+        }
+      });
+    });
+
+
+    /* 인증번호 비교 */
+    $("#email_num_check").click(function(){
+      var inputCode = $(".email_check_input").val();		// 입력코드
+      var checkResult = $("#email_check_input_box_warn");	// 비교 결과
+      var checkBoolean = $("#email_check_boolean");
+      var sendBoolean = $("#email_send_boolean");
+
+
+      if(inputCode == ""){
+        alert("인증번호를 입력해주세요.");
+        return false;
+      } else if(!sendBoolean.prop("checked")) {
+        alert("메일을 전송한 뒤에 인증번호를 입력해주세요.");
+        return false;
+      }
+
+      if(inputCode == code){
+        checkResult.html("인증번호가 일치합니다.");		// 일치하는 경우
+        checkResult.attr("class", "correct");
+        checkBoolean.prop("checked", true);
+
+
+      } else {
+        checkResult.html("인증번호가 일치하지 않습니다.");		// 일치하지 않는 경우
+        checkResult.attr("class", "incorrect");
+        checkBoolean.prop("checked", false);
+
+      }
+    });
+  });
+
+
+</script>
+
+</html>

@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+	crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" 
+	integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+	crossorigin="anonymous">
+<title>나의 장바구니</title>
+</head>
+<body>
+<div th:insert="~{cafeHi_module/header :: cafeHiHeader}"></div>
+
+<div th:replace="~{cafeHi_module/MessageCommon :: cafeHiMyPageCommon}"></div>
+
+<div class="d-flex justfiy-content-center">
+<div class="float-start mt-5 p-5">
+<div th:replace="~{cafeHi_module/NavCommon :: cafeHiMyPage}"></div>
+</div>
+<div class="w-50 m-auto" style="padding-top: 5%">
+	<h2 class="m-5" style="text-align: center"><b>장바구니 정보</b></h2>
+	<div class="m-2" style="padding-bottom: 50px;">
+	<a class="btn btn-success float-end" th:href="@{/CafeHi-Menu}">카페하이 메뉴 보기</a>
+	</div>
+			<div th:if="${cartList.size() == 0}">
+        	<h3>장바구니가 비었습니다.</h3>
+        	</div>
+        	<div th:unless="${cartList.size() == 0}">
+      
+
+					<table class="table table-striped" border="1" width="400px" >
+					
+						<tr align="center">
+							<th class="table-success">상품명</th>
+							<th class="table-success">상품가격</th>
+							<th class="table-success">수량</th>
+							<th class="table-success">금액</th>
+							<th class="table-success">&nbsp;</th>
+						</tr>
+
+
+							<tr align="center" th:each="Cart : ${cartList}">
+								<form method="post" th:action="@{/modifyCart}">
+								<td th:text="${Cart.menuDTO.menuName}"></td>
+								<td th:text="${#numbers.formatInteger(Cart.menuDTO.menuPrice, 3, 'COMMA') + ' 원'}"></td>
+								<td >
+									<input type="number" th:name="cart_amount" th:value="${#numbers.formatInteger(Cart.cartAmount, 1, 'COMMA')}" style="width: 50px; border: none;"/>
+									<input type="hidden" th:name="cart_code" th:value="${Cart.cart_code}">
+								</td>
+								<td th:text="${#numbers.formatInteger(Cart.menuDTO.menuPrice * Cart.cartAmount, 3, 'COMMA') + ' 원'}"></td>
+
+								<td>
+								<button class="btn btn-success btn-sm">수정</button>
+								</form>
+								<button type="button" class="btn btn-success btn-sm" th:onclick="|javascript:cartDelete('${Cart.cart_code}')|">삭제</button>
+								</td>
+							</tr>
+						<tr>
+							<td colspan="5" align="right"> <b>30000원 이상부터 배송료가 무료입니다.</b> <br>
+								장바구니 금액 합계 : <span th:text="${#numbers.formatInteger(sumMoney , 3, 'COMMA') + '원'}"></span><br>
+								<div th:if="${sumMoney >= 30000}">
+									배송료 : <span th:text="${#numbers.formatInteger(0 , 1, 'COMMA') + '원'}"></span><br>
+									총합계 : <span th:text="${#numbers.formatInteger(sumMoney , 3, 'COMMA') + '원'}"></span><br>
+									예상 적립 포인트 : <span th:text="${#numbers.formatInteger(totalPoint , 3, 'COMMA') + '포인트'}"></span>
+								</div>
+								<div th:unless="${sumMoney >= 30000}">
+									배송료 : <span th:text="${#numbers.formatInteger(2500 , 1, 'COMMA') + '원'}"></span><br>
+									총합계 : <span th:text="${#numbers.formatInteger(sumMoney + 2500 , 3, 'COMMA') + '원'}"></span><br>
+									예상 적립 포인트 : <span th:text="${#numbers.formatInteger(totalPoint , 3, 'COMMA') + '포인트'}"></span>
+								</div>
+								</td>
+						</tr>
+
+					</table>
+					<br>
+					<div class="d-flex justify-content-between">
+
+					<button type="button" class="btn btn-success" th:onclick="|javascript:cartDeleteAll()|">장바구니 비우기</button>
+
+					<button type="button" class="btn btn-success" th:onclick="|javascript:cartOrderAll('${totalPoint}', '${sumMoney}')|">구매하기</button>
+
+					</div>
+
+
+        	</div>
+        	
+        	</div>
+			
+			
+
+
+</div>
+
+<div th:insert="~{cafeHi_module/footer :: cafeHiFooter}"></div>
+</body>
+<script th:inline="javascript">
+    function cartDelete(cart_code) {
+    	// create element (form)
+        var form = document.createElement("form");
+    	 // create element (input)
+        var cartInput = document.createElement('input');
+    	var csrfInput =  document.createElement('input');
+    	 // set attribute (form) 
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "deleteCart");
+     	// set attribute (input)
+        cartInput.setAttribute("type", "hidden");
+        cartInput.setAttribute("name", "cart_code");
+        cartInput.setAttribute("value", cart_code);
+     	// set attribute (input) - spring security 속성 추가
+     	csrfInput.setAttribute("type", "hidden");
+     	csrfInput.setAttribute("name", /*[[${_csrf.parameterName }]]*/);
+     	csrfInput.setAttribute("value", /*[[${_csrf.token }]]*/);
+     	
+        
+     	// append input (to form)
+        form.appendChild(cartInput);
+     	form.appendChild(csrfInput);
+     	// append form (to body)
+        document.body.appendChild(form);
+     	// submit form
+        form.submit();
+    }
+    
+    function cartDeleteAll() {
+    	// create element (form)
+        var form = document.createElement("form");
+    	 // create element (input)
+    	var csrfInput =  document.createElement('input');
+    	 // set attribute (form) 
+        form.setAttribute("method", "post");
+        form.setAttribute("action", "deleteCartAll");
+		form.setAttribute("enctype", "application/x-www-form-urlencoded");
+
+
+		// set attribute (input) - spring security 속성 추가
+     	csrfInput.setAttribute("type", "hidden");
+     	csrfInput.setAttribute("name", /*[[${_csrf.parameterName }]]*/);
+     	csrfInput.setAttribute("value", /*[[${_csrf.token }]]*/);
+     	
+        
+     	// append input (to form)
+     	form.appendChild(csrfInput);
+     	// append form (to body)
+        document.body.appendChild(form);
+     	// submit form
+        form.submit();
+    }
+
+	function cartOrderAll(totalPoint, sumMoney) {
+		console.log(totalPoint)
+		console.log(typeof totalPoint)
+		console.log(sumMoney)
+		console.log(typeof sumMoney)
+		// create element (form)
+		var form = document.createElement("form");
+		// create element (input)
+		var csrfInput =  document.createElement('input');
+		// set attribute (form)
+		form.setAttribute("method", "post");
+		form.setAttribute("action", "cartOrderAll");
+		form.setAttribute("enctype", "application/x-www-form-urlencoded");
+
+		// Set attribute (input) - cartList value as JSON string
+		var cartListValue = JSON.stringify(/*[[${cartList}]]*/);
+
+		var cartInput = document.createElement('input');
+		cartInput.setAttribute("type", "hidden");
+		cartInput.setAttribute("name", "cartList");
+		cartInput.setAttribute("value", cartListValue);
+
+		var pointInput = document.createElement('input');
+		pointInput.setAttribute("type", "hidden");
+		pointInput.setAttribute("name", "totalPoint");
+		pointInput.setAttribute("value", totalPoint);
+
+		var sumMoneyInput = document.createElement('input');
+		sumMoneyInput.setAttribute("type", "hidden");
+		sumMoneyInput.setAttribute("name", "sumMoney");
+		sumMoneyInput.setAttribute("value", sumMoney);
+
+		var headersSizeInput = document.createElement('input');
+		var headersSize = JSON.stringify(form).length;
+		headersSizeInput.setAttribute("type", "hidden");
+		headersSizeInput.setAttribute("name", "headersSize");
+		headersSizeInput.setAttribute("value", headersSize);
+
+		// set attribute (input) - spring security 속성 추가
+		csrfInput.setAttribute("type", "hidden");
+		csrfInput.setAttribute("name", /*[[${_csrf.parameterName }]]*/);
+		csrfInput.setAttribute("value", /*[[${_csrf.token }]]*/);
+
+
+		// append input (to form)
+		form.appendChild(cartInput);
+		form.appendChild(pointInput);
+		form.appendChild(sumMoneyInput);
+		form.appendChild(headersSizeInput);
+		form.appendChild(csrfInput);
+		// append form (to body)
+		document.body.appendChild(form);
+
+
+
+
+		// submit form
+		form.submit();
+	}
+
+
+
+</script>
+</html>

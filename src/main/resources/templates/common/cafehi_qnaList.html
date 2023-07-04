@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+    <script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+          crossorigin="anonymous">
+    <title>CAFEHI 질문게시판</title>
+</head>
+<body>
+<div th:insert="~{cafeHi_module/header :: cafeHiHeader}"></div>
+
+<div th:replace="~{cafeHi_module/MessageCommon :: cafeHiQnACommon}"></div>
+
+
+<main class=" w-50 m-auto">
+    <div class="container-fluid px-4">
+        <h1 class="mb-4">게시판</h1>
+
+        <div class="card mb-4">
+
+            <div class="card-header">
+
+
+
+                <div class="search_area d-flex justify-content-between" >
+                    <div class=" float-start">
+
+                    <form th:action="@{/CafeHi-QnAList}" method="get">
+                        <label>
+                            <select th:name="searchType">
+                                <option th:value="title" th:selected="${scri.searchType eq 'title'}">
+                                    제목</option>
+                                <option th:value="content" th:selected="${scri.searchType eq 'content'}">
+                                    내용</option>
+                                <option th:value="writer" th:selected="${scri.searchType eq 'writer'}">
+                                    작성자</option>
+                        </select>
+                        </label>
+                        <label for="keywordInput"></label><input class="btn btn-success" type="text" th:name="keyword" id="keywordInput" th:value="${scri.getKeyword()}">
+                        <button class="btn btn-success">검색</button>
+                    </form>
+                    </div>
+                    <a class="btn btn-success float-end" sec:authorize="hasAnyRole('ROLE_USER')" href="" th:href="@{/CafeHi-QnAWrite}">
+                        <i class="fas fa-edit"></i> 글 작성
+                    </a>
+
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table  table-striped">
+                    <thead>
+                    <tr>
+                        <th>글번호</th>
+                        <th>분류</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>작성일</th>
+                        <th>조회수</th>
+                    </tr>
+                    </thead>
+
+
+                    <tbody th:if="${ qnaList.size() eq 0 }">
+                    <tr>
+                        <th colspan="6" style="text-align: center;">게시글이 없습니다.</th>
+                    </tr>
+                    </tbody>
+
+                    <tbody th:unless="${ qnaList.size() eq 0 }">
+
+                    <tr th:each="qna : ${ qnaList }" th:with="writeDate= ${qna.qnaWriteDate}">
+                        <td th:text="${qna.qnaNum }">글번호</td>
+                        <td th:text="'[' + ${qna.qnaTitleClassification} + ']'"></td>
+                        <td>
+                            <a th:text="${qna.qnaTitle }" th:href="@{/CafeHi-QnA(qnaNum = ${qna.qnaNum}, page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}"
+                               style="text-decoration: none; color: black; font-weight: bold;">
+                                글제목
+                            </a>
+                        </td>
+                        <td th:text="${qna.member.memberId}">회원 id</td>
+                        <td th:text="${#temporals.format(writeDate , 'yyyy-MM-dd HH:mm:ss')}">작성일자</td>
+                        <td th:text="${qna.qnaHit }">조회수</td>
+                    </tr>
+
+
+                    <tr align="center">
+                        <td colspan=6 style="border: none; margin-top: 30px;">
+
+                            <div class="container mt-3">
+                                <ul class="pagination justify-content-center">
+
+                                    <li th:class="page-item" th:if="${pageMaker.prev}">
+                                        <a th:class="page-link" th:href="@{/CafeHi-QnAList(page=${pageMaker.startPage - 1}, perPageNum=${scri.getPerPageNum()}, searchType=${scri.getSearchType()}, keyword=${scri.getKeyword()})}" style='text-decoration: none; color: black;'><span aria-hidden="true">&laquo;</span></a>
+                                    </li>
+                                    <li th:class="page-item" th:each="pageNum : ${#numbers.sequence(pageMaker.startPage, (pageMaker.endPage > pageMaker.totalCount ? pageMaker.totalCount : pageMaker.endPage))}">
+                                    <a th:class="page-link" th:href="@{/CafeHi-QnAList(page=${pageNum}, perPageNum=${scri.getPerPageNum()}, searchType=${scri.getSearchType()}, keyword=${scri.getKeyword()})}" th:text="${pageNum}"
+                                           th:classappend="${pageNum eq scri.page} ? 'bg-success' : 'text-dark'"
+                                           style='text-decoration: none; color: white;'></a>
+                                    </li>
+                                    <li th:class="page-item" th:if="${pageMaker.next && pageMaker.endPage > 0}">
+                                        <a th:class="page-link" th:href="@{/CafeHi-QnAList(page=${pageMaker.endPage + 1}, perPageNum=${scri.getPerPageNum()}, searchType=${scri.getSearchType()}, keyword=${scri.getKeyword()})}" style='text-decoration: none; color: black;'><span aria-hidden="true">&raquo;</span></a>
+                                    </li>
+
+                                </ul>
+                            </div>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+
+<div th:insert="~{cafeHi_module/footer :: cafeHiFooter}"></div>
+</body>
+
+</html>

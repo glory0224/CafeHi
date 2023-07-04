@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+<!--  주문할 메뉴 수량 계산 js  -->
+<script src="" th:src="@{/js/menu/latteCount.js}"></script>
+</head>
+<body>
+<div th:insert="~{cafeHi_module/header :: cafeHiHeader}"></div>
+
+<div th:replace="~{cafeHi_module/MessageCommon :: cafeHiMenuCommon}"></div>
+
+<div th:replace="~{cafeHi_module/NavCommon :: cafeHiMenuNav}"></div>
+
+<div class="w-50 m-auto mt-4">
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+
+      
+        <div class="col">
+          <div class="card shadow-sm">
+			<img alt="" src="" th:src="@{ |${latteList0.menuImgPath}| }" width="100%" height="400">
+            <div class="card-body">
+            	
+              <p class="card-text text-center" th:text="${latteList0.menuName }"></p>
+              <p class="card-text text-center" th:text="${latteList0.menuExplain }"></p>
+              <p class="card-text text-center" th:text="|${latteList0.menuPrice }원|"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                
+                <form action="" th:action="@{/CafehiOrder}" method="get">
+                  <input type="hidden" th:name="menuId" th:value="${latteList0.menuId }">
+                  <input type="hidden" th:name="returnPage" th:value="${latteList0.menuType }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${latteList0.menuStockQuantity}">
+                  <input id="latteOrderAmount0" type="hidden" th:name="toOrderAmount" th:value="0">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
+                </form> 
+                
+                  <form action="" th:action="@{/insertCart}" method="post">
+                  <input type="hidden" th:name="menuId" th:value="${latteList0.menuId }">
+                  <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
+                  <input id="latteCartAmount0" type="hidden" th:name="toCartAmount" th:value="0">
+                  <div class="d-flex justify-content-between">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="장바구니 담기">
+                  
+                  <div id='latteCount0' class="m-1">0</div>
+				
+				<input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList0("plus")' value='+' /> &nbsp;
+                  <input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList0("minus")' value='-' />
+                  </div>
+                 
+				</form>		                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+			<img alt="" src="" th:src="@{ |${latteList1.menuImgPath}| }" width="100%" height="400">
+            <div class="card-body">
+            	
+              <p class="card-text text-center" th:text="${latteList1.menuName }"></p>
+              <p class="card-text text-center" th:text="${latteList1.menuExplain }"></p>
+              <p class="card-text text-center" th:text="|${latteList1.menuPrice }원|"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                
+                <form action="" th:action="@{/CafehiOrder}" method="get">
+                  <input type="hidden" th:name="menuId" th:value="${latteList1.menuId }">
+                  <input type="hidden" th:name="returnPage" th:value="${latteList1.menuType }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${latteList1.menuStockQuantity}">
+                  <input id="latteOrderAmount1" type="hidden" th:name="toOrderAmount" th:value="0">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
+                </form>
+                
+                  <form action="" th:action="@{/insertCart}" method="post">
+                  <input type="hidden" th:name="menuId" th:value="${latteList1.menuId }">
+                  <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
+                  <input id="latteCartAmount1" type="hidden" th:name="toCartAmount" th:value="0">
+                  <div class="d-flex justify-content-between">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="장바구니 담기">
+                  
+                   <div id='latteCount1' class="m-1">0</div>
+				
+				<input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList1("plus")' value='+' /> &nbsp;
+                  <input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList1("minus")' value='-' />
+                  </div>
+                 
+				</form>		                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+			<img alt="" src="" th:src="@{ |${latteList2.menuImgPath}| }" width="100%" height="400">
+            <div class="card-body">
+            	
+              <p class="card-text text-center" th:text="${latteList2.menuName }"></p>
+              <p class="card-text text-center" th:text="${latteList2.menuExplain }"></p>
+              <p class="card-text text-center" th:text="|${latteList2.menuPrice }원|"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                
+                <form action="" method="get" th:action="@{/CafehiOrder}">
+                  <input type="hidden" th:name="menuId" th:value="${latteList2.menuId }">
+                  <input type="hidden" th:name="returnPage" th:value="${latteList2.menuType }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${latteList2.menuStockQuantity}">
+                  <input id="latteOrderAmount2" type="hidden" th:name="toOrderAmount" th:value="0">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
+                </form>
+                
+                  <form action="" th:action="@{/insertCart}"  method="post">
+                  <input type="hidden" th:name="menuId" th:value="${latteList2.menuId }">
+                  <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
+                  <input id="latteCartAmount2" type="hidden" th:name="toCartAmount" th:value="0">
+                  <div class="d-flex justify-content-between">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="장바구니 담기">
+                   <div id='latteCount2' class="m-1">
+                   0
+					</div>
+				<input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList2("plus")' value='+' /> &nbsp;
+                  <input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList2("minus")' value='-' />
+                  </div>
+                 
+				</form>		                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+			<img alt="" src="" th:src="@{ |${latteList3.menuImgPath}| }" width="100%" height="400">
+            <div class="card-body">
+            	
+              <p class="card-text text-center" th:text="${latteList3.menuName }"></p>
+              <p class="card-text text-center" th:text="${latteList3.menuExplain }"></p>
+              <p class="card-text text-center" th:text="|${latteList3.menuPrice }원|"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                
+                 <form action="" th:action="@{/CafehiOrder}" method="get">
+                  <input type="hidden" th:name="menuId" th:value="${latteList3.menuId }">
+                   <input type="hidden" th:name="returnPage" th:value="${latteList3.menuType }">
+                   <input type="hidden" th:name="menu_stock_quantity" th:value="${latteList3.menuStockQuantity}">
+                  <input id="latteOrderAmount3" type="hidden" th:name="toOrderAmount" th:value="0">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
+                </form>
+                
+                  <form action="" th:action="@{/insertCart}" method="post">
+                  <input type="hidden" th:name="menuId" th:value="${latteList3.menuId }">
+                  <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
+                  <input id="latteCartAmount3" type="hidden" th:name="toCartAmount" th:value="0">
+                  <div class="d-flex justify-content-between">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="장바구니 담기">
+                   <div id='latteCount3' class="m-1">
+                  	0
+					</div>
+				<input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList3("plus")' value='+' /> &nbsp;
+                  <input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList3("minus")' value='-' />
+                  </div>
+                 
+				</form>		                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+			<img alt="" src="" th:src="@{ |${latteList4.menuImgPath}| }" width="100%" height="400">
+            <div class="card-body">
+            	
+              <p class="card-text text-center" th:text="${latteList4.menuName }"></p>
+              <p class="card-text text-center" th:text="${latteList4.menuExplain }"></p>
+              <p class="card-text text-center" th:text="|${latteList4.menuPrice }원|"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                
+                <form action="" th:action="@{/CafehiOrder}" method="get">
+                  <input type="hidden" th:name="menuId" th:value="${latteList4.menuId }">
+                  <input type="hidden" th:name="returnPage" th:value="${latteList4.menuType }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${latteList4.menuStockQuantity}">
+                  <input id="latteOrderAmount4" type="hidden" th:name="toOrderAmount" th:value="0">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
+                </form>
+                
+                  <form action="" th:action="@{/insertCart}" method="post">
+                  <input type="hidden" th:name="menuId" th:value="${latteList4.menuId }">
+                  <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
+                  <input id="latteCartAmount4" type="hidden" th:name="toCartAmount" th:value="0">
+                  <div class="d-flex justify-content-between">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="장바구니 담기">
+                   <div id='latteCount4' class="m-1">
+                  	0
+					</div>
+				<input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList4("plus")' value='+' /> &nbsp;
+                  <input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList4("minus")' value='-' />
+                  </div>
+                 
+				</form>		                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+			<img alt="" src="" th:src="@{ |${latteList5.menuImgPath}| }" width="100%" height="400">
+            <div class="card-body">
+            	
+              <p class="card-text text-center" th:text="${latteList5.menuName }"></p>
+              <p class="card-text text-center" th:text="${latteList5.menuExplain }"></p>
+              <p class="card-text text-center" th:text="|${latteList5.menuPrice }원|"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                
+                <form action="" th:action="@{/CafehiOrder}" method="get">
+                  <input type="hidden" th:name="menuId" th:value="${latteList5.menuId }">
+                  <input type="hidden" th:name="returnPage" th:value="${latteList5.menuType }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${latteList5.menuStockQuantity}">
+                  <input id="latteOrderAmount5" type="hidden" th:name="toOrderAmount" th:value="0">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
+                </form>
+                
+                  <form action="" th:action="@{/insertCart}" method="post">
+                  <input type="hidden" th:name="menuId" th:value="${latteList5.menuId }">
+                  <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
+                  <input id="latteCartAmount5" type="hidden" th:name="toCartAmount" th:value="0">
+                  <div class="d-flex justify-content-between">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="장바구니 담기">
+                   <div id='latteCount5' class="m-1">
+                  	0
+					</div>
+				<input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList5("plus")' value='+' /> &nbsp;
+                  <input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList5("minus")' value='-' />
+                  </div>
+                 
+				</form>		                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="card shadow-sm">
+			<img alt="" src="" th:src="@{ |${latteList6.menuImgPath}| }" width="100%" height="400">
+            <div class="card-body">
+            	
+              <p class="card-text text-center" th:text="${latteList6.menuName }"></p>
+              <p class="card-text text-center" th:text="${latteList6.menuExplain }"></p>
+              <p class="card-text text-center" th:text="|${latteList6.menuPrice }원|"></p>
+              <div class="d-flex justify-content-between align-items-center">
+                <div class="btn-group">
+                
+                <form action="" th:action="@{/CafehiOrder}" method="get">
+                  <input type="hidden" th:name="menuId" th:value="${latteList6.menuId }">
+                  <input type="hidden" th:name="returnPage" th:value="${latteList6.menuType }">
+                  <input type="hidden" th:name="menu_stock_quantity" th:value="${latteList6.menuStockQuantity}">
+                  <input id="latteOrderAmount6" type="hidden" th:name="toOrderAmount" th:value="0">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="구매하기"> &nbsp;
+                </form>
+                
+                  <form action="" th:action="@{/insertCart}" method="post">
+                  <input type="hidden" th:name="menuId" th:value="${latteList6.menuId }">
+                  <input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }" />
+                  <input id="latteCartAmount6" type="hidden" th:name="toCartAmount" th:value="0">
+                  <div class="d-flex justify-content-between">
+                  <input type="submit" class="btn btn-sm btn-outline-success" value="장바구니 담기">
+                   <div id='latteCount6' class="m-1">
+                  	0
+					</div>
+				<input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList6("plus")' value='+' /> &nbsp;
+                  <input class="btn btn-sm btn-outline-success" type='button' onclick='countLatteList6("minus")' value='-' />
+                  </div>
+                 
+				</form>		                
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+      </div>
+
+
+<div th:insert="~{cafeHi_module/footer :: cafeHiFooter}"></div>
+</body>
+</html>
