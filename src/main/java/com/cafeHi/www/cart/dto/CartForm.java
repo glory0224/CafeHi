@@ -1,7 +1,7 @@
 package com.cafeHi.www.cart.dto;
 
-import com.cafeHi.cart.entity.Cart;
-import com.cafeHi.menu.dto.MenuDTO;
+import com.cafeHi.www.cart.entity.Cart;
+import com.cafeHi.www.menu.dto.MenuDTO;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

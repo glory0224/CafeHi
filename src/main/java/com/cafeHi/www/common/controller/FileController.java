@@ -1,6 +1,6 @@
 package com.cafeHi.www.common.controller;
 
-import com.cafeHi.common.file.S3FileStore;
+import com.cafeHi.www.common.file.S3FileStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;

@@ -1,6 +1,6 @@
 package com.cafeHi.www.order.entity;
 
-import com.cafeHi.menu.entity.Menu;
+import com.cafeHi.www.menu.entity.Menu;
 import lombok.*;
 
 import javax.persistence.*;

@@ -1,11 +1,11 @@
 package com.cafeHi.www.member.controller;
 
-import com.cafeHi.member.dto.*;
-import com.cafeHi.member.entity.Member;
-import com.cafeHi.member.entity.MemberAuth;
-import com.cafeHi.member.entity.Membership;
-import com.cafeHi.member.service.MemberService;
-import com.cafeHi.member.service.MembershipService;
+import com.cafeHi.www.member.dto.*;
+import com.cafeHi.www.member.entity.Member;
+import com.cafeHi.www.member.entity.MemberAuth;
+import com.cafeHi.www.member.entity.Membership;
+import com.cafeHi.www.member.service.MemberService;
+import com.cafeHi.www.member.service.MembershipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.javamail.JavaMailSender;

@@ -1,7 +1,7 @@
 package com.cafeHi.www.menu.entity;
 
-import com.cafeHi.common.exception.NotEnoughStockException;
-import com.cafeHi.menu.MenuType;
+import com.cafeHi.www.common.exception.NotEnoughStockException;
+import com.cafeHi.www.menu.MenuType;
 import lombok.Getter;
 import lombok.Setter;
 

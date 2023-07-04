@@ -1,7 +1,7 @@
 package com.cafeHi.www.delivery.dto;
 
-import com.cafeHi.delivery.DeliveryStatus;
-import com.cafeHi.delivery.entity.Delivery;
+import com.cafeHi.www.delivery.DeliveryStatus;
+import com.cafeHi.www.delivery.entity.Delivery;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

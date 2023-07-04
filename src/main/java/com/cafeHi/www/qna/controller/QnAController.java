@@ -1,9 +1,9 @@
 package com.cafeHi.www.qna.controller;
 
-import com.cafeHi.common.page.PageMaker;
-import com.cafeHi.common.page.SearchCriteria;
-import com.cafeHi.qna.dto.QnAForm;
-import com.cafeHi.qna.service.QnAService;
+import com.cafeHi.www.common.page.PageMaker;
+import com.cafeHi.www.common.page.SearchCriteria;
+import com.cafeHi.www.qna.dto.QnAForm;
+import com.cafeHi.www.qna.service.QnAService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

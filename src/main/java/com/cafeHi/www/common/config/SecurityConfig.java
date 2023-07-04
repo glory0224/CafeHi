@@ -1,7 +1,7 @@
 package com.cafeHi.www.common.config;
 
 
-import com.cafeHi.member.service.CustomUserDetailService;
+import com.cafeHi.www.member.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

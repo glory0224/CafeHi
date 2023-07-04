@@ -1,9 +1,9 @@
 package com.cafeHi.www.order.entity;
 
-import com.cafeHi.delivery.DeliveryStatus;
-import com.cafeHi.delivery.entity.Delivery;
-import com.cafeHi.member.entity.Member;
-import com.cafeHi.order.OrderStatus;
+import com.cafeHi.www.delivery.DeliveryStatus;
+import com.cafeHi.www.delivery.entity.Delivery;
+import com.cafeHi.www.member.entity.Member;
+import com.cafeHi.www.order.OrderStatus;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,7 +1,7 @@
 package com.cafeHi.www.member.repository;
 
-import com.cafeHi.member.entity.Member;
-import com.cafeHi.member.entity.Membership;
+import com.cafeHi.www.member.entity.Member;
+import com.cafeHi.www.member.entity.Membership;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

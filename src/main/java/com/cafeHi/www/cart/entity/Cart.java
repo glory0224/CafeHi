@@ -1,7 +1,7 @@
 package com.cafeHi.www.cart.entity;
 
-import com.cafeHi.member.entity.Member;
-import com.cafeHi.menu.entity.Menu;
+import com.cafeHi.www.member.entity.Member;
+import com.cafeHi.www.menu.entity.Menu;
 import lombok.Getter;
 
 import javax.persistence.*;

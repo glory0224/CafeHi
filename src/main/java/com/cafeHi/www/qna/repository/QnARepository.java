@@ -1,11 +1,11 @@
 package com.cafeHi.www.qna.repository;
 
-import com.cafeHi.common.page.SearchCriteria;
-import com.cafeHi.member.entity.QMember;
-import com.cafeHi.qna.dto.QnASearch;
-import com.cafeHi.qna.entity.QQnA;
-import com.cafeHi.qna.entity.QQnAFile;
-import com.cafeHi.qna.entity.QnA;
+import com.cafeHi.www.common.page.SearchCriteria;
+import com.cafeHi.www.member.entity.QMember;
+import com.cafeHi.www.qna.dto.QnASearch;
+import com.cafeHi.www.qna.entity.QQnA;
+import com.cafeHi.www.qna.entity.QQnAFile;
+import com.cafeHi.www.qna.entity.QnA;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

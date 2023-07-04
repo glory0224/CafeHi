@@ -1,7 +1,7 @@
 package com.cafeHi.www.cart.repository;
 
-import com.cafeHi.cart.entity.Cart;
-import com.cafeHi.cart.entity.QCart;
+import com.cafeHi.www.cart.entity.Cart;
+import com.cafeHi.www.cart.entity.QCart;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

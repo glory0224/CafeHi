@@ -1,7 +1,7 @@
 package com.cafeHi.www.qna.entity;
 
-import com.cafeHi.member.entity.Member;
-import com.cafeHi.qna.dto.QnAForm;
+import com.cafeHi.www.member.entity.Member;
+import com.cafeHi.www.qna.dto.QnAForm;
 import lombok.Getter;
 import lombok.ToString;
 

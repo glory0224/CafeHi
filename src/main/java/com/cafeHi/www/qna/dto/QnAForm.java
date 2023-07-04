@@ -1,6 +1,6 @@
 package com.cafeHi.www.qna.dto;
 
-import com.cafeHi.member.entity.Member;
+import com.cafeHi.www.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

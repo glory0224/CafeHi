@@ -3,7 +3,7 @@ package com.cafeHi.www.common.file;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
 import com.amazonaws.util.IOUtils;
-import com.cafeHi.common.file.dto.UploadFile;
+import com.cafeHi.www.common.file.dto.UploadFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ContentDisposition;

@@ -1,7 +1,7 @@
 package com.cafeHi.www.menu.repository;
 
-import com.cafeHi.menu.MenuType;
-import com.cafeHi.menu.entity.Menu;
+import com.cafeHi.www.menu.MenuType;
+import com.cafeHi.www.menu.entity.Menu;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

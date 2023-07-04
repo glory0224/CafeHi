@@ -1,9 +1,9 @@
 package com.cafeHi.www.menu.service;
 
-import com.cafeHi.menu.MenuType;
-import com.cafeHi.menu.dto.MenuDTO;
-import com.cafeHi.menu.entity.Menu;
-import com.cafeHi.menu.repository.MenuRepository;
+import com.cafeHi.www.menu.MenuType;
+import com.cafeHi.www.menu.dto.MenuDTO;
+import com.cafeHi.www.menu.entity.Menu;
+import com.cafeHi.www.menu.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

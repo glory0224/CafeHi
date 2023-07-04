@@ -1,6 +1,6 @@
 package com.cafeHi.www.member.controller;
 
-import com.cafeHi.member.dto.CustomMember;
+import com.cafeHi.www.member.dto.CustomMember;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;

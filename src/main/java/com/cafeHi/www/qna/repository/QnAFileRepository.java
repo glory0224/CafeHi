@@ -1,7 +1,7 @@
 package com.cafeHi.www.qna.repository;
 
-import com.cafeHi.qna.entity.QnA;
-import com.cafeHi.qna.entity.QnAFile;
+import com.cafeHi.www.qna.entity.QnA;
+import com.cafeHi.www.qna.entity.QnAFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

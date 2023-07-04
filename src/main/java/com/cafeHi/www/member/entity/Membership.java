@@ -1,6 +1,6 @@
 package com.cafeHi.www.member.entity;
 
-import com.cafeHi.member.MembershipGrade;
+import com.cafeHi.www.member.MembershipGrade;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 

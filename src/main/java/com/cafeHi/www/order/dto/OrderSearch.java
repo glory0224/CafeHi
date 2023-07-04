@@ -1,6 +1,6 @@
 package com.cafeHi.www.order.dto;
 
-import com.cafeHi.order.OrderStatus;
+import com.cafeHi.www.order.OrderStatus;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -1,11 +1,11 @@
 package com.cafeHi.www.member.service;
 
-import com.cafeHi.member.dto.CustomMember;
-import com.cafeHi.member.dto.MemberInfo;
-import com.cafeHi.member.entity.Member;
-import com.cafeHi.member.entity.Membership;
-import com.cafeHi.member.repository.MemberRepository;
-import com.cafeHi.member.repository.MembershipRepository;
+import com.cafeHi.www.member.dto.CustomMember;
+import com.cafeHi.www.member.dto.MemberInfo;
+import com.cafeHi.www.member.entity.Member;
+import com.cafeHi.www.member.entity.Membership;
+import com.cafeHi.www.member.repository.MemberRepository;
+import com.cafeHi.www.member.repository.MembershipRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;

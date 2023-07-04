@@ -1,9 +1,9 @@
 package com.cafeHi.www.delivery.entity;
 
-import com.cafeHi.delivery.DeliveryStatus;
-import com.cafeHi.delivery.dto.DeliveryDTO;
-import com.cafeHi.delivery.dto.DeliveryForm;
-import com.cafeHi.order.entity.Order;
+import com.cafeHi.www.delivery.DeliveryStatus;
+import com.cafeHi.www.delivery.dto.DeliveryDTO;
+import com.cafeHi.www.delivery.dto.DeliveryForm;
+import com.cafeHi.www.order.entity.Order;
 import lombok.Getter;
 import lombok.Setter;
 

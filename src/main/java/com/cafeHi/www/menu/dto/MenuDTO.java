@@ -1,8 +1,8 @@
 package com.cafeHi.www.menu.dto;
 
 
-import com.cafeHi.menu.MenuType;
-import com.cafeHi.menu.entity.Menu;
+import com.cafeHi.www.menu.MenuType;
+import com.cafeHi.www.menu.entity.Menu;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -1,6 +1,6 @@
 package com.cafeHi.www.qna.dto;
 
-import com.cafeHi.qna.entity.QnA;
+import com.cafeHi.www.qna.entity.QnA;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

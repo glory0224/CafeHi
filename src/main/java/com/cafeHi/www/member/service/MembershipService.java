@@ -1,7 +1,7 @@
 package com.cafeHi.www.member.service;
 
-import com.cafeHi.member.entity.Membership;
-import com.cafeHi.member.repository.MembershipRepository;
+import com.cafeHi.www.member.entity.Membership;
+import com.cafeHi.www.member.repository.MembershipRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
 package com.cafeHi.www.member.dto;
 
-import com.cafeHi.member.entity.MemberAuth;
-import com.cafeHi.member.entity.Membership;
+import com.cafeHi.www.member.entity.MemberAuth;
+import com.cafeHi.www.member.entity.Membership;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

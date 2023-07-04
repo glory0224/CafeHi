@@ -1,6 +1,6 @@
 package com.cafeHi.www.delivery.dto;
 
-import com.cafeHi.delivery.DeliveryStatus;
+import com.cafeHi.www.delivery.DeliveryStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

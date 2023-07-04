@@ -1,6 +1,6 @@
 package com.cafeHi.www.member.dto;
 
-import com.cafeHi.member.entity.Membership;
+import com.cafeHi.www.member.entity.Membership;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
