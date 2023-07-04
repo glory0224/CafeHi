@@ -13,11 +13,11 @@
 
 <li> 템플릿 엔진 : Thymeleaf </li>
 
-<li>데이터베이스 : MySQL </li>
+<li>데이터베이스 : Oracle 11 </li>
 
 <li> 프론트엔드 라이브러리 : BootStrap 5.2.0 </li>
 
-<li> ORM 프레임 워크 : JPA</li>
+<li> ORM 프레임 워크 : MyBatis </li>
 
 <li> IDE : IntelliJ </li>
 
