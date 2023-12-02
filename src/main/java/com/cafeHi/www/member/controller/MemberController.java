@@ -32,7 +32,7 @@ public class MemberController {
 
     private final MembershipService membershipService;
 
-    private final JavaMailSender mailSender;
+//    private final JavaMailSender mailSender;
 
     @GetMapping("/members/signup")
     public String signupForm(Model model){
@@ -165,50 +165,50 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/EmailAuth")
-    @ResponseBody
-    public String mailAuth(String email) {
-
-
-        /* 인증번호(난수) 생성 */
-        Random random = new Random();
-        // 111111 ~ 999999 범위의 숫자를 얻기 위해서 nextInt(888888) + 111111
-        int checkNum = random.nextInt(888888) + 111111;
-
-
-        /* 이메일 보내기 */
-
-        String setFrom = "CafeHi1004@naver.com";
-        String toMail = email;
-        String title = "** 카페 하이 아이디 찾기 인증 관련 이메일입니다 **";
-        String content =
-                "홈페이지를 방문해주서서 감사합니다." +
-                        "<br><br>" +
-                        "인증 번호는 " + checkNum + "입니다." +
-                        "<br>" +
-                        "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
-
-
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-            helper.setFrom(setFrom);
-            helper.setTo(toMail);
-            helper.setSubject(title);
-            helper.setText(content, true);
-            mailSender.send(message);
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-
-        String num = Integer.toString(checkNum);
-
-        log.info("아아디 찾기 인증번호  : {} ", num);
-
-        return num;
-
-    }
+//    @GetMapping("/EmailAuth")
+//    @ResponseBody
+//    public String mailAuth(String email) {
+//
+//
+//        /* 인증번호(난수) 생성 */
+//        Random random = new Random();
+//        // 111111 ~ 999999 범위의 숫자를 얻기 위해서 nextInt(888888) + 111111
+//        int checkNum = random.nextInt(888888) + 111111;
+//
+//
+//        /* 이메일 보내기 */
+//
+//        String setFrom = "CafeHi1004@naver.com";
+//        String toMail = email;
+//        String title = "** 카페 하이 아이디 찾기 인증 관련 이메일입니다 **";
+//        String content =
+//                "홈페이지를 방문해주서서 감사합니다." +
+//                        "<br><br>" +
+//                        "인증 번호는 " + checkNum + "입니다." +
+//                        "<br>" +
+//                        "해당 인증번호를 인증번호 확인란에 기입하여 주세요.";
+//
+//
+//        try {
+//            MimeMessage message = mailSender.createMimeMessage();
+//            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+//            helper.setFrom(setFrom);
+//            helper.setTo(toMail);
+//            helper.setSubject(title);
+//            helper.setText(content, true);
+//            mailSender.send(message);
+//
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//
+//        String num = Integer.toString(checkNum);
+//
+//        log.info("아아디 찾기 인증번호  : {} ", num);
+//
+//        return num;
+//
+//    }
 
     /**
      * 아이디 찾기 - 해당 메일의 아이디 반환
@@ -233,45 +233,45 @@ public class MemberController {
     /**
      * 비밀번호 찾기 - 해당 아이디에 비밀번호 찾기
      */
-    @PostMapping("/FindMemberPw")
-    public String FindMemberPw(@RequestParam String MemberId, Model model) {
-
-        // 해당 계정의 새로운 비밀번호 반환
-
-        ChangeMemberPwByEmailForm changeMemberPwByEmailForm = memberService.changeMemberPw(MemberId);
-
-        /* 이메일 보내기 */
-        String setFrom = "CafeHi1004@naver.com";
-        String toMail = changeMemberPwByEmailForm.getEmail();
-        String title = "** 카페하이 비밀번호 임시발급 **";
-        String content =
-                "홈페이지를 방문해주서서 감사합니다." +
-                        "<br><br>" +
-                        "임시 발급된 비밀번호는 " + changeMemberPwByEmailForm.getNewPassword() + "입니다." +
-                        "<br>" +
-                        "해당 사이트의 로그인 창에서 새로 입력해주세요" +
-                        "<br>" +
-                        "로그인 후 반드시 비밀번호를 변경해주세요.";
-
-
-        try {
-            MimeMessage message = mailSender.createMimeMessage();
-            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
-            helper.setFrom(setFrom);
-            helper.setTo(toMail);
-            helper.setSubject(title);
-            helper.setText(content, true);
-            mailSender.send(message);
-
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        }
-        log.info("전송된 이메일 주소 : {} ", changeMemberPwByEmailForm.getEmail());
-        log.info("발급된 임시 비밀번호  : {} ", changeMemberPwByEmailForm.getNewPassword());
-
-        model.addAttribute("msg", "가입하신 이메일로 임시 비밀번호가 발급되었습니다.");
-        model.addAttribute("url", "login");
-        return "common/alert";
-    }
+//    @PostMapping("/FindMemberPw")
+//    public String FindMemberPw(@RequestParam String MemberId, Model model) {
+//
+//        // 해당 계정의 새로운 비밀번호 반환
+//
+//        ChangeMemberPwByEmailForm changeMemberPwByEmailForm = memberService.changeMemberPw(MemberId);
+//
+//        /* 이메일 보내기 */
+//        String setFrom = "CafeHi1004@naver.com";
+//        String toMail = changeMemberPwByEmailForm.getEmail();
+//        String title = "** 카페하이 비밀번호 임시발급 **";
+//        String content =
+//                "홈페이지를 방문해주서서 감사합니다." +
+//                        "<br><br>" +
+//                        "임시 발급된 비밀번호는 " + changeMemberPwByEmailForm.getNewPassword() + "입니다." +
+//                        "<br>" +
+//                        "해당 사이트의 로그인 창에서 새로 입력해주세요" +
+//                        "<br>" +
+//                        "로그인 후 반드시 비밀번호를 변경해주세요.";
+//
+//
+//        try {
+//            MimeMessage message = mailSender.createMimeMessage();
+//            MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+//            helper.setFrom(setFrom);
+//            helper.setTo(toMail);
+//            helper.setSubject(title);
+//            helper.setText(content, true);
+//            mailSender.send(message);
+//
+//        } catch (MessagingException e) {
+//            e.printStackTrace();
+//        }
+//        log.info("전송된 이메일 주소 : {} ", changeMemberPwByEmailForm.getEmail());
+//        log.info("발급된 임시 비밀번호  : {} ", changeMemberPwByEmailForm.getNewPassword());
+//
+//        model.addAttribute("msg", "가입하신 이메일로 임시 비밀번호가 발급되었습니다.");
+//        model.addAttribute("url", "login");
+//        return "common/alert";
+//    }
 
 }

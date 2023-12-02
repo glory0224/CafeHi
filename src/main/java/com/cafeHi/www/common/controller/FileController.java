@@ -1,6 +1,6 @@
 package com.cafeHi.www.common.controller;
 
-import com.cafeHi.www.common.file.S3FileStore;
+import com.cafeHi.www.common.file.FileStore;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets;
 @RequiredArgsConstructor
 public class FileController {
 
-    private final S3FileStore fileStore;
+    private final FileStore fileStore;
 
     // aws s3 파일 다운 받기
     @PostMapping("/qnaFileDownload")

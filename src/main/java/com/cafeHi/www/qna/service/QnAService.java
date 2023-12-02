@@ -1,6 +1,6 @@
 package com.cafeHi.www.qna.service;
 
-import com.cafeHi.www.common.file.S3FileStore;
+import com.cafeHi.www.common.file.FileStore;
 import com.cafeHi.www.common.file.dto.UploadFile;
 import com.cafeHi.www.common.page.SearchCriteria;
 import com.cafeHi.www.member.dto.CustomMember;
@@ -39,7 +39,7 @@ public class QnAService {
     private final MemberRepository memberRepository;
 
 
-    private final S3FileStore fileStore;
+    private final FileStore fileStore;
 
     @Transactional
     public void WriteQnA(QnAForm qnAForm, MultipartFile uploadFile){
