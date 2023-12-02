@@ -36,7 +36,7 @@ public class MenuController {
 
     @GetMapping("/menuList/coldBrew")
     public String coldBrewListView(Model model) {
-        List<Menu> coldbrewList =  menuRepository.findByType(MenuType.coldBrew);
+        List<Menu> coldbrewList =  menuRepository.findByType(MenuType.coldbrew);
 
         model.addAttribute("coldbrewList0", coldbrewList.get(0));
         model.addAttribute("coldbrewList1", coldbrewList.get(1));
