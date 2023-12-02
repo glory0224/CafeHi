@@ -1,10 +1,12 @@
-package com.cafeHi.www.common.config;
+package com.cafeHi.www.common.security.config;
 
 
+import com.cafeHi.www.common.security.provider.CustomAuthenticationProvider;
 import com.cafeHi.www.member.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -52,17 +54,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .formLogin()
                     .loginPage("/login")	// 커스텀 login 페이지 이동
                     .defaultSuccessUrl("/")	// 로그인 성공 시 이동 페이지
-//                    .loginProcessingUrl("/login")
                     .usernameParameter("username")
                     .passwordParameter("password")
                     .permitAll()
                     .and()
-                .logout()
-				 .logoutRequestMatcher(new AntPathRequestMatcher("/logout")) 
-				/* .logoutUrl("/logout") */
-                	.logoutSuccessUrl("/login")
-                	.invalidateHttpSession(true)	// 세션 초기화
-                    .permitAll();
+					;
     }
 	
 	
@@ -70,11 +66,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        // add our Users for in memory authentication
-        // auth.inMemoryAuthentication().withUser("user").password("password").roles("USER");
-        auth.userDetailsService(customUserDetailService);
+		auth.authenticationProvider(authenticationProvider());
     }
-	
+
+	@Bean
+	public AuthenticationProvider authenticationProvider() {
+		// 커스텀 AuthenticationProvider 생성
+		return new CustomAuthenticationProvider(customUserDetailService, pwdEncoder());
+	}
+
 	@Bean
 	public BCryptPasswordEncoder pwdEncoder() {
 		return new BCryptPasswordEncoder();

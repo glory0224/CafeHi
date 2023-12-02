@@ -8,11 +8,14 @@ import com.cafeHi.www.member.repository.MemberRepository;
 import com.cafeHi.www.member.repository.MembershipRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -33,6 +36,12 @@ public class CustomUserDetailService implements UserDetailsService{
 		Member memberEntity = memberRepository.findByMemberId(username);
 
 		Membership membershipEntity = membershipRepository.findMembershipbByMemberId(memberEntity);
+
+		if(memberEntity == null) {
+			throw new UsernameNotFoundException("Not Found Member By userName");
+		} else if(membershipEntity == null) {
+			throw new UsernameNotFoundException("Not Found Membership By userName");
+		}
 
 		MemberInfo mem = new MemberInfo(memberEntity.getId(), memberEntity.getMemberId(), memberEntity.getMemberPw(), memberEntity.getMemberName(), memberEntity.getMemberContact()
 										, memberEntity.getMemberEmail(), memberEntity.getMemberRoadAddress(), memberEntity.getMemberJibunAddress()
