@@ -6,6 +6,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,12 +14,11 @@ import javax.servlet.http.HttpServletResponse;
 @Controller
 public class LoginController {
     @GetMapping("/login")
-    public String loginView(Model model, String error) {
+    public String loginView(@RequestParam(value = "error", required = false) String error,
+                            @RequestParam(value = "exception", required = false) String exception, Model model) {
 
-        if (error != null) {
-            model.addAttribute("msg", "아이디 또는 비밀번호를 확인해주세요!");
-            model.addAttribute("url", "login");
-            return "common/alert"; }
+            model.addAttribute("error", error);
+            model.addAttribute("exception", exception);
 
         return "common/login";
     }

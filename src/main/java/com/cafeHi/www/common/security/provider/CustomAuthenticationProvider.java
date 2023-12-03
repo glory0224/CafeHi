@@ -1,11 +1,13 @@
 package com.cafeHi.www.common.security.provider;
 
+import com.cafeHi.www.common.security.common.FormWebAuthenticationDetails;
 import com.cafeHi.www.member.dto.CustomMember;
 import com.cafeHi.www.member.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -29,6 +31,22 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         if(!passwordEncoder.matches(password, customMember.getPassword())) {
             throw new BadCredentialsException("BadCredentialsException");
+        }
+
+        // custom으로 구현한 Details 반환
+        FormWebAuthenticationDetails formWebAuthenticationDetails = (FormWebAuthenticationDetails) authentication.getDetails();
+
+        String secretKey = formWebAuthenticationDetails.getSecretKey();
+        String customerIpAddress = formWebAuthenticationDetails.getCustomerIpAddress();
+        String customerSessionId = formWebAuthenticationDetails.getCustomerSessionId();
+
+        // 클라이언트로부터 전달받는 데이터 검증
+        if(secretKey == null || !"secret".equals(secretKey)) {
+            throw new InsufficientAuthenticationException("secretKey is not Authentication");
+        } else if(customerIpAddress == null || !"127.0.0.1".equals(customerIpAddress)) {
+            throw new InsufficientAuthenticationException("customerIpAddress is not Authentication");
+        } else if(customerSessionId == null || !"ADE1231415".equals(customerSessionId)) {
+            throw new InsufficientAuthenticationException("customerSessionId is not Authentication");
         }
 
         // 인증에 성공하면 AuthenticationToken 을 생성한다.
