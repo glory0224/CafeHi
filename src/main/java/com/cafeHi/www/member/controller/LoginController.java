@@ -1,5 +1,7 @@
 package com.cafeHi.www.member.controller;
 
+import com.cafeHi.www.member.dto.CustomMember;
+import com.cafeHi.www.member.dto.MemberInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
@@ -34,5 +36,16 @@ public class LoginController {
         }
 
         return "redirect:/login";
+    }
+
+    // 인가 권한 처리 - 부여된 권한이 아닌 경우 denied 페이지로 이동
+    @GetMapping("/denied")
+    public String accessDenied(@RequestParam(value = "exception", required = false) String exception, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        MemberInfo memberInfo = (MemberInfo) authentication.getPrincipal();
+        model.addAttribute("username", memberInfo.getMemberName());
+        model.addAttribute("exception", exception);
+
+        return "common/denied";
     }
 }
