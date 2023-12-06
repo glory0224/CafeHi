@@ -1,0 +1,12 @@
+### Post 방식으로 json 데이터 전송 테스트
+# @no-redirect
+POST http://localhost:8080/api/login
+Content-Type: application/json
+X-Requested-With: XMLHttpRequest
+
+{
+  "memberId" : "asdfasdf",
+  "memberPw" : "asdf1234"
+}
+
+###

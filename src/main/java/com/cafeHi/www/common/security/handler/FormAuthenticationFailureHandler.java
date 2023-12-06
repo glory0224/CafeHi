@@ -1,18 +1,21 @@
 package com.cafeHi.www.common.security.handler;
 
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.CredentialsExpiredException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
+import javax.security.auth.login.CredentialException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Component
-public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class FormAuthenticationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         // 기본 메세지
@@ -24,6 +27,10 @@ public class CustomAuthenticationFailureHandler extends SimpleUrlAuthenticationF
             errorMessage = "Invalid Username or Password";
         } else if(exception instanceof InsufficientAuthenticationException) {
             errorMessage = "Invalid SeretKey or IpAddress or SessionId";
+        } else if(exception instanceof DisabledException) {
+            errorMessage = "Locked";
+        } else if(exception instanceof CredentialsExpiredException) {
+            errorMessage = "Expired password";
         }
 
         // exception 발생 시 기본적으로 돌아가는 페이지 설정

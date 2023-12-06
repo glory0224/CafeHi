@@ -2,16 +2,15 @@ package com.cafeHi.www.common.security.config;
 
 
 import com.cafeHi.www.common.security.common.FormAuthenticationDetailSource;
-import com.cafeHi.www.common.security.filter.AjaxLoginProcessingFilter;
-import com.cafeHi.www.common.security.handler.CustomAccessDeniedHandler;
-import com.cafeHi.www.common.security.provider.CustomAuthenticationProvider;
+import com.cafeHi.www.common.security.handler.FormAccessDeniedHandler;
+import com.cafeHi.www.common.security.handler.FormAuthenticationFailureHandler;
+import com.cafeHi.www.common.security.handler.FormAuthenticationSuccessHandler;
+import com.cafeHi.www.common.security.provider.FormAuthenticationProvider;
 import com.cafeHi.www.member.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationDetailsSource;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -22,7 +21,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -32,9 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	private final CustomUserDetailService customUserDetailService;
 	private final FormAuthenticationDetailSource customAuthenticationDetailsSource;
-	private final AuthenticationSuccessHandler customAuthenticationSuccessHandler;
-	private final AuthenticationFailureHandler customAuthenticationFailureHandler;
-	
+
+	private final AuthenticationSuccessHandler formAuthenticationSuccessHandler; //스프링 component로 등록된 이름으로 필드명을 선언해줘야 제대로 생성자 주입이 가능하다.
+	private final AuthenticationFailureHandler formAuthenticationFailureHandler;
+
 	public void configure(WebSecurity web) throws Exception {
 		// 인증을 무시하기 위한 설정
 		web.ignoring().antMatchers("/cafeHi/**","/js/**", "/css/**");
@@ -65,8 +64,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		.and()
                 	.formLogin()
                     .loginPage("/login")	// 커스텀 login 페이지 이동
-					.successHandler(customAuthenticationSuccessHandler)
-					.failureHandler(customAuthenticationFailureHandler)
+					.successHandler(formAuthenticationSuccessHandler)
+					.failureHandler(formAuthenticationFailureHandler)
 					.authenticationDetailsSource(customAuthenticationDetailsSource)
                     .permitAll()
 		.and()
@@ -81,18 +80,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Bean
 	public AccessDeniedHandler accessDeniedHandler() {
-		CustomAccessDeniedHandler accessDeniedHandler = new CustomAccessDeniedHandler();
+		FormAccessDeniedHandler accessDeniedHandler = new FormAccessDeniedHandler();
 		accessDeniedHandler.setErrorPage("/denied");
 		return accessDeniedHandler;
 	}
 
-
-
-
 	@Bean
 	public AuthenticationProvider authenticationProvider() {
 		// 커스텀 AuthenticationProvider 생성
-		return new CustomAuthenticationProvider(customUserDetailService, pwdEncoder());
+		return new FormAuthenticationProvider(customUserDetailService, pwdEncoder());
 	}
 
 	@Bean
