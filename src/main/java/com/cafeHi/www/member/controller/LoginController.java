@@ -1,6 +1,5 @@
 package com.cafeHi.www.member.controller;
 
-import com.cafeHi.www.member.dto.CustomMember;
 import com.cafeHi.www.member.dto.MemberInfo;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

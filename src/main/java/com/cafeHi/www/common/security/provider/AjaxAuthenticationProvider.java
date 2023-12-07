@@ -1,13 +1,11 @@
 package com.cafeHi.www.common.security.provider;
 
-import com.cafeHi.www.common.security.common.FormWebAuthenticationDetails;
+import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.common.security.token.AjaxAuthenticationToken;
-import com.cafeHi.www.member.dto.CustomMember;
-import com.cafeHi.www.member.service.CustomUserDetailService;
+import com.cafeHi.www.common.security.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,14 +22,14 @@ public class AjaxAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        CustomMember customMember = (CustomMember)customUserDetailService.loadUserByUsername(username);
+        CustomUser customUser = (CustomUser)customUserDetailService.loadUserByUsername(username);
 
-        if(!passwordEncoder.matches(password, customMember.getPassword())) {
+        if(!passwordEncoder.matches(password, customUser.getPassword())) {
             throw new BadCredentialsException("BadCredentialsException");
         }
 
         // 인증에 성공하면 AuthenticationToken 을 생성한다.
-        AjaxAuthenticationToken authenticationToken = new AjaxAuthenticationToken(customMember.getMemberInfo(), null, customMember.getAuthorities());
+        AjaxAuthenticationToken authenticationToken = new AjaxAuthenticationToken(customUser.getMemberInfo(), null, customUser.getAuthorities());
 
         return authenticationToken;
     }

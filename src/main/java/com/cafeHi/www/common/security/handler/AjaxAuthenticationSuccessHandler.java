@@ -1,6 +1,5 @@
 package com.cafeHi.www.common.security.handler;
 
-import com.cafeHi.www.member.dto.CustomMember;
 import com.cafeHi.www.member.dto.MemberInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;

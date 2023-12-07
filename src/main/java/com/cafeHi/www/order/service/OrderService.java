@@ -6,7 +6,7 @@ import com.cafeHi.www.common.page.WithoutKeywordCriteria;
 import com.cafeHi.www.delivery.dto.DeliveryDTO;
 import com.cafeHi.www.delivery.entity.Delivery;
 import com.cafeHi.www.delivery.repository.DeliveryRepository;
-import com.cafeHi.www.member.dto.CustomMember;
+import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.Membership;
 import com.cafeHi.www.member.repository.MemberRepository;
@@ -104,10 +104,10 @@ public class OrderService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // 사용자 정보 업데이트
-        CustomMember customMember = (CustomMember) authentication.getPrincipal();
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
 
         // 세션에서 멤버 키 가져와서 멤버 엔티티 가져옴
-        Member member = memberRepository.findMember(customMember.getMemberInfo().getMemberCode());
+        Member member = memberRepository.findMember(customUser.getMemberInfo().getMemberCode());
 
         // 주문 코드 생성
         String orderMenuCode = generateOrderCode();
@@ -140,7 +140,7 @@ public class OrderService {
 
         // 장바구니 비우기
 
-        cartRepository.deleteAllCart(customMember.getMemberInfo().getMemberCode());
+        cartRepository.deleteAllCart(customUser.getMemberInfo().getMemberCode());
 
         // 포인트 적립
         Membership membership = membershipRepository.findMembershipbByMemberId(member);
@@ -163,11 +163,11 @@ public class OrderService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // 사용자 정보 업데이트
-        CustomMember customMember = (CustomMember) authentication.getPrincipal();
-        customMember.getMemberInfo().setMembership(membership);
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        customUser.getMemberInfo().setMembership(membership);
 
         // 인증 객체 업데이트
-        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(customMember, authentication.getCredentials(), authentication.getAuthorities());
+        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(customUser, authentication.getCredentials(), authentication.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
 
     }

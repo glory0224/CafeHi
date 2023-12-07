@@ -1,8 +1,8 @@
 package com.cafeHi.www.common.security.provider;
 
 import com.cafeHi.www.common.security.common.FormWebAuthenticationDetails;
-import com.cafeHi.www.member.dto.CustomMember;
-import com.cafeHi.www.member.service.CustomUserDetailService;
+import com.cafeHi.www.common.security.service.CustomUser;
+import com.cafeHi.www.common.security.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -24,9 +24,9 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
         String username = authentication.getName();
         String password = (String) authentication.getCredentials();
 
-        CustomMember customMember = (CustomMember)customUserDetailService.loadUserByUsername(username);
+        CustomUser customUser = (CustomUser)customUserDetailService.loadUserByUsername(username);
 
-        if(!passwordEncoder.matches(password, customMember.getPassword())) {
+        if(!passwordEncoder.matches(password, customUser.getPassword())) {
             throw new BadCredentialsException("BadCredentialsException");
         }
 
@@ -47,7 +47,7 @@ public class FormAuthenticationProvider implements AuthenticationProvider {
         }
 
         // 인증에 성공하면 AuthenticationToken 을 생성한다.
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(customMember.getMemberInfo(), null, customMember.getAuthorities());
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(customUser.getMemberInfo(), null, customUser.getAuthorities());
 
         return authenticationToken;
     }

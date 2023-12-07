@@ -1,5 +1,6 @@
 package com.cafeHi.www.member.controller;
 
+import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.member.dto.*;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.MemberAuth;
@@ -8,20 +9,15 @@ import com.cafeHi.www.member.service.MemberService;
 import com.cafeHi.www.member.service.MembershipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.Random;
 
 @Controller
 @RequiredArgsConstructor
@@ -79,9 +75,8 @@ public class MemberController {
     public String MemberInfoUpdateView(Model model) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomMember memberInfo = (CustomMember) principal;
-
-        Member findMember = memberService.findMember(memberInfo.getMemberInfo().getMemberCode());
+        MemberInfo memberInfo = (MemberInfo) principal;
+        Member findMember = memberService.findMember(memberInfo.getMemberCode());
 
         MemberForm memberForm = new MemberForm();
 
@@ -144,13 +139,14 @@ public class MemberController {
         String memberPw = loginForm.getMemberPw();
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomMember memberInfo = (CustomMember) principal;
+//        CustomUser memberInfo = (CustomUser) principal;
+        MemberInfo memberInfo = (MemberInfo) principal;
 
-        Long memberCode = memberInfo.getMemberInfo().getMemberCode();
+        Long memberCode = memberInfo.getMemberCode();
 
         boolean isPasswordMatched = memberService.isPasswordMatched(memberCode, memberPw);
 
-        if(memberId.equals(memberInfo.getUsername()) && isPasswordMatched) {
+        if(memberId.equals(memberInfo.getMemberId()) && isPasswordMatched) {
             memberService.deleteMember(memberCode);
             session.invalidate(); // 세션 정보 삭제
             SecurityContextHolder.getContext().setAuthentication(null); // 세션 권한 정보 null 초기화

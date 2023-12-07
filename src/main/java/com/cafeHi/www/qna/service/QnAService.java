@@ -3,7 +3,7 @@ package com.cafeHi.www.qna.service;
 import com.cafeHi.www.common.file.FileStore;
 import com.cafeHi.www.common.file.dto.UploadFile;
 import com.cafeHi.www.common.page.SearchCriteria;
-import com.cafeHi.www.member.dto.CustomMember;
+import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.repository.MemberRepository;
 import com.cafeHi.www.qna.dto.QnAFileForm;
@@ -45,7 +45,7 @@ public class QnAService {
     public void WriteQnA(QnAForm qnAForm, MultipartFile uploadFile){
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomMember memberInfo = (CustomMember) principal;
+        CustomUser memberInfo = (CustomUser) principal;
 
         Member findMember = memberRepository.findMember(memberInfo.getMemberInfo().getMemberCode());
 

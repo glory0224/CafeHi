@@ -3,7 +3,7 @@ package com.cafeHi.www.cart.controller;
 import com.cafeHi.www.cart.dto.CartForm;
 import com.cafeHi.www.cart.dto.ModifyCartForm;
 import com.cafeHi.www.cart.service.CartService;
-import com.cafeHi.www.member.dto.CustomMember;
+import com.cafeHi.www.common.security.service.CustomUser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +30,7 @@ public class CartController {
 
 		if (principal != null) {
 
-			CustomMember memberInfo = (CustomMember) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			CustomUser memberInfo = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Long memberCode = memberInfo.getMemberInfo().getMemberCode();
 
 
@@ -58,7 +58,7 @@ public class CartController {
 	
 	
 	@PostMapping("/insertCart")
-	public String CartInsert(@AuthenticationPrincipal CustomMember customMember, @RequestParam int toCartAmount, @RequestParam Long menuId, HttpServletRequest request) {
+	public String CartInsert(@AuthenticationPrincipal CustomUser customUser, @RequestParam int toCartAmount, @RequestParam Long menuId, HttpServletRequest request) {
 		
 		if(toCartAmount == 0) {
 			request.setAttribute("msg", "수량은 1개 이상 담을 수 있습니다.");
@@ -67,7 +67,7 @@ public class CartController {
 			return "common/alert";
 		}
 
-		cartService.insertCart(customMember.getMemberInfo().getMemberCode(),menuId, toCartAmount);
+		cartService.insertCart(customUser.getMemberInfo().getMemberCode(),menuId, toCartAmount);
 
 		//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		CustomUser userInfo = (CustomUser) principal;
@@ -103,7 +103,7 @@ public class CartController {
 		public String CartDeleteAll() {
 
 			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			CustomMember userInfo = (CustomMember) principal;
+			CustomUser userInfo = (CustomUser) principal;
 			Long member_code = userInfo.getMemberInfo().getMemberCode();
 
 

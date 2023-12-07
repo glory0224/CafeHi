@@ -1,13 +1,8 @@
 package com.cafeHi.www.common.security.filter;
 
 import com.cafeHi.www.common.security.token.AjaxAuthenticationToken;
-import com.cafeHi.www.member.dto.CustomMember;
-import com.cafeHi.www.member.dto.MemberDTO;
 import com.cafeHi.www.member.dto.MemberInfo;
-import com.cafeHi.www.member.entity.Member;
-import com.cafeHi.www.member.service.CustomUserDetailService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;

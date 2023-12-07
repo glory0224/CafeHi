@@ -1,6 +1,9 @@
 package com.cafeHi.www.member.controller;
 
-import com.cafeHi.www.member.dto.CustomMember;
+import com.cafeHi.www.member.dto.MemberForm;
+import com.cafeHi.www.member.dto.MemberInfo;
+import com.cafeHi.www.member.entity.Member;
+import com.cafeHi.www.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -11,13 +14,32 @@ import org.springframework.web.bind.annotation.GetMapping;
 @RequiredArgsConstructor
 public class MemberPageController {
 
+    private final MemberService memberService;
+
     @GetMapping("/CafeHi-MemberMyPage")
     public String MemberMyPageView() {
         return "member/cafehi_myPage";
     }
 
     @GetMapping("/CafeHi-MemberInfo")
-    public String MemberInfoView() {
+    public String MemberInfoView(Model model) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberInfo memberInfo = (MemberInfo) principal;
+
+        Member findMember = memberService.findMember(memberInfo.getMemberCode());
+
+        MemberForm memberForm = new MemberForm();
+
+        memberForm.setId(findMember.getId());
+        memberForm.setMemberId(findMember.getMemberId());
+        memberForm.setMemberName(findMember.getMemberName());
+        memberForm.setMemberContact(findMember.getMemberContact());
+        memberForm.setMemberEmail(findMember.getMemberEmail());
+        memberForm.setMemberRoadAddress(findMember.getMemberRoadAddress());
+        memberForm.setMemberJibunAddress(findMember.getMemberJibunAddress());
+        memberForm.setMemberDetailAddress(findMember.getMemberDetailAddress());
+
+        model.addAttribute("memberForm", memberForm);
 
         return "member/cafehi_memberInfo";
     }
@@ -36,10 +58,10 @@ public class MemberPageController {
     public String MyMembershipView(Model model) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomMember memberInfo = (CustomMember) principal;
-
-        model.addAttribute("MembershipGrade", memberInfo.getMemberInfo().getMembership().getMembershipGrade());
-        model.addAttribute("MemebershipPoint", memberInfo.getMemberInfo().getMembership().getMembershipPoint());
+//        CustomUser memberInfo = (CustomUser) principal;
+        MemberInfo memberInfo = (MemberInfo) principal;
+        model.addAttribute("MembershipGrade", memberInfo.getMembership().getMembershipGrade());
+        model.addAttribute("MemebershipPoint", memberInfo.getMembership().getMembershipPoint());
 
         return "member/cafehi_myMembership";
     }

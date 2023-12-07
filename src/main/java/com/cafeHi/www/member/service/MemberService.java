@@ -2,10 +2,10 @@ package com.cafeHi.www.member.service;
 
 import com.cafeHi.www.cart.entity.Cart;
 import com.cafeHi.www.cart.repository.CartRepository;
+import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.delivery.repository.DeliveryRepository;
 import com.cafeHi.www.member.dto.ChangeMemberPwByEmailForm;
 import com.cafeHi.www.member.dto.ChangeMemberPwForm;
-import com.cafeHi.www.member.dto.CustomMember;
 import com.cafeHi.www.member.dto.MemberForm;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.MemberAuth;
@@ -80,17 +80,17 @@ public class MemberService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         // 사용자 정보 업데이트
-        CustomMember customMember = (CustomMember) authentication.getPrincipal();
-        customMember.getMemberInfo().setMemberId(memberForm.getMemberId());
-        customMember.getMemberInfo().setMemberName(memberForm.getMemberName());
-        customMember.getMemberInfo().setMemberContact(memberForm.getMemberContact());
-        customMember.getMemberInfo().setMemberEmail(memberForm.getMemberEmail());
-        customMember.getMemberInfo().setMemberRoadAddress(memberForm.getMemberRoadAddress());
-        customMember.getMemberInfo().setMemberJibunAddress(memberForm.getMemberJibunAddress());
-        customMember.getMemberInfo().setMemberDetailAddress(memberForm.getMemberDetailAddress());
+        CustomUser customUser = (CustomUser) authentication.getPrincipal();
+        customUser.getMemberInfo().setMemberId(memberForm.getMemberId());
+        customUser.getMemberInfo().setMemberName(memberForm.getMemberName());
+        customUser.getMemberInfo().setMemberContact(memberForm.getMemberContact());
+        customUser.getMemberInfo().setMemberEmail(memberForm.getMemberEmail());
+        customUser.getMemberInfo().setMemberRoadAddress(memberForm.getMemberRoadAddress());
+        customUser.getMemberInfo().setMemberJibunAddress(memberForm.getMemberJibunAddress());
+        customUser.getMemberInfo().setMemberDetailAddress(memberForm.getMemberDetailAddress());
 
         // 인증 객체 업데이트
-        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(customMember, authentication.getCredentials(), authentication.getAuthorities());
+        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(customUser, authentication.getCredentials(), authentication.getAuthorities());
         SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
 
 

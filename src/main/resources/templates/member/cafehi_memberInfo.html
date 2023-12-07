@@ -17,45 +17,46 @@
 <div th:replace="~{cafeHi_module/NavCommon :: cafeHiMyPage}"></div>
 </div>
 
-<div class="w-50 m-auto" style="padding-top: 5%">
-	<input type="hidden" name="userSeq" value="${authentication.memberInfo.member_code}" />
-  
-  <div class="m-5">
-    <label class="form-label">아이디</label>
-  	<h3><b sec:authentication="principal.memberInfo.memberId"></b></h3>
-  </div>
-  
-  <div class="m-5">
-    <label class="form-label">이름</label>
-  	<h3><b sec:authentication="principal.memberInfo.memberName"></b></h3>
-  </div>
-  
-  <div class="m-5">
-    <label class="form-label">연락처</label>
-  	<h3><b sec:authentication="principal.memberInfo.memberContact"></b></h3>
-  </div>
-  
-  <div class="m-5">
-    <label class="form-label">이메일</label>
-  	<h3><b sec:authentication="principal.memberInfo.memberEmail"></b></h3>
-  </div>
-  
-  <div class="m-5">
-    <label  class="form-label">도로명 주소</label>
-  	<h3><b sec:authentication="principal.memberInfo.memberRoadAddress"></b></h3>
-  </div>
+    <div class="w-50 m-auto" style="padding-top: 5%">
+        <form class="container" th:object="${memberForm}">
+            <div class="m-5">
+                <label class="form-label">아이디</label>
+                <div class="d-flex justify-content-between">
+                    <input type="text"  class="form-control" th:field="*{memberId}" readonly="readonly">
+                </div>
+            </div>
+            <div class="m-5">
+                <label class="form-label">이름</label>
+                <div class="d-flex justify-content-between">
+                    <input type="text" class="form-control" th:field="*{memberName}" readonly="readonly">
+                </div>
+            </div>
+            <div class="m-5">
+                <label class="form-label">연락처</label>
+                <div class="d-flex justify-content-between">
+                    <input type="text" class="form-control" th:field="*{memberContact}" readonly="readonly">
+                </div>
+            </div>
+            <div class="m-5">
+                <label class="form-label">메일</label>
+                <div class="d-flex justify-content-between">
+                    <input type="text" class="form-control" th:field="*{memberEmail}" readonly="readonly">
+                </div>
+            </div>
+            <div class="m-5">
+                <label class="form-label">주소</label>
+                <input type="text"  class="form-control" th:field="*{memberRoadAddress}" readonly="readonly"><br>
+                <input type="text"  class="form-control" th:field="*{memberJibunAddress}" readonly="readonly"><br>
+            </div>
+            <div class="m-5">
+                <label class="form-label">상세 주소</label>
+                <div class="d-flex justify-content-between">
+                    <input type="text" class="form-control" th:field="*{memberDetailAddress}" th:placeholder="*{memberDetailAddress}">
+                </div>
+            </div>
+        </form>
 
-
-
-  <div class="m-5">
-    <label  class="form-label">지번 주소</label>
-  	<h3><b sec:authentication="principal.memberInfo.memberJibunAddress"></b></h3>
-  </div>
-  
-  <div class="m-5">
-    <label  class="form-label">상세 주소</label>
-  	  <h3><b sec:authentication="principal.memberInfo.memberDetailAddress"></b></h3>
-  </div>
+    </div>
 
 <div class="d-flex justify-content-end">
 <div style="padding-right: 30px">
@@ -63,8 +64,6 @@
 </div>
 </div>
 </div>
-
-
 
 <div th:insert="~{cafeHi_module/footer :: cafeHiFooter}"></div>
 

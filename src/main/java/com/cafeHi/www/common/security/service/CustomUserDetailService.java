@@ -1,6 +1,5 @@
-package com.cafeHi.www.member.service;
+package com.cafeHi.www.common.security.service;
 
-import com.cafeHi.www.member.dto.CustomMember;
 import com.cafeHi.www.member.dto.MemberInfo;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.Membership;
@@ -8,14 +7,11 @@ import com.cafeHi.www.member.repository.MemberRepository;
 import com.cafeHi.www.member.repository.MembershipRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.stream.Collectors;
 
 
 @Slf4j
@@ -47,7 +43,7 @@ public class CustomUserDetailService implements UserDetailsService{
 										, memberEntity.getMemberEmail(), memberEntity.getMemberRoadAddress(), memberEntity.getMemberJibunAddress()
 										, memberEntity.getMemberDetailAddress(), memberEntity.isEnabled(), membershipEntity, memberEntity.getMemberAuthEntities());
 
-		return mem ==  null ? null : new CustomMember(mem);
+		return mem ==  null ? null : new CustomUser(mem);
 		
 	}
 	

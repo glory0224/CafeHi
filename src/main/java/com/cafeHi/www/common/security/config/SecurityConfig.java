@@ -3,10 +3,8 @@ package com.cafeHi.www.common.security.config;
 
 import com.cafeHi.www.common.security.common.FormAuthenticationDetailSource;
 import com.cafeHi.www.common.security.handler.FormAccessDeniedHandler;
-import com.cafeHi.www.common.security.handler.FormAuthenticationFailureHandler;
-import com.cafeHi.www.common.security.handler.FormAuthenticationSuccessHandler;
 import com.cafeHi.www.common.security.provider.FormAuthenticationProvider;
-import com.cafeHi.www.member.service.CustomUserDetailService;
+import com.cafeHi.www.common.security.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
