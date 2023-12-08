@@ -22,36 +22,36 @@
             <div class="m-5">
                 <label class="form-label">아이디</label>
                 <div class="d-flex justify-content-between">
-                    <input type="text"  class="form-control" th:field="*{memberId}" readonly="readonly">
+                    <input type="text"  class="form-control" th:value="${#authentication.principal.memberId}" readonly="readonly">
                 </div>
             </div>
             <div class="m-5">
                 <label class="form-label">이름</label>
                 <div class="d-flex justify-content-between">
-                    <input type="text" class="form-control" th:field="*{memberName}" readonly="readonly">
+                    <input type="text" class="form-control" th:value="${#authentication.principal.memberName}" readonly="readonly">
                 </div>
             </div>
             <div class="m-5">
                 <label class="form-label">연락처</label>
                 <div class="d-flex justify-content-between">
-                    <input type="text" class="form-control" th:field="*{memberContact}" readonly="readonly">
+                    <input type="text" class="form-control" th:value="${#authentication.principal.memberContact}" readonly="readonly">
                 </div>
             </div>
             <div class="m-5">
                 <label class="form-label">메일</label>
                 <div class="d-flex justify-content-between">
-                    <input type="text" class="form-control" th:field="*{memberEmail}" readonly="readonly">
+                    <input type="text" class="form-control" th:value="${#authentication.principal.memberEmail}" readonly="readonly">
                 </div>
             </div>
             <div class="m-5">
                 <label class="form-label">주소</label>
-                <input type="text"  class="form-control" th:field="*{memberRoadAddress}" readonly="readonly"><br>
-                <input type="text"  class="form-control" th:field="*{memberJibunAddress}" readonly="readonly"><br>
+                <input type="text"  class="form-control" th:value="${#authentication.principal.memberRoadAddress}" readonly="readonly"><br>
+                <input type="text"  class="form-control" th:value="${#authentication.principal.memberJibunAddress}" readonly="readonly"><br>
             </div>
             <div class="m-5">
                 <label class="form-label">상세 주소</label>
                 <div class="d-flex justify-content-between">
-                    <input type="text" class="form-control" th:field="*{memberDetailAddress}" th:placeholder="*{memberDetailAddress}">
+                    <input type="text" class="form-control" th:value="${#authentication.principal.memberDetailAddress}" readonly="readonly">
                 </div>
             </div>
         </form>

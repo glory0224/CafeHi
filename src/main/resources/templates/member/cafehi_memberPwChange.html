@@ -24,7 +24,8 @@
                 <label class="form-label">현재 비밀번호</label>
                 <br>
                 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
-                <input type="hidden" name="memberCode" th:value="${#authentication.Principal.memberInfo.memberCode}">
+                <!--getmemberInfo.memberCode-->
+                <input type="hidden" name="memberCode" th:value="${#authentication.principal.memberCode}">
 
                 <input id="changePw" class="form-control" type="password" name="currentPassword"/>
                 <br>

@@ -4,6 +4,7 @@ import com.cafeHi.www.cart.dto.CartForm;
 import com.cafeHi.www.cart.dto.ModifyCartForm;
 import com.cafeHi.www.cart.service.CartService;
 import com.cafeHi.www.common.security.service.CustomUser;
+import com.cafeHi.www.member.dto.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,10 +31,8 @@ public class CartController {
 
 		if (principal != null) {
 
-			CustomUser memberInfo = (CustomUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Long memberCode = memberInfo.getMemberInfo().getMemberCode();
-
-
+			MemberInfo memberInfo = (MemberInfo)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Long memberCode = memberInfo.getMemberCode();
 
 			List<CartForm> cartList = cartService.findCartList(memberCode);
 

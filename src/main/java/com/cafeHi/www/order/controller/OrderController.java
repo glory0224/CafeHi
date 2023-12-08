@@ -5,6 +5,7 @@ import com.cafeHi.www.common.page.PageMaker;
 import com.cafeHi.www.common.page.WithoutKeywordCriteria;
 import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.delivery.dto.DeliveryDTO;
+import com.cafeHi.www.member.dto.MemberInfo;
 import com.cafeHi.www.member.dto.MembershipForm;
 import com.cafeHi.www.menu.dto.MenuDTO;
 import com.cafeHi.www.menu.service.MenuService;
@@ -125,7 +126,7 @@ public class OrderController {
     public String CafehiOrderListView(@ModelAttribute("orderSearch") OrderSearch orderSearch, WithoutKeywordCriteria withoutKeywordCriteria, Model model) {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        CustomUser memberInfo = (CustomUser) principal;
+        MemberInfo memberInfo = (MemberInfo) principal;
 
         int offset = withoutKeywordCriteria.getRowStart();
         int limit = withoutKeywordCriteria.getPerPageNum();

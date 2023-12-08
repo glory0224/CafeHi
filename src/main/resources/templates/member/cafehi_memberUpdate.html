@@ -25,48 +25,52 @@
 </div>
 <div class="w-50 m-auto" style="padding-top: 5%">
 <form class="container" th:object="${memberForm}" method="post" th:action="@{/CafeHi-MemberInfoUpdate}">
-	<input type="hidden" th:field="*{id}">
+	<input type="hidden" th:name="memberCode" th:value="${#authentication.principal.memberCode}">
   <div class="m-5">
     <label class="form-label">아이디</label>
     <div class="d-flex justify-content-between">
     <!-- thymeleaf security custom login session 정보를 value 값에 넣고 싶을 때 아래와 같이 넣는다. -->
-  	<input type="text"  class="form-control" th:field="*{memberId}" th:placeholder="*{memberId}">
+<!--  	<input type="text"  class="form-control" th:field='${#authentication.principal.memberId}' th:placeholder="*{memberId}">-->
+	<input type="text" class="form-control" th:placeholder="${#authentication.principal.memberId}">
   	<div class="ms-3">
-		<p th:if="${#fields.hasErrors('memberId')}" th:errors="*{memberId}" th:class="errorMsg">Incorrect data</p>
+		<p th:if="${#fields.hasErrors('memberId')}" th:errors="${#authentication.principal.memberId}" th:class="errorMsg">Incorrect data</p>
 	</div>
 	</div>
   </div>
     <div class="m-5">
     <label class="form-label">이름</label>
   	<div class="d-flex justify-content-between">
-  	<input type="text" class="form-control" th:field="*{memberName}" th:placeholder="*{memberName}">
+<!--  	<input type="text" class="form-control" th:field="${#authentication.principal.memberName}" th:placeholder="*{memberName}">-->
+  	<input type="text" class="form-control" th:placeholder="${#authentication.principal.memberName}">
   	<div class="ms-3">
-		<p th:if="${#fields.hasErrors('memberName')}" th:errors="*{memberName}" th:class="errorMsg">Incorrect data</p>
+		<p th:if="${#fields.hasErrors('memberName')}" th:errors="${#authentication.principal.memberName}" th:class="errorMsg">Incorrect data</p>
 	</div>
 	</div>
   </div>
   <div class="m-5">
     <label class="form-label">연락처</label>
  	<div class="d-flex justify-content-between">
-  	<input type="text" class="form-control" th:field="*{memberContact}" th:placeholder="*{memberContact}">
+<!--  	<input type="text" class="form-control" th:field="${#authentication.principal.memberContact}" th:placeholder="*{memberContact}">-->
+  	<input type="text" class="form-control" th:placeholder="${#authentication.principal.memberContact}">
   	<div class="ms-3">
-		<p th:if="${#fields.hasErrors('memberContact')}" th:errors="*{memberContact}" th:class="errorMsg">Incorrect data</p>
+		<p th:if="${#fields.hasErrors('memberContact')}" th:errors="${#authentication.principal.memberContact}" th:class="errorMsg">Incorrect data</p>
 	</div>
 	</div>
   </div>
   <div class="m-5">
     <label class="form-label">메일</label>
  	<div class="d-flex justify-content-between">
-  	<input type="text" class="form-control" th:field="*{memberEmail}" th:placeholder="*{memberEmail}">
+<!--  	<input type="text" class="form-control" th:field="${#authentication.principal.memberEmail}" th:placeholder="*{memberEmail}">-->
+  	<input type="text" class="form-control" th:placeholder="${#authentication.principal.memberEmail}">
   	<div class="ms-3">
-		<p th:if="${#fields.hasErrors('memberEmail')}" th:errors="*{memberEmail}" th:class="errorMsg">Incorrect data</p>
+		<p th:if="${#fields.hasErrors('memberEmail')}" th:errors="${#authentication.principal.memberEmail}" th:class="errorMsg">Incorrect data</p>
 	</div>
 	</div>
   </div>
   <div class="m-5">
     <label class="form-label">주소</label>
-  	<input type="text"  class="form-control" th:field="*{memberRoadAddress}" th:placeholder="*{memberRoadAddress}" readonly="readonly"><br>
-  	<input type="text"  class="form-control" th:field="*{memberJibunAddress}" th:placeholder="*{memberJibunAddress}" readonly="readonly"><br>
+	  <input type="text"  class="form-control" th:value="${#authentication.principal.memberRoadAddress}" readonly="readonly"><br>
+	  <input type="text"  class="form-control" th:value="${#authentication.principal.memberJibunAddress}" readonly="readonly"><br>
       <input class="btn btn-sm btn-success float-end" type="button" onclick="find_address()" value="주소 찾기">
   	<div class="ms-3">
 	</div>
@@ -75,9 +79,9 @@
   <div class="m-5">
     <label class="form-label">상세 주소</label>
   	<div class="d-flex justify-content-between">
-  	<input type="text" class="form-control" th:field="*{memberDetailAddress}" th:placeholder="*{memberDetailAddress}">
+  	<input type="text" class="form-control" th:placeholder="${#authentication.principal.memberDetailAddress}">
   	<div class="ms-3">
-		<p th:if="${#fields.hasErrors('memberDetailAddress')}" th:errors="*{memberDetailAddress}" th:class="errorMsg">Incorrect data</p>
+		<p th:if="${#fields.hasErrors('memberDetailAddress')}" th:errors="${#authentication.principal.memberDetailAddress}" th:class="errorMsg">Incorrect data</p>
 	</div>
 	</div>
   </div>
