@@ -1,12 +1,27 @@
-### Post 방식으로 json 데이터 전송 테스트
+### Ajax 로그인 테스트
 # @no-redirect
-POST http://localhost:8080/api/login
-Content-Type: application/json
-X-Requested-With: XMLHttpRequest
-
-{
-  "memberId" : "asdfasdf",
-  "memberPw" : "asdf1234"
-}
+#POST http://localhost:8080/api/login
+#Content-Type: application/json
+#X-Requested-With: XMLHttpRequest
+#
+#{
+#  "memberId" : "test1234",
+#  "memberPw" : "qwer1234"
+#}
 
 ###
+# @no-redirect
+#POST http://localhost:8080/api/login
+#Content-Type: application/json
+#X-Requested-With: XMLHttpRequest
+#
+#{
+#  "memberId" : "asdf1234",
+#  "memberPw" : "asdf1234"
+#}
+
+### 권한이 없는 사용자 접근 테스트
+# @no-redirect
+GET http://localhost:8080/api/messages
+Content-Type: application/json
+X-Requested-With: XMLHttpRequest

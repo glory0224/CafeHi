@@ -1,12 +1,13 @@
 package com.cafeHi.www.common.security.config;
 
+import com.cafeHi.www.common.security.common.AjaxLoginAuthenticationEntryPoint;
 import com.cafeHi.www.common.security.filter.AjaxLoginProcessingFilter;
+import com.cafeHi.www.common.security.handler.AjaxAccessDeniedHandler;
 import com.cafeHi.www.common.security.handler.AjaxAuthenticationFailureHandler;
 import com.cafeHi.www.common.security.handler.AjaxAuthenticationSuccessHandler;
 import com.cafeHi.www.common.security.provider.AjaxAuthenticationProvider;
-import com.cafeHi.www.member.service.CustomUserDetailService;
+import com.cafeHi.www.common.security.service.CustomUserDetailService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -16,6 +17,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -53,10 +55,20 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .antMatcher("/api/**")
                 .authorizeRequests()
+                .antMatchers("/api/messages").hasRole("MANAGER")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+        http
+                .exceptionHandling()
+                        .authenticationEntryPoint(new AjaxLoginAuthenticationEntryPoint())
+                                .accessDeniedHandler(ajaxAccessDeniedHandler());
         http.csrf().disable();  // post 요청시 401 에러를 해결하기 위해 설정
+    }
+
+    @Bean
+    public AccessDeniedHandler ajaxAccessDeniedHandler() {
+        return new AjaxAccessDeniedHandler();
     }
 
     @Bean
