@@ -1,7 +1,6 @@
 package com.cafeHi.www.common.security.config;
 
 import com.cafeHi.www.common.security.common.AjaxLoginAuthenticationEntryPoint;
-import com.cafeHi.www.common.security.filter.AjaxLoginProcessingFilter;
 import com.cafeHi.www.common.security.handler.AjaxAccessDeniedHandler;
 import com.cafeHi.www.common.security.handler.AjaxAuthenticationFailureHandler;
 import com.cafeHi.www.common.security.handler.AjaxAuthenticationSuccessHandler;
@@ -56,14 +55,27 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatcher("/api/**")
                 .authorizeRequests()
                 .antMatchers("/api/messages").hasRole("MANAGER")
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated();
+//                .and()
+//                .addFilterBefore(ajaxLoginProcessingFilter(), UsernamePasswordAuthenticationFilter.class);
         http
                 .exceptionHandling()
                         .authenticationEntryPoint(new AjaxLoginAuthenticationEntryPoint())
                                 .accessDeniedHandler(ajaxAccessDeniedHandler());
         http.csrf().disable();  // post 요청시 401 에러를 해결하기 위해 설정
+
+        customConfigureAjax(http);
+    }
+
+
+    private void customConfigureAjax(HttpSecurity http) throws Exception{
+        http
+                .apply(new AjaxLoginConfigurer<>())
+                .successHandlerAjax(ajaxAuthenticationSuccessHandler())
+                .failureHandlerAjax(ajaxAuthenticationFailureHandler())
+                .setAuthenticationManager(authenticationManagerBean())
+                .loginProcessingUrl("/api/login");
+
     }
 
     @Bean
@@ -71,14 +83,14 @@ public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
         return new AjaxAccessDeniedHandler();
     }
 
-    @Bean
-    public AjaxLoginProcessingFilter ajaxLoginProcessingFilter() throws Exception {
-        AjaxLoginProcessingFilter ajaxLoginProcessingFilter = new AjaxLoginProcessingFilter();
-        ajaxLoginProcessingFilter.setAuthenticationManager(authenticationManagerBean());
-        ajaxLoginProcessingFilter.setAuthenticationSuccessHandler(ajaxAuthenticationSuccessHandler());
-        ajaxLoginProcessingFilter.setAuthenticationFailureHandler(ajaxAuthenticationFailureHandler());
-        return ajaxLoginProcessingFilter;
-    }
+//    @Bean
+//    public AjaxLoginProcessingFilter ajaxLoginProcessingFilter() throws Exception {
+//        AjaxLoginProcessingFilter ajaxLoginProcessingFilter = new AjaxLoginProcessingFilter();
+//        ajaxLoginProcessingFilter.setAuthenticationManager(authenticationManagerBean());
+//        ajaxLoginProcessingFilter.setAuthenticationSuccessHandler(ajaxAuthenticationSuccessHandler());
+//        ajaxLoginProcessingFilter.setAuthenticationFailureHandler(ajaxAuthenticationFailureHandler());
+//        return ajaxLoginProcessingFilter;
+//    }
 
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
