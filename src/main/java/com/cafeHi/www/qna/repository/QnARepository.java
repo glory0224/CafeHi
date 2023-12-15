@@ -60,8 +60,31 @@ public class QnARepository {
                 .fetch();
     }
 
-    public List<QnA> findByMemberCode(Long MemberCode){
+    public List<QnA> findQnAListByMemberCode(int limit, int offset, SearchCriteria searchCriteria, Long MemberCode){
 
+        QQnA qnA = QQnA.qnA;
+        QQnAFile qnAFile = QQnAFile.qnAFile;
+        QMember member = QMember.member;
+
+        return queryFactory
+                .select(qnA)
+                .from(qnA)
+                .join(qnA.member, member)
+                .join(qnA.qnAFile, qnAFile)
+                .where(member.id.eq(MemberCode).and(
+                        searchCriteria.getSearchType().equals("title") ? qnA.qnaTitle.contains(searchCriteria.getKeyword()) :
+                                searchCriteria.getSearchType().equals("content") ? qnA.qnaContent.contains(searchCriteria.getKeyword()) :
+                                        searchCriteria.getSearchType().equals("writer") ? member.memberId.contains(searchCriteria.getKeyword()) :
+                                                null
+                ))
+                .orderBy(qnA.qnaNum.desc())
+                .offset(offset - 1)
+                .limit(limit)
+                .fetch();
+
+    }
+
+    public List<QnA> findQnAMemberCode(Long MemberCode) {
         QQnA qnA = QQnA.qnA;
         QQnAFile qnAFile = QQnAFile.qnAFile;
         QMember member = QMember.member;
@@ -73,7 +96,6 @@ public class QnARepository {
                 .join(qnA.qnAFile, qnAFile)
                 .where(member.id.eq(MemberCode))
                 .fetch();
-
     }
 
 

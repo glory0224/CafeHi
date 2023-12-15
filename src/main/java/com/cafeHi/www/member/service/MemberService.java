@@ -103,7 +103,7 @@ public class MemberService {
     @Transactional
     public void deleteMember(Long memberCode) {
 
-        List<QnA> byMemberCodeQnAList = qnARepository.findByMemberCode(memberCode);
+        List<QnA> byMemberCodeQnAList = qnARepository.findQnAMemberCode(memberCode);
         List<OrderMenu> byMemberCodeOrderList = orderRepository.findOrderMenusByMemberCode(memberCode);
         List<Cart> byMemberCodeCartList = cartRepository.findCartList(memberCode);
 

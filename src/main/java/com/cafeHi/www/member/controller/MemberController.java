@@ -22,6 +22,7 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("member")
 public class MemberController {
 
     private final MemberService memberService;
@@ -30,14 +31,15 @@ public class MemberController {
 
 //    private final JavaMailSender mailSender;
 
-    @GetMapping("/members/signup")
-    public String signupForm(Model model){
-        log.info("signupForm GetMapping");
-        model.addAttribute("memberForm", new MemberForm());
-        return "common/signup";
-    }
 
-    @PostMapping("/members/signup")
+    /**
+     * 회원 가입
+     * @param memberForm
+     * @param result
+     * @param model
+     * @return
+     */
+    @PostMapping("signup")
     public String signup(@Valid MemberForm memberForm, BindingResult result, Model model) {
 
         if (result.hasErrors()) {
@@ -71,95 +73,28 @@ public class MemberController {
         return "redirect:/login";
     }
 
-    @GetMapping("/CafeHi-MemberInfoUpdate")
-    public String MemberInfoUpdateView(Model model) {
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        MemberInfo memberInfo = (MemberInfo) principal;
-        Member findMember = memberService.findMember(memberInfo.getMemberCode());
-
-        MemberForm memberForm = new MemberForm();
-
-        memberForm.setId(findMember.getId());
-        memberForm.setMemberId(findMember.getMemberId());
-        memberForm.setMemberName(findMember.getMemberName());
-        memberForm.setMemberContact(findMember.getMemberContact());
-        memberForm.setMemberEmail(findMember.getMemberEmail());
-        memberForm.setMemberRoadAddress(findMember.getMemberRoadAddress());
-        memberForm.setMemberJibunAddress(findMember.getMemberJibunAddress());
-        memberForm.setMemberDetailAddress(findMember.getMemberDetailAddress());
-
-        model.addAttribute("memberForm", memberForm);
-
-        return "member/cafehi_memberUpdate";
-    }
 
     /**
-     * 회원 정보 수정
+     * 아이디 찾기 - 해당 메일의 아이디 반환
      */
-    @PostMapping("/CafeHi-MemberInfoUpdate")
-    public String memberInfoUpdate(@ModelAttribute("memberForm") MemberForm form, Model model) {
+    @PostMapping("/FindMemberId")
+    public String FindMemberId(FindMemberIdForm findMemberIdForm, Model model) {
 
-        memberService.modifyMember(form);
-
-        return "redirect:/CafeHi-MemberInfoUpdate";
-    }
-
-    /**
-     *  회원 비밀번호 변경
-     */
-
-    @PostMapping("/CafeHi-MemberChangePassword")
-    public String memberChangePassword(ChangeMemberPwForm changeMemberPwForm, HttpServletRequest request) {
-
-        Boolean isChangePw = memberService.authenticationAndChangePw(changeMemberPwForm);
-
-        // 올바르게 변경됨
-        if (isChangePw) {
-
-            request.setAttribute("msg", "비밀번호가 변경되었습니다.");
-            request.setAttribute("url", "javascript:history.back()");
-
+        String memberIdByEmail = memberService.findMemberByEmail(findMemberIdForm.getMemberEmail());
+        // 해당 메일이 없는 경우
+        if (memberIdByEmail == null) {
+            model.addAttribute("msg", "해당 메일로 가입된 아이디는 없습니다.");
+            model.addAttribute("url", "javascript:history.back()");
             return "common/alert";
-
-        }else { // 비밀번호가 서로 맞지 않음
-
-            request.setAttribute("msg", "비밀번호가 맞지 않습니다. 가입된 비밀번호를 다시 입력해주세요.");
-            request.setAttribute("url", "javascript:history.back()");
-
-            return "common/alert";
-        }
-
-    }
-
-    @PostMapping("/deleteMember")
-    public String deleteMember(LoginForm loginForm, HttpSession session, HttpServletRequest request) {
-
-        String memberId = loginForm.getMemberId();
-        String memberPw = loginForm.getMemberPw();
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        CustomUser memberInfo = (CustomUser) principal;
-        MemberInfo memberInfo = (MemberInfo) principal;
-
-        Long memberCode = memberInfo.getMemberCode();
-
-        boolean isPasswordMatched = memberService.isPasswordMatched(memberCode, memberPw);
-
-        if(memberId.equals(memberInfo.getMemberId()) && isPasswordMatched) {
-            memberService.deleteMember(memberCode);
-            session.invalidate(); // 세션 정보 삭제
-            SecurityContextHolder.getContext().setAuthentication(null); // 세션 권한 정보 null 초기화
         } else {
-
-            request.setAttribute("msg", "아이디 또는 비밀번호가 맞지 않습니다.");
-            request.setAttribute("url", "javascript:history.back()");
-
+            model.addAttribute("msg", "아이디는 " + memberIdByEmail + " 입니다.");
+            model.addAttribute("url", "login");
             return "common/alert";
         }
 
-        return "redirect:/";
     }
+
+
 
 //    @GetMapping("/EmailAuth")
 //    @ResponseBody
@@ -206,25 +141,7 @@ public class MemberController {
 //
 //    }
 
-    /**
-     * 아이디 찾기 - 해당 메일의 아이디 반환
-     */
-    @PostMapping("/FindMemberId")
-    public String FindMemberId(FindMemberIdForm findMemberIdForm, Model model) {
 
-        String memberIdByEmail = memberService.findMemberByEmail(findMemberIdForm.getMemberEmail());
-        // 해당 메일이 없는 경우
-        if (memberIdByEmail == null) {
-            model.addAttribute("msg", "해당 메일로 가입된 아이디는 없습니다.");
-            model.addAttribute("url", "javascript:history.back()");
-            return "common/alert";
-        } else {
-            model.addAttribute("msg", "아이디는 " + memberIdByEmail + " 입니다.");
-            model.addAttribute("url", "login");
-            return "common/alert";
-        }
-
-    }
 
     /**
      * 비밀번호 찾기 - 해당 아이디에 비밀번호 찾기

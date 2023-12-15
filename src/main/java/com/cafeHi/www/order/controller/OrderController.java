@@ -122,31 +122,7 @@ public class OrderController {
     /**
      * 마이페이지 주문 목록 Get Mapping Controller
      */
-    @GetMapping("/CafeHi-MyPageOrderMenuList")
-    public String CafehiOrderListView(@ModelAttribute("orderSearch") OrderSearch orderSearch, WithoutKeywordCriteria withoutKeywordCriteria, Model model) {
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        MemberInfo memberInfo = (MemberInfo) principal;
-
-        int offset = withoutKeywordCriteria.getRowStart();
-        int limit = withoutKeywordCriteria.getPerPageNum();
-
-        PageMaker pageMaker = new PageMaker();
-        pageMaker.setCri(withoutKeywordCriteria);
-
-        if(memberInfo != null) {
-
-            List<OrderMenuDTO> orderList = orderService.findOrders(limit, offset, withoutKeywordCriteria);
-            pageMaker.setTotalCount(orderService.getPagingCount(withoutKeywordCriteria));
-
-            model.addAttribute("orderList", orderList);
-            model.addAttribute("pageMaker", pageMaker);
-            model.addAttribute("scri", withoutKeywordCriteria);
-
-        }
-
-        return "member/cafehi_myPageOrderList";
-    }
 
     /**
      * 주문 취소 Post Mapping Controller

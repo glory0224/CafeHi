@@ -84,23 +84,31 @@
 <!--      		<b sec:authentication="principal.memberInfo.memberName"></b> 님 환영합니다.-->
       		</li>
       		<li class="nav-item" sec:authorize="hasAnyRole('ROLE_USER')">
-      			<a class="nav-link" aria-current="page" href="" th:href="@{/CafeHi-MemberMyPage}">마이페이지</a>
-      		</li>
-      		
-      		<li class="nav-item" sec:authorize="hasAnyRole('ROLE_MANAGER')">
-      			<a class="nav-link" aria-current="page" th:href="@{/CafeHi-UserManagement}">유저 관리</a>
+      			<a class="nav-link" aria-current="page" href="" th:href="@{/member/mypage/CafeHi-MemberMyPage}">마이페이지</a>
       		</li>
 
             <li class="nav-item" sec:authorize="hasAnyRole('ROLE_MANAGER')">
-                <a class="nav-link" aria-current="page" th:href="@{/CafeHi-ProductManagement}">제품 관리</a>
+                <a class="nav-link" aria-current="page" href="" th:href="@{/manager/mypage/CafeHi-MemberMyPage}">마이페이지</a>
             </li>
 
             <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                <a class="nav-link" aria-current="page" th:href="@{/CafeHi-ManagerManagement}">매니저 관리</a>
+                <a class="nav-link" aria-current="page" href="" th:href="@{/admin/mypage/CafeHi-MemberMyPage}">마이페이지</a>
+            </li>
+
+      		<li class="nav-item" sec:authorize="hasAnyRole('ROLE_MANAGER')">
+      			<a class="nav-link" aria-current="page" th:href="@{/manager/usermanagement/CafeHi-UserManagement}">유저 관리</a>
+      		</li>
+
+            <li class="nav-item" sec:authorize="hasAnyRole('ROLE_MANAGER')">
+                <a class="nav-link" aria-current="page" th:href="@{/manager/productmanagement/CafeHi-ProductManagement}">제품 관리</a>
             </li>
 
             <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
-                <a class="nav-link" aria-current="page" th:href="@{/CafeHi-AuthManagement}">권한 관리</a>
+                <a class="nav-link" aria-current="page" th:href="@{/admin/managermanagement/CafeHi-ManagerManagement}">매니저 관리</a>
+            </li>
+
+            <li class="nav-item" sec:authorize="hasAnyRole('ROLE_ADMIN')">
+                <a class="nav-link" aria-current="page" th:href="@{/admin/authmanagement/CafeHi-AuthManagement}">권한 관리</a>
             </li>
       		<li class="nav-item">
       			<!--<form action="" th:action="@{/logout}" method="post">

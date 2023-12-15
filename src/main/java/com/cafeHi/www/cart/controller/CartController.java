@@ -25,37 +25,7 @@ import java.util.List;
 public class CartController {
 	
 	private final CartService cartService;
-	
-	@GetMapping("/CafeHi-MyPageCart")
-	public String myPageCartView(Model model, Principal principal) {
 
-		if (principal != null) {
-
-			MemberInfo memberInfo = (MemberInfo)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Long memberCode = memberInfo.getMemberCode();
-
-			List<CartForm> cartList = cartService.findCartList(memberCode);
-
-			int sumMoney = 0;
-
-			for (CartForm cartForm : cartList) {
-				// 장바구니에 담긴 메뉴와 개수를 계산한 비용을 총 비용 변수에 더해준다.
-				sumMoney += cartForm.getCartAmount() * cartForm.getMenuDTO().getMenuPrice();
-			}
-
-			// 합계에 대한 포인트 계산
-			double totalPoint = cartService.CalculateCartPoint(sumMoney, memberCode);
-
-			model.addAttribute("sumMoney", sumMoney);
-			model.addAttribute("totalPoint", totalPoint);
-			model.addAttribute("cartList", cartList);
-			model.addAttribute("memberCode", memberCode);
-		}
-
-		return "member/cafehi_myPageCart";
-	}
-	
-	
 	@PostMapping("/insertCart")
 	public String CartInsert(@AuthenticationPrincipal CustomUser customUser, @RequestParam int toCartAmount, @RequestParam Long menuId, HttpServletRequest request) {
 		

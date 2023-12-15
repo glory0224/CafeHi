@@ -143,6 +143,26 @@ public class QnAService {
 
     }
 
+    public List<QnAForm> findQnAListByMemberCode(int limit, int offset, SearchCriteria searchCriteria, Long memberCode) {
+
+        List<QnA> qnAList = qnARepository.findQnAListByMemberCode(limit, offset, searchCriteria, memberCode);
+
+        List<QnAForm> qnAFormList = qnAList.stream().map(qna -> {
+            QnAForm qnAForm = new QnAForm();
+            qnAForm.setQnaNum(qna.getQnaNum());
+            qnAForm.setQnaTitle(qna.getQnaTitle());
+            qnAForm.setQnaTitleClassification(qna.getQnaTitleClassification());
+            qnAForm.setQnaContent(qna.getQnaContent());
+            qnAForm.setQnaHit(qna.getQnaHit());
+            qnAForm.setMember(qna.getMember());
+            qnAForm.setQnaWriteDate(qna.getQnaWriteDate());
+            qnAForm.setQnaUpdateDate(qna.getQnaUpdateDate());
+            return qnAForm;
+        }).collect(Collectors.toList());
+
+        return qnAFormList;
+    }
+
     public QnAForm findQnA(Long QnAId) {
 
         QnA qnA = qnARepository.findQnA(QnAId);
