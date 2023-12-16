@@ -1,5 +1,6 @@
 package com.cafeHi.www.member.repository;
 
+import com.cafeHi.www.member.MemberAuthority;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.MemberAuth;
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,22 @@ public class MemberRepository {
     public List<Member> findById(String memberId) {
         return em.createQuery("select m from Member m where m.memberId = :memberId", Member.class)
                 .setParameter("memberId", memberId)
+                .getResultList();
+    }
+
+    // 유저권한 멤버 조회
+    public List<Member> findMembersByManager(String userAuth) {
+
+       return em.createQuery("select m from Member m join m.memberAuthEntities a where a.memberAuth = :userAuth", Member.class)
+                    .setParameter("userAuth", userAuth)
+                    .getResultList();
+    }
+
+    // 유저권한, 매니저권한의 멤버 조회
+    public List<Member> findMembersByAdmin(MemberAuthority userAuth, MemberAuthority managerAuth) {
+        return em.createQuery("select m from Member m join m.memberAuthEntities a where a.memberAuth in (:userAuth,:managerAuth)", Member.class)
+                .setParameter("userAuth", userAuth)
+                .setParameter("managerAuth", managerAuth)
                 .getResultList();
     }
 
