@@ -50,4 +50,52 @@ public class MemberInfo {
         this.membership = membership;
         this.memberAuthEntities = memberAuthEntities;
     }
+
+    // 각 권한별 사용하는 기능이 달라서 초기화 분리
+
+    // 유저 권한 멤버
+    public void initUserAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberRoadAddress, String memberJibunAddress, String memberDetailAddress,  boolean enabled, Membership membership, List<MemberAuth> memberAuthEntities) {
+        this.memberCode = memberCode;
+        this.memberId = memberId;
+        this.memberPw = memberPw;
+        this.memberName = memberName;
+        this.memberContact = memberContact;
+        this.memberEmail = memberEmail;
+        this.memberRoadAddress = memberRoadAddress;
+        this.memberJibunAddress = memberJibunAddress;
+        this.memberDetailAddress = memberDetailAddress;
+        this.enabled = enabled;
+        this.membership = membership;
+        this.memberAuthEntities = memberAuthEntities;
+    }
+
+    // 매니저 권한 멤버
+    public void initManagerAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberRoadAddress, String memberJibunAddress, String memberDetailAddress,  boolean enabled, List<MemberAuth> memberAuthEntities) {
+        this.memberCode = memberCode;
+        this.memberId = memberId;
+        this.memberPw = memberPw;
+        this.memberName = memberName;
+        this.memberContact = memberContact;
+        this.memberEmail = memberEmail;
+        this.memberRoadAddress = memberRoadAddress;
+        this.memberJibunAddress = memberJibunAddress;
+        this.memberDetailAddress = memberDetailAddress;
+        this.enabled = enabled;
+        this.memberAuthEntities = memberAuthEntities;
+    }
+
+    // 관리자 권한 멤버
+    public void initAdminAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberRoadAddress, String memberJibunAddress, String memberDetailAddress,  boolean enabled, List<MemberAuth> memberAuthEntities) {
+        this.memberCode = memberCode;
+        this.memberId = memberId;
+        this.memberPw = memberPw;
+        this.memberName = memberName;
+        this.memberContact = memberContact;
+        this.memberEmail = memberEmail;
+        this.memberRoadAddress = memberRoadAddress;
+        this.memberJibunAddress = memberJibunAddress;
+        this.memberDetailAddress = memberDetailAddress;
+        this.enabled = enabled;
+        this.memberAuthEntities = memberAuthEntities;
+    }
 }

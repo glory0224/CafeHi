@@ -65,13 +65,12 @@ public class MemberRepository {
                 .getResultList();
     }
 
+    // 아이디로 멤버 조회
     public Member findByMemberId(String memberId) {
         return em.createQuery("select m from Member m where m.memberId = :memberId", Member.class)
                 .setParameter("memberId", memberId)
                 .getSingleResult();
     }
-
-
     public void deleteMember(Long memberCode) {
         Member findMember = em.find(Member.class, memberCode);
 

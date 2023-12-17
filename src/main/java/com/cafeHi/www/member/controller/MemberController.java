@@ -1,6 +1,5 @@
 package com.cafeHi.www.member.controller;
 
-import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.member.dto.*;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.MemberAuth;
@@ -9,14 +8,11 @@ import com.cafeHi.www.member.service.MemberService;
 import com.cafeHi.www.member.service.MembershipService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Controller
@@ -55,7 +51,7 @@ public class MemberController {
         Member getMember = memberService.joinMember(member);
 
         MemberAuth memberAuth = new MemberAuth();
-        memberAuth.signupMemberAuth(getMember);
+        memberAuth.signupUserAuth(getMember);
 
         memberService.joinMemberAuth(memberAuth);
 

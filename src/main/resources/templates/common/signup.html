@@ -26,7 +26,7 @@ CsrfRequestDataValueProcessor가 적용되어 from 에 CSRF 토큰이 자동적�
 	<div th:insert="~{cafeHi_module/header :: cafeHiHeader}"></div>
 	
 <div class="w-50 m-auto p-5">
-<form class="container" action="" th:action="@{/members/signup}" th:object="${memberForm}" method="post" id="memberForm">
+<form class="container" action="" th:action="@{/member/signup}" th:object="${memberForm}" method="post" id="memberForm">
 	<h1 class="text-center m-5">회원 가입</h1>
   <div class="m-5">
     <h4><label for="memberId" class="form-label">아이디</label></h4>

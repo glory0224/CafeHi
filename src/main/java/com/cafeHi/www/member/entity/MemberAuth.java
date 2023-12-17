@@ -22,10 +22,29 @@ public class MemberAuth {
     private LocalDateTime memberAuthWritetime; // 사용자 정보 권한 등록일
     private LocalDateTime memberAuthUpdatetime; // 사용자 정보 권한 수정일
 
-    public void signupMemberAuth(Member member) {
+    // 유저 권한
+    public void signupUserAuth(Member member) {
         this.member = member;
         this.memberAuth = "ROLE_USER";
         this.memberAuthWritetime = LocalDateTime.now();
         this.memberAuthUpdatetime = LocalDateTime.now();
     }
+
+    // 매니저 권한
+    public void signupManagerAuth(Member member) {
+        this.member = member;
+        this.memberAuth = "ROLE_MANAGER";
+        this.memberAuthWritetime = LocalDateTime.now();
+        this.memberAuthUpdatetime = LocalDateTime.now();
+    }
+
+    // 관리자 권한
+    public void signupAdminAuth(Member member) {
+        this.member = member;
+        this.memberAuth = "ROLE_ADMIN";
+        this.memberAuthWritetime = LocalDateTime.now();
+        this.memberAuthUpdatetime = LocalDateTime.now();
+    }
+
+
 }
