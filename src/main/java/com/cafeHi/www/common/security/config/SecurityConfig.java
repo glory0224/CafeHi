@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //                .antMatchers("/CafehiOrder").hasRole("USER")
 //                .antMatchers("/CafeHi-MyPageOrderMenuList").hasRole("USER")
 				.antMatchers("/member/**").hasRole("USER")
+				.antMatchers("/manager/**").hasRole("MANAGER")
 
 		.and()
                 	.formLogin()

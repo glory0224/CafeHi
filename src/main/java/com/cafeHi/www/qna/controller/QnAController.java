@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,9 +27,46 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
+@RequestMapping("member/qna")
 public class QnAController {
 
     private final QnAService qnAService;
+
+    @GetMapping("/CafeHi-QnAWrite")
+    public String QnaWriteView(Model model) {
+        model.addAttribute("qnAForm", new QnAForm());
+        return "member/cafehi_qnaWrite";
+    }
+
+    @GetMapping("/CafeHi-UpdateQnA")
+    public String QnAUpdateView(Long qnaNum, Model model, SearchCriteria searchCriteria) {
+
+        model.addAttribute("qna",qnAService.findQnA(qnaNum));
+        model.addAttribute("qnaFile", qnAService.findQnAFile(qnaNum));
+        model.addAttribute("scri", searchCriteria);
+
+        return "member/cafehi_qnaUpdate";
+    }
+
+    @GetMapping("/CafeHi-UpdateReturnQnA")
+    public String QnAUpdateReturnView(Model model, @ModelAttribute("qna") QnAForm qna,
+                                      @ModelAttribute("org.springframework.validation.BindingResult.qna") BindingResult result, SearchCriteria searchCriteria) {
+
+        model.addAttribute("scri", searchCriteria);
+
+        if (result.hasErrors()) {
+            // 에러가 있을 경우 처리
+            model.addAttribute("qna", qnAService.findQnA(qna.getQnaNum()));
+            model.addAttribute("org.springframework.validation.BindingResult.qna", result);
+            return "member/cafehi_qnaUpdate";
+        } else {
+            // 에러가 없을 경우 처리
+            model.addAttribute("qna", qnAService.findQnA(qna.getQnaNum()));
+            model.addAttribute("qnaFile", qnAService.findQnAFile(qna.getQnaNum()));
+            return "member/cafehi_qnaUpdate";
+        }
+    }
+
 
     @PostMapping("WriteQnA")
     public String WriteQnA(@Valid QnAForm qnAForm, BindingResult result, MultipartFile uploadFile, RedirectAttributes redirectAttributes){
@@ -39,27 +78,6 @@ public class QnAController {
         qnAService.WriteQnA(qnAForm, uploadFile);
 
         return "redirect:/CafeHi-QnAList";
-    }
-
-    @GetMapping("/CafeHi-QnAList")
-    public String QnAListView(SearchCriteria searchCriteria, Model model) {
-
-        int offset = searchCriteria.getRowStart();
-        int limit = searchCriteria.getPerPageNum();
-
-        List<QnAForm> qnAList = qnAService.findQnAList(limit, offset, searchCriteria);
-
-        PageMaker pageMaker = new PageMaker();
-
-        pageMaker.setCri(searchCriteria);
-        pageMaker.setTotalCount(qnAService.getPagingCount(searchCriteria));
-
-        // 총 페이지 수
-        model.addAttribute("qnaList", qnAList);
-        model.addAttribute("pageMaker", pageMaker);
-        model.addAttribute("scri", searchCriteria);
-
-        return "common/cafehi_qnaList";
     }
 
     @GetMapping("/CafeHi-QnA")

@@ -20,7 +20,7 @@ public class QnAForm {
     private Long qnaNum;
     @NotEmpty(message = "게시글 제목을 입력해주세요.")
     private String qnaTitle;
-    private String qnaTitleClassification;
+    private String  qnaTitleClassification;
     @NotEmpty(message = "게시글 내용을 입력해주세요.")
     private String qnaContent;
     private int qnaHit;

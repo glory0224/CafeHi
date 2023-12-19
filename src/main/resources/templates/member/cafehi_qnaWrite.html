@@ -32,9 +32,9 @@
 			<h1 class="mb-4">게시글 등록</h1>
 
 			<div class="card mb-4">
-				<form action="" th:action="@{/WriteQnA}" th:object="${qnAForm}" method="post"
+				<form action="" th:action="@{/member/qna/WriteQnA}" th:object="${qnAForm}" method="post"
 					 enctype="multipart/form-data" >
-					 <input type="hidden" th:name="memberCode" th:value="${#authentication.Principal.memberInfo.memberCode}">
+					 <input type="hidden" th:name="memberCode" th:value="${#authentication.principal.memberCode}">
 					 <input type="hidden" name="qna_hit" th:value="0">
 					 <input type="hidden" name="${_csrf.parameterName }" value="${_csrf.token }" />
 					<div class="card-body">
@@ -42,7 +42,7 @@
 							
 							<tr>
 								<th>작성자</th>
-								<td><input type="text" th:name="memberId" th:value="${#authentication.Principal.memberInfo.memberId}"
+								<td><input type="text" th:name="memberId" th:value="${#authentication.principal.memberId}"
 									readonly="readonly"></td>
 								
 							</tr>
