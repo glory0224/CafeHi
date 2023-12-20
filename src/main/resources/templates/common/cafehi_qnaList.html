@@ -77,7 +77,7 @@
                         <td th:text="${qna.qnaNum }">글번호</td>
                         <td th:text="'[' + ${qna.qnaTitleClassification} + ']'"></td>
                         <td>
-                            <a th:text="${qna.qnaTitle }" th:href="@{/CafeHi-QnA(qnaNum = ${qna.qnaNum}, page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}"
+                            <a th:text="${qna.qnaTitle }" th:href="@{/member/qna/CafeHi-QnA(qnaNum = ${qna.qnaNum}, page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}"
                                style="text-decoration: none; color: black; font-weight: bold;">
                                 글제목
                             </a>
