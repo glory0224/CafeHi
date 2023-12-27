@@ -33,20 +33,20 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@RequestMapping("member/qna")
+@RequestMapping("qna")
 public class QnAController {
 
     private final QnAService qnAService;
 
     private final FileStore fileStore;
 
-    @GetMapping("/CafeHi-QnAWrite")
+    @GetMapping("member/CafeHi-QnAWrite")
     public String QnaWriteView(Model model) {
         model.addAttribute("qnAForm", new QnAForm());
         return "member/cafehi_qnaWrite";
     }
 
-    @GetMapping("/CafeHi-UpdateQnA")
+    @GetMapping("member/CafeHi-UpdateQnA")
     public String QnAUpdateView(Long qnaNum, Model model, SearchCriteria searchCriteria) {
 
         model.addAttribute("qna",qnAService.findQnA(qnaNum));
@@ -56,7 +56,7 @@ public class QnAController {
         return "member/cafehi_qnaUpdate";
     }
 
-    @GetMapping("/CafeHi-UpdateReturnQnA")
+    @GetMapping("member/CafeHi-UpdateReturnQnA")
     public String QnAUpdateReturnView(Model model, @ModelAttribute("qna") QnAForm qna,
                                       @ModelAttribute("org.springframework.validation.BindingResult.qna") BindingResult result, SearchCriteria searchCriteria) {
 
@@ -76,7 +76,7 @@ public class QnAController {
     }
 
 
-    @PostMapping("WriteQnA")
+    @PostMapping("member/WriteQnA")
     public String WriteQnA(@Valid QnAForm qnAForm, BindingResult result, MultipartFile uploadFile, RedirectAttributes redirectAttributes){
 
         if (result.hasErrors()) {
@@ -88,7 +88,7 @@ public class QnAController {
         return "redirect:/CafeHi-QnAList";
     }
 
-    @GetMapping("/CafeHi-QnA")
+    @GetMapping("member/CafeHi-QnA")
     public String QnAView(HttpServletRequest request, HttpServletResponse response, Long qnaNum, SearchCriteria searchCriteria, Model model) {
 
 
@@ -105,7 +105,7 @@ public class QnAController {
         return "common/cafehi_qnaContent";
     }
 
-    @PostMapping("/CafeHi-UpdateQnA")
+    @PostMapping("member/CafeHi-UpdateQnA")
     public String UpdateQnA(@Valid QnAForm qna, BindingResult result, MultipartFile uploadFile, SearchCriteria searchCriteria, RedirectAttributes redirectAttributes) {
 
 
@@ -121,7 +121,7 @@ public class QnAController {
         return "redirect:/CafeHi-QnA" + queryString;
     }
 
-    @PostMapping("/CafeHi-DeleteQnA")
+    @PostMapping("member/CafeHi-DeleteQnA")
     public String DeleteQnA(QnAForm qnAForm, SearchCriteria searchCriteria) throws IOException {
         qnAService.deleteQnA(qnAForm);
 
@@ -130,7 +130,7 @@ public class QnAController {
         return "redirect:/CafeHi-QnAList" + queryString;
     }
 
-    @PostMapping("/qnaFileDownload")
+    @PostMapping("member/qnaFileDownload")
     public ResponseEntity<Resource> fileDownload(@RequestParam("upload_path") String upload_path, @RequestParam("upload_file_name") String upload_file_name) throws IOException {
 
         ResponseEntity<Resource> downloadResponse = fileStore.download(upload_file_name);
@@ -167,4 +167,63 @@ public class QnAController {
 
     }
 
+    // 매니저 QnA 게시글 작성 페이지
+    @GetMapping("manager/CafeHi-QnAWrite")
+    public String ManagerQnaWritePage(Model model)  {
+        model.addAttribute("qnAForm", new QnAForm());
+
+        return "manager/cafehi_qnaWrite";
+    }
+
+    // 매니저 QnA  게시글 등록
+
+    @PostMapping("manager/WriteQnA")
+    public String ManagerWriteQnA(@Valid QnAForm qnAForm, BindingResult result, MultipartFile uploadFile) {
+        if (result.hasErrors()) {
+            return "manager/cafehi_qnaWrite";
+        }
+
+        qnAService.WriteQnA(qnAForm, uploadFile);
+
+        return "redirect:/CafeHi-QnAList";
+    }
+
+    @GetMapping("manager/CafeHi-QnA")
+    public String QnAManagerView(HttpServletRequest request, HttpServletResponse response, Long qnaNum, SearchCriteria searchCriteria, Model model) {
+
+        qnAService.increaseHit(request, response, qnaNum);
+
+        QnAForm qnAForm = qnAService.findQnA(qnaNum);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        model.addAttribute("securityId", authentication.getName()); // 로그인 중인 사용자의 권한에 따라 보이는 항목을 다르게 하기위해 ID값 반환
+        model.addAttribute("qna", qnAForm);
+        model.addAttribute("qnaFile", qnAService.findQnAFile(qnAForm.getQnaNum()));
+        model.addAttribute("scri", searchCriteria);
+
+        return "common/cafehi_qnaContent";
+    }
+
+
+
+    // 관리자 QnA 페이지
+    @GetMapping("admin/CafeHi-QnAWrite")
+    public String AdminQnaWritePage(Model model) {
+
+        model.addAttribute("qnAForm", new QnAForm());
+
+        return "admin/cafehi_qnaWrite";
+    }
+
+    // 관리자 QnA 글쓰기
+    @PostMapping("admin/WriteQnA")
+    public String ManagerWriteQnA(@Valid QnAForm qnAForm, BindingResult result, MultipartFile uploadFile, Model model) {
+
+        if (result.hasErrors()) {
+            return "admin/cafehi_qnaWrite";
+        }
+        qnAService.WriteQnA(qnAForm, uploadFile);
+
+        return "redirect:/CafeHi-QnAList";
+    }
 }
