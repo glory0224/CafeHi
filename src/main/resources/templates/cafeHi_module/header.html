@@ -72,7 +72,7 @@
       
       <div sec:authorize="isAnonymous()"  class="d-flex justify-content-end">
           <!--ajax 테스트용 메세지 메뉴 탭-->
-          <button id="messageBtn" type="button" class="btn btn-outline-success me-2">messages</button>
+          <a th:href="@{/manager/api/messages}"><button id="messageBtn" type="button" class="btn btn-outline-success me-2">messages</button></a>
 
           <a th:href="@{/login}"><button type="button" class="btn btn-outline-success me-2">Login</button></a>
       </div>

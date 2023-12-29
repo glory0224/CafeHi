@@ -2,10 +2,13 @@ package com.cafeHi.www.common.security.listener;
 
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.MemberAuth;
+import com.cafeHi.www.member.entity.MemberAuthHierachy;
 import com.cafeHi.www.member.entity.Membership;
+import com.cafeHi.www.member.repository.MemberAuthHierarchyRepository;
 import com.cafeHi.www.member.service.MemberService;
 import com.cafeHi.www.member.service.MembershipService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
@@ -17,6 +20,8 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
     private boolean alreadySetup = false;
     private final MemberService memberService;
     private final MembershipService membershipService;
+    @Autowired
+    private MemberAuthHierarchyRepository memberAuthHierarchyRepository;
 
     @Override
     @Transactional
@@ -72,6 +77,38 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
 
             membershipService.joinMembership(membership);
 
+            // 권한별로 계층 구조 적용
+            // 유저 < 매니저 < 관리자
+            createAuthHierarchyIfNotFound(managerAuth, adminAuth);
+            createAuthHierarchyIfNotFound(userAuth, managerAuth);
 
+    }
+
+    @Transactional
+    public void createAuthHierarchyIfNotFound(MemberAuth childAuth, MemberAuth parentAuth) {
+
+        MemberAuthHierachy authHierachy = memberAuthHierarchyRepository.findByChildName(parentAuth.getMemberAuth());
+
+        // 해당 권한의 계층구조가 없는 경우 생성
+        if(authHierachy == null) {
+            authHierachy = MemberAuthHierachy.builder()
+                    .childName(parentAuth.getMemberAuth())
+                    .build();
+        }
+
+        // 엔티티 저장, 부모 계층 데이터 추출
+        MemberAuthHierachy parentAuthHierarchy = memberAuthHierarchyRepository.save(authHierachy);
+
+        authHierachy = memberAuthHierarchyRepository.findByChildName(childAuth.getMemberAuth());
+
+        // 해당 권한의 계층구조가 없는 경우 생성
+        if(authHierachy == null) {
+            authHierachy = MemberAuthHierachy.builder()
+                    .childName(childAuth.getMemberAuth())
+                    .build();
+        }
+
+        MemberAuthHierachy childAuthHierarchy = memberAuthHierarchyRepository.save(authHierachy);
+        childAuthHierarchy.setParentName(parentAuthHierarchy);
     }
 }

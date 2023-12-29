@@ -2,13 +2,20 @@ package com.cafeHi.www.common.security.config;
 
 
 import com.cafeHi.www.common.security.common.FormAuthenticationDetailSource;
+import com.cafeHi.www.common.security.factory.UrlResourcesMapFactoryBean;
 import com.cafeHi.www.common.security.handler.FormAccessDeniedHandler;
+import com.cafeHi.www.common.security.metadatasource.UrlFilterInvocationSecurityMetadataSource;
 import com.cafeHi.www.common.security.provider.FormAuthenticationProvider;
 import com.cafeHi.www.common.security.service.CustomUserDetailService;
+import com.cafeHi.www.resources.service.SecurityResourceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.access.AccessDecisionManager;
+import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,8 +24,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
+import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+
+import java.sql.CallableStatement;
+import java.util.Arrays;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -31,6 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	private final AuthenticationSuccessHandler formAuthenticationSuccessHandler; //스프링 component로 등록된 이름으로 필드명을 선언해줘야 제대로 생성자 주입이 가능하다.
 	private final AuthenticationFailureHandler formAuthenticationFailureHandler;
+
+	private final SecurityResourceService securityResourceService;
 
 	public void configure(WebSecurity web) throws Exception {
 		// 인증을 무시하기 위한 설정
@@ -75,7 +90,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                     .permitAll()
 		.and()
 					.exceptionHandling()
-					.accessDeniedHandler(accessDeniedHandler());
+					.accessDeniedHandler(accessDeniedHandler())
+		.and()
+				.addFilterBefore(customFilterSecurityInterceptor(), FilterSecurityInterceptor.class)
+
+		;
+
     }
 
 	@Override
@@ -100,7 +120,39 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public BCryptPasswordEncoder pwdEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
 
-	
+	// FilterSecurityInterceptor 를 custom 방식으로 생성
+	@Bean
+	public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
+
+		FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+		filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
+		filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased());
+		filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
+
+		return filterSecurityInterceptor;
+	}
+	@Bean
+	public AccessDecisionManager affirmativeBased() {
+		AffirmativeBased affirmativeBased = new AffirmativeBased(getAccessDecisionVoters());
+		return affirmativeBased;
+	}
+
+	private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
+		return Arrays.asList(new RoleVoter());
+	}
+
+	@Bean
+	public FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() throws Exception {
+		return new UrlFilterInvocationSecurityMetadataSource(urlResourcesMapFactoryBean().getObject());
+	}
+
+	private UrlResourcesMapFactoryBean urlResourcesMapFactoryBean() {
+
+		UrlResourcesMapFactoryBean urlResourcesMapFactoryBean = new UrlResourcesMapFactoryBean();
+		urlResourcesMapFactoryBean.setSecurityResourceService(securityResourceService);
+
+		return urlResourcesMapFactoryBean;
+	}
+
 }
