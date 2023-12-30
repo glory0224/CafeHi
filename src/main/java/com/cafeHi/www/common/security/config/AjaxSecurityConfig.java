@@ -22,7 +22,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@Order(0)   // 이 설정 클래스의 우선순위가 제일 높도록 설정
+@Order(1)   // 설정 클래스의 우선순위 설정
 @RequiredArgsConstructor
 public class AjaxSecurityConfig extends WebSecurityConfigurerAdapter {
 

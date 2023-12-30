@@ -3,6 +3,7 @@ package com.cafeHi.www.common.security.config;
 
 import com.cafeHi.www.common.security.common.FormAuthenticationDetailSource;
 import com.cafeHi.www.common.security.factory.UrlResourcesMapFactoryBean;
+import com.cafeHi.www.common.security.filter.PermitAllFilter;
 import com.cafeHi.www.common.security.handler.FormAccessDeniedHandler;
 import com.cafeHi.www.common.security.metadatasource.UrlFilterInvocationSecurityMetadataSource;
 import com.cafeHi.www.common.security.provider.FormAuthenticationProvider;
@@ -36,7 +37,7 @@ import java.util.List;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@Order(1)
+@Order(0)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	private final CustomUserDetailService customUserDetailService;
@@ -46,6 +47,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	private final AuthenticationFailureHandler formAuthenticationFailureHandler;
 
 	private final SecurityResourceService securityResourceService;
+
+	// 인증이나 인가가 필요없는 자원
+	private String[] permitAllResources = {"/", "/CafeHi-Introduce", "/CafeHi-Membership",
+			"/CafeHi-Event", "/CafeHi-Place", "/CafeHi-Menu","/CafeHi-Signup", "common/login*"};
 
 	public void configure(WebSecurity web) throws Exception {
 		// 인증을 무시하기 위한 설정
@@ -57,8 +62,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         http
 //                .csrf().disable()	// Post Mapping 할 때 시큐리티는 csrf를 체크하면서 값이 없으면 403 에러를 발생시키는데 그 기능을 꺼주는 설정
                 .authorizeRequests()
-                .antMatchers("/", "/CafeHi-Introduce", "/CafeHi-Membership",
-						"/CafeHi-Event", "/CafeHi-Place", "/CafeHi-Menu","/CafeHi-Signup", "common/login*").permitAll()	// "common/login*" login 뒤에 어떤 문자열이 찍히더라도 경로로 인식하고 permitAll 처리한다.
+//                .antMatchers("/", "/CafeHi-Introduce", "/CafeHi-Membership",
+//						"/CafeHi-Event", "/CafeHi-Place", "/CafeHi-Menu","/CafeHi-Signup", "common/login*").permitAll()	// "common/login*" login 뒤에 어떤 문자열이 찍히더라도 경로로 인식하고 permitAll 처리한다.
 //                .antMatchers("/CafeHi-MemberInfo").hasRole("USER")
 //                .antMatchers("/CafeHi-MemberInfoUpdate").hasRole("USER")
 //                .antMatchers("/CafeHi-MemberChangePassword").hasRole("USER")
@@ -123,9 +128,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	// FilterSecurityInterceptor 를 custom 방식으로 생성
 	@Bean
-	public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
+//	public FilterSecurityInterceptor customFilterSecurityInterceptor() throws Exception {
+	public PermitAllFilter customFilterSecurityInterceptor() throws Exception {
 
-		FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+//		FilterSecurityInterceptor filterSecurityInterceptor = new FilterSecurityInterceptor();
+		// 커스텀한 PermitAllFilter로 교체
+		PermitAllFilter filterSecurityInterceptor = new PermitAllFilter(permitAllResources);
 		filterSecurityInterceptor.setSecurityMetadataSource(urlFilterInvocationSecurityMetadataSource());
 		filterSecurityInterceptor.setAccessDecisionManager(affirmativeBased());
 		filterSecurityInterceptor.setAuthenticationManager(authenticationManagerBean());
@@ -144,7 +152,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 	@Bean
 	public FilterInvocationSecurityMetadataSource urlFilterInvocationSecurityMetadataSource() throws Exception {
-		return new UrlFilterInvocationSecurityMetadataSource(urlResourcesMapFactoryBean().getObject());
+		return new UrlFilterInvocationSecurityMetadataSource(urlResourcesMapFactoryBean().getObject(), securityResourceService);
 	}
 
 	private UrlResourcesMapFactoryBean urlResourcesMapFactoryBean() {
