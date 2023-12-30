@@ -15,7 +15,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDecisionVoter;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.access.vote.AffirmativeBased;
+import org.springframework.security.access.vote.RoleHierarchyVoter;
 import org.springframework.security.access.vote.RoleVoter;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -30,7 +32,7 @@ import org.springframework.security.web.access.intercept.FilterSecurityIntercept
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
-import java.sql.CallableStatement;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -147,7 +149,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	}
 
 	private List<AccessDecisionVoter<?>> getAccessDecisionVoters() {
-		return Arrays.asList(new RoleVoter());
+
+		List<AccessDecisionVoter<? extends Object>> accessDecisionVoters = new ArrayList<>();
+		// 일반 voter가 아닌 AuthHirerachy 된 custom Voter를 주는 케이스
+//		accessDecisionVoters.add(roleVoter());
+		// 일반 voter를 주는 케이스
+		accessDecisionVoters.add(new RoleVoter());
+//		return Arrays.asList(new RoleVoter());
+		return accessDecisionVoters;
+	}
+
+	@Bean
+	public AccessDecisionVoter<? extends Object> roleVoter() {
+		// 생성자에 상속 규칙이 적용된 객체 전달
+		RoleHierarchyVoter roleHierarchyVoter = new RoleHierarchyVoter(roleHierarchy());
+
+		return roleHierarchyVoter;
+	}
+
+	@Bean
+	public RoleHierarchyImpl roleHierarchy() {
+		RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+		return roleHierarchy;
 	}
 
 	@Bean
