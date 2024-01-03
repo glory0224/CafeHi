@@ -44,7 +44,7 @@ public class MemberController {
 
         Member member = new Member();
         member.signupMember(memberForm.getMemberId(), memberForm.getMemberPw(), memberForm.getMemberName(), memberForm.getMemberContact(), memberForm.getMemberEmail()
-                , memberForm.getMemberRoadAddress(), memberForm.getMemberJibunAddress(), memberForm.getMemberDetailAddress());
+                , memberForm.getMemberZipCode(), memberForm.getMemberAddress(), memberForm.getMemberDetailAddress());
 
         try {
 

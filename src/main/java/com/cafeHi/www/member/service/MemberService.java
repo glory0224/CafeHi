@@ -72,7 +72,7 @@ public class MemberService {
         Member findMember = memberRepository.findMember(memberForm.getId());
 
         findMember.modifyMember(memberForm.getId(),memberForm.getMemberId(), memberForm.getMemberName(), memberForm.getMemberContact(), memberForm.getMemberEmail()
-                , memberForm.getMemberRoadAddress(), memberForm.getMemberJibunAddress(), memberForm.getMemberDetailAddress());
+                ,memberForm.getMemberZipCode(), memberForm.getMemberAddress(), memberForm.getMemberDetailAddress());
 
         // 세션 정보 업데이트
 
@@ -85,8 +85,8 @@ public class MemberService {
         customUser.getMemberInfo().setMemberName(memberForm.getMemberName());
         customUser.getMemberInfo().setMemberContact(memberForm.getMemberContact());
         customUser.getMemberInfo().setMemberEmail(memberForm.getMemberEmail());
-        customUser.getMemberInfo().setMemberRoadAddress(memberForm.getMemberRoadAddress());
-        customUser.getMemberInfo().setMemberJibunAddress(memberForm.getMemberJibunAddress());
+        customUser.getMemberInfo().setMemberZipCode(memberForm.getMemberZipCode());
+        customUser.getMemberInfo().setMemberAddress(memberForm.getMemberAddress());
         customUser.getMemberInfo().setMemberDetailAddress(memberForm.getMemberDetailAddress());
 
         // 인증 객체 업데이트

@@ -24,8 +24,8 @@ public class MemberInfo {
     private String memberName; // 사용자 이름
     private String memberContact; // 사용자 연락처
     private String memberEmail; // 사용자 계정 인증용 이메일
-    private String memberRoadAddress; // 사용자 도로명 주소
-    private String memberJibunAddress; // 사용자 지번 주소
+    private String memberZipCode; // 우편번호
+    private String memberAddress; // 사용자 주소
     private String memberDetailAddress; // 사용자 상세 주소
     private boolean enabled; // 스프링 시큐리티 권한 사용 여부
     private LocalDateTime memberWritetime; // 사용자 등록일
@@ -36,15 +36,15 @@ public class MemberInfo {
     @OneToMany(mappedBy = "member")
     private List<MemberAuth> memberAuthEntities = new ArrayList<>();
 
-    public MemberInfo(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberRoadAddress, String memberJibunAddress, String memberDetailAddress,  boolean enabled, Membership membership, List<MemberAuth> memberAuthEntities) {
+    public MemberInfo(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberZipCode, String memberAddress, String memberDetailAddress,  boolean enabled, Membership membership, List<MemberAuth> memberAuthEntities) {
         this.memberCode = memberCode;
         this.memberId = memberId;
         this.memberPw = memberPw;
         this.memberName = memberName;
         this.memberContact = memberContact;
         this.memberEmail = memberEmail;
-        this.memberRoadAddress = memberRoadAddress;
-        this.memberJibunAddress = memberJibunAddress;
+        this.memberZipCode = memberZipCode;
+        this.memberAddress = memberAddress;
         this.memberDetailAddress = memberDetailAddress;
         this.enabled = enabled;
         this.membership = membership;
@@ -54,15 +54,15 @@ public class MemberInfo {
     // 각 권한별 사용하는 기능이 달라서 초기화 분리
 
     // 유저 권한 멤버
-    public void initUserAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberRoadAddress, String memberJibunAddress, String memberDetailAddress,  boolean enabled, Membership membership, List<MemberAuth> memberAuthEntities) {
+    public void initUserAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberZipCode, String memberAddress, String memberDetailAddress,  boolean enabled, Membership membership, List<MemberAuth> memberAuthEntities) {
         this.memberCode = memberCode;
         this.memberId = memberId;
         this.memberPw = memberPw;
         this.memberName = memberName;
         this.memberContact = memberContact;
         this.memberEmail = memberEmail;
-        this.memberRoadAddress = memberRoadAddress;
-        this.memberJibunAddress = memberJibunAddress;
+        this.memberZipCode = memberZipCode;
+        this.memberAddress = memberAddress;
         this.memberDetailAddress = memberDetailAddress;
         this.enabled = enabled;
         this.membership = membership;
@@ -70,30 +70,30 @@ public class MemberInfo {
     }
 
     // 매니저 권한 멤버
-    public void initManagerAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberRoadAddress, String memberJibunAddress, String memberDetailAddress,  boolean enabled, List<MemberAuth> memberAuthEntities) {
+    public void initManagerAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberZipCode, String memberAddress, String memberDetailAddress,  boolean enabled, List<MemberAuth> memberAuthEntities) {
         this.memberCode = memberCode;
         this.memberId = memberId;
         this.memberPw = memberPw;
         this.memberName = memberName;
         this.memberContact = memberContact;
         this.memberEmail = memberEmail;
-        this.memberRoadAddress = memberRoadAddress;
-        this.memberJibunAddress = memberJibunAddress;
+        this.memberZipCode = memberZipCode;
+        this.memberAddress = memberAddress;
         this.memberDetailAddress = memberDetailAddress;
         this.enabled = enabled;
         this.memberAuthEntities = memberAuthEntities;
     }
 
     // 관리자 권한 멤버
-    public void initAdminAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberRoadAddress, String memberJibunAddress, String memberDetailAddress,  boolean enabled, List<MemberAuth> memberAuthEntities) {
+    public void initAdminAuthMember(Long memberCode, String memberId, String memberPw, String memberName, String memberContact, String memberEmail, String memberZipCode, String memberAddress, String memberDetailAddress,  boolean enabled, List<MemberAuth> memberAuthEntities) {
         this.memberCode = memberCode;
         this.memberId = memberId;
         this.memberPw = memberPw;
         this.memberName = memberName;
         this.memberContact = memberContact;
         this.memberEmail = memberEmail;
-        this.memberRoadAddress = memberRoadAddress;
-        this.memberJibunAddress = memberJibunAddress;
+        this.memberZipCode = memberZipCode;
+        this.memberAddress = memberAddress;
         this.memberDetailAddress = memberDetailAddress;
         this.enabled = enabled;
         this.memberAuthEntities = memberAuthEntities;

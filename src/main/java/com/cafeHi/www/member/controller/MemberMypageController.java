@@ -68,8 +68,8 @@ public class MemberMypageController {
         memberForm.setMemberName(findMember.getMemberName());
         memberForm.setMemberContact(findMember.getMemberContact());
         memberForm.setMemberEmail(findMember.getMemberEmail());
-        memberForm.setMemberRoadAddress(findMember.getMemberRoadAddress());
-        memberForm.setMemberJibunAddress(findMember.getMemberJibunAddress());
+        memberForm.setMemberZipCode(findMember.getMemberZipCode());
+        memberForm.setMemberAddress(findMember.getMemberAddress());
         memberForm.setMemberDetailAddress(findMember.getMemberDetailAddress());
 
         model.addAttribute("memberForm", memberForm);
@@ -96,8 +96,8 @@ public class MemberMypageController {
         memberForm.setMemberName(findMember.getMemberName());
         memberForm.setMemberContact(findMember.getMemberContact());
         memberForm.setMemberEmail(findMember.getMemberEmail());
-        memberForm.setMemberRoadAddress(findMember.getMemberRoadAddress());
-        memberForm.setMemberJibunAddress(findMember.getMemberJibunAddress());
+        memberForm.setMemberZipCode(findMember.getMemberZipCode());
+        memberForm.setMemberAddress(findMember.getMemberAddress());
         memberForm.setMemberDetailAddress(findMember.getMemberDetailAddress());
 
         model.addAttribute("memberForm", memberForm);

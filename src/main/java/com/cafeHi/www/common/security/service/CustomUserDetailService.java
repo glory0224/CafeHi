@@ -56,15 +56,15 @@ public class CustomUserDetailService implements UserDetailsService{
 				}
 
 				mem.initUserAuthMember(memberEntity.getId(), memberEntity.getMemberId(), memberEntity.getMemberPw(), memberEntity.getMemberName(), memberEntity.getMemberContact()
-						, memberEntity.getMemberEmail(), memberEntity.getMemberRoadAddress(), memberEntity.getMemberJibunAddress()
+						, memberEntity.getMemberEmail(), memberEntity.getMemberZipCode(), memberEntity.getMemberAddress()
 						, memberEntity.getMemberDetailAddress(), memberEntity.isEnabled(), membershipEntity, memberEntity.getMemberAuthEntities());
 			} else if("ROLE_MANAGER".equals(memberAuthName)) {
 				mem.initManagerAuthMember(memberEntity.getId(), memberEntity.getMemberId(), memberEntity.getMemberPw(), memberEntity.getMemberName(), memberEntity.getMemberContact()
-						, memberEntity.getMemberEmail(), memberEntity.getMemberRoadAddress(), memberEntity.getMemberJibunAddress()
+						, memberEntity.getMemberEmail(), memberEntity.getMemberZipCode(), memberEntity.getMemberAddress()
 						, memberEntity.getMemberDetailAddress(), memberEntity.isEnabled(), memberEntity.getMemberAuthEntities());
 			} else if("ROLE_ADMIN".equals(memberAuthName)) {
 				mem.initAdminAuthMember(memberEntity.getId(), memberEntity.getMemberId(), memberEntity.getMemberPw(), memberEntity.getMemberName(), memberEntity.getMemberContact()
-						, memberEntity.getMemberEmail(), memberEntity.getMemberRoadAddress(), memberEntity.getMemberJibunAddress()
+						, memberEntity.getMemberEmail(), memberEntity.getMemberZipCode(), memberEntity.getMemberAddress()
 						, memberEntity.getMemberDetailAddress(), memberEntity.isEnabled(), memberEntity.getMemberAuthEntities());
 			}
 

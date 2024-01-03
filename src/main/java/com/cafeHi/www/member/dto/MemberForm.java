@@ -26,9 +26,9 @@ public class MemberForm {
     private String memberContact; // 사용자 연락처
     @Pattern(regexp = "^[a-zA-Z0-9+-\\_.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$", message = "이메일을 입력해주세요. ex) cafeHi@naver.com")
     private String memberEmail; // 사용자 계정 인증용 이메일
+    private String memberZipCode; // 우편번호
     @NotEmpty(message = "주소 찾기를 통해 주소를 등록해주세요.")
-    private String memberRoadAddress; // 사용자 도로명 주소
-    private String memberJibunAddress; // 사용자 지번 주소
+    private String memberAddress; // 사용자 주소
     @NotEmpty(message = "상세주소는 필수입니다.")
     private String memberDetailAddress; // 사용자 상세 주소
     private boolean enabled; // 스프링 시큐리티 권한 사용 여부

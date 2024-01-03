@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,8 +19,8 @@ public class MemberDTO {
     private String memberName; // 사용자 이름
     private String memberContact; // 사용자 연락처
     private String memberEmail; // 사용자 계정 인증용 이메일
-    private String memberRoadAddress; // 사용자 도로명 주소
-    private String memberJibunAddress; // 사용자 지번 주소
+    private String memberZipCode; // 우편번호
+    private String memberAddress; // 사용자 주소
     private String memberDetailAddress; // 사용자 상세 주소
     private boolean enabled; // 스프링 시큐리티 권한 사용 여부
     private LocalDateTime memberWritetime; // 사용자 등록일
@@ -35,8 +36,8 @@ public class MemberDTO {
         this.memberName = member.getMemberName();
         this.memberContact = member.getMemberContact();
         this.memberEmail = member.getMemberEmail();
-        this.memberRoadAddress = member.getMemberRoadAddress();
-        this.memberJibunAddress = member.getMemberJibunAddress();
+        this.memberZipCode = member.getMemberZipCode();
+        this.memberAddress = member.getMemberAddress();
         this.enabled = member.isEnabled();
         this.memberWritetime = member.getMemberWritetime();
         this.memberUpdatetime = member.getMemberUpdatetime();
