@@ -55,15 +55,15 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
             // 테스트 멤버 생성
         Member user = new Member();
         user.signupMember("user1234", "user1234", "user", "01012341234", "test@test.com"
-                , "테스트 도로명 주소", "테스트 지번 주소", "테스트 상세주소");
+                , "12345", "테스트 주소", "테스트 상세주소");
 
         Member manager = new Member();
         manager.signupMember("manager1234", "manager1234", "manager", "01012341234", "test@test.com"
-                , "테스트 도로명 주소", "테스트 지번 주소", "테스트 상세주소");
+                , "12345", "테스트 주소", "테스트 상세주소");
 
         Member admin = new Member();
         admin.signupMember("admin1234", "admin1234", "admin", "01012341234", "test@test.com"
-                , "테스트 도로명 주소", "테스트 지번 주소", "테스트 상세주소");
+                , "12345", "테스트 주소", "테스트 상세주소");
 
         // 테스트 멤버 권한 생성
         Member getUser = memberService.joinMember(user);

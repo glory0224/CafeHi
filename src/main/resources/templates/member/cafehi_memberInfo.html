@@ -44,9 +44,10 @@
                 </div>
             </div>
             <div class="m-5">
+                <label class="form-label">우편번호</label>
+                <input type="text" class="form-control" th:value="${#authentication.principal.memberZipCode}" readonly="readonly">
                 <label class="form-label">주소</label>
-                <input type="text"  class="form-control" th:value="${#authentication.principal.memberRoadAddress}" readonly="readonly"><br>
-                <input type="text"  class="form-control" th:value="${#authentication.principal.memberJibunAddress}" readonly="readonly"><br>
+                <input type="text" class="form-control" th:value="${#authentication.principal.memberAddress}" readonly="readonly">
             </div>
             <div class="m-5">
                 <label class="form-label">상세 주소</label>
