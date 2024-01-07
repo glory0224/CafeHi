@@ -32,6 +32,7 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
@@ -148,6 +149,7 @@ public class QnAController {
 
     /**
      * QnA 글 조회
+     * 글 조회는 모든 권한이 볼 수 있음
      * @param request
      * @param response
      * @param qnaNum
@@ -164,8 +166,13 @@ public class QnAController {
         QnAForm qnAForm = qnAService.findQnA(qnaNum);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        MemberInfo memberInfo = (MemberInfo) authentication.getPrincipal();
-        model.addAttribute("securityId", memberInfo.getMemberId()); // 로그인 중인 사용자의 권한에 따라 보이는 항목을 다르게 하기위해 ID값 반환
+        Object principal = authentication.getPrincipal();
+
+        // 권한이 있는 사용자의 경우 securityId 추가
+        if(principal instanceof MemberInfo) {
+            MemberInfo memberInfo = (MemberInfo) authentication.getPrincipal();
+            model.addAttribute("securityId", memberInfo.getMemberId()); // 로그인 중인 사용자의 권한에 따라 보이는 항목을 다르게 하기위해 ID값 반환
+        }
         model.addAttribute("qna", qnAForm);
         model.addAttribute("qnaFile", qnAService.findQnAFile(qnAForm.getQnaNum()));
         model.addAttribute("scri", searchCriteria);
