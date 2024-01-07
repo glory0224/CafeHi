@@ -45,15 +45,10 @@
                         <button class="btn btn-success">검색</button>
                     </form>
                     </div>
-                    <a class="btn btn-success float-end" sec:authorize="hasAnyRole('ROLE_USER')" href="" th:href="@{/qna/member/CafeHi-QnAWrite}">
+                    <a class="btn btn-success float-end" href="" th:href="@{/qna/CafeHi-QnAWriteView}">
                         <i class="fas fa-edit"></i> 글 작성
                     </a>
-                    <a class="btn btn-success float-end" sec:authorize="hasAnyRole('ROLE_MANAGER')" href="" th:href="@{/qna/manager/CafeHi-QnAWrite}">
-                        <i class="fas fa-edit"></i> 글 작성
-                    </a>
-                    <a class="btn btn-success float-end" sec:authorize="hasAnyRole('ROLE_ADMIN')" href="" th:href="@{/qna/admin/CafeHi-QnAWrite}">
-                        <i class="fas fa-edit"></i> 글 작성
-                    </a>
+
                 </div>
             </div>
             <div class="card-body">
@@ -83,7 +78,7 @@
                         <td th:text="'[' + ${qna.qnaTitleClassification} + ']'" style="text-decoration: none; color: black; font-weight: bold;"></td>
                         <td>
                             <!--유저, 매니저, 관리자의 권한을 어떻게 구분하고 상세 페이지로 이동할 것인지? 각자의 컨트롤러에서 동일한 model 이름을 보내고 값을 다르게 보낸다. 이후 조건문으로 체크한다.-->
-                            <a th:text="${qna.qnaTitle }" th:href="@{/qna/member/CafeHi-QnA(qnaNum = ${qna.qnaNum}, page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}"
+                            <a th:text="${qna.qnaTitle }" th:href="@{/qna/CafeHi-QnAView(qnaNum = ${qna.qnaNum}, page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}"
                                style="text-decoration: none; color: black; font-weight: bold;">
                                 글제목
                             </a>

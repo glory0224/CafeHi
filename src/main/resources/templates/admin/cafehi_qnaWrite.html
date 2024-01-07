@@ -32,7 +32,7 @@
 			<h1 class="mb-4">관리자 게시글 등록</h1>
 
 			<div class="card mb-4">
-				<form action="" th:action="@{/qna/admin/WriteQnA}" th:object="${qnAForm}" method="post"
+				<form action="" th:action="@{/qna/WriteQnA}" th:object="${qnAForm}" method="post"
 					 enctype="multipart/form-data" >
 					 <input type="hidden" th:name="memberCode" th:value="${#authentication.principal.memberCode}">
 					 <input type="hidden" name="qna_hit" th:value="0">
@@ -50,9 +50,9 @@
 								<th>분류</th>
 								<td>
 								<select th:field="*{qnaTitleClassification}">
-									<option th:value="관리자 공지사항">관리자 공지사항</option>
-									<option th:value="매니저 공지사항">매니저 공지사항</option>
-									<option th:value="유저 공지사항">유저 공지사항</option>
+									<option th:value="관리자공지사항">관리자 공지사항</option>
+									<option th:value="매니저공지사항">매니저 공지사항</option>
+									<option th:value="유저공지사항">유저 공지사항</option>
 								</select>
 								</td>
 							</tr>

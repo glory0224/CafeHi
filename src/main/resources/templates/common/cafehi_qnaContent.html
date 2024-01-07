@@ -67,13 +67,18 @@
 
 						<!-- 로그인 중인 사용자 분류 -->
 
-						<div th:if="${qna.member.memberId eq securityId}">
+
 						
 						<!-- 회원  -->
 						<div sec:authorize="hasRole('ROLE_USER')" th:class="d-flex" th:classappend="justify-content-end">
-
-							<a class="btn btn-success" th:href="@{/CafeHi-UpdateQnA(qnaNum = ${qna.qnaNum}, page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}">수정</a>
-							<form th:action="@{/CafeHi-DeleteQnA}" method="post">
+							<!--수정은 본인만-->
+							<div th:if="${qna.member.memberId eq securityId}">
+							<a class="btn btn-success" th:href="@{/qna/CafeHi-QnAUpdateView(qnaNum = ${qna.qnaNum}, page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}">수정</a>
+							</div>
+							<!--삭제는 본인이거나 manager 이상의 권한-->
+							<div th:each="authority : ${#authentication.getAuthorities()}">
+							<div th:if="${qna.member.memberId eq securityId or authority.authority eq 'ROLE_MANAGER' or authority.authority eq 'ROLE_ADMIN'}">
+							<form th:action="@{/qna/CafeHi-DeleteQnA}" method="post">
 								<input class="btn btn-success" type="submit" value="삭제" th:onclick="alert('정말로 삭제하시겠습니까?')">
 								<input type="hidden" th:name="${_csrf.parameterName }" th:value="${_csrf.token }">
 								<input type="hidden" th:name="qnaNum" th:value="${qna.qnaNum }">
@@ -81,15 +86,15 @@
 								<input type="hidden" th:name="perPageNum" th:value="${scri.perPageNum }">
 								<input type="hidden" th:name="searchType" th:value="${scri.searchType }">
 								<input type="hidden" th:name="keyword" th:value="${scri.keyword }">
+								<input type="hidden" th:name="securityId" th:value="${#authentication.principal.memberId}">
 							</form>
-
-							<a class="btn btn-success"  th:href="@{/CafeHi-QnAList(page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}">목록</a>
-
+							</div>
+							</div>
 						</div>
-						
-						</div>
+
 						<!-- 비회원 -->
-						<a class="btn btn-success" th:unless="${qna.member.memberId eq securityId}" th:href="@{/CafeHi-QnAList(page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}">목록</a>
+						<a class="btn btn-success"  th:href="@{/CafeHi-QnAList(page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}">목록</a>
+<!--						<a class="btn btn-success" th:unless="${qna.member.memberId eq securityId}" th:href="@{/CafeHi-QnAList(page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}">목록</a>-->
 						</div>
 						</div>
 	</main>

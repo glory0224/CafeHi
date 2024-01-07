@@ -32,7 +32,7 @@
 			<h1 class="mb-4">유저 게시글 등록</h1>
 
 			<div class="card mb-4">
-				<form action="" th:action="@{/qna/member/WriteQnA}" th:object="${qnAForm}" method="post"
+				<form action="" th:action="@{/qna/WriteQnA}" th:object="${qnAForm}" method="post"
 					 enctype="multipart/form-data" >
 					 <input type="hidden" th:name="memberCode" th:value="${#authentication.principal.memberCode}">
 					 <input type="hidden" name="qna_hit" th:value="0">
