@@ -49,27 +49,6 @@ function signupcheck() {
 
 }
 
-
-// 로그인 공백 확인
-function loginCheck(){
-	memberId = document.getElementById('floatingInput');
-	memberPassword = document.getElementById('floatingPassword');
-	console.log(memberId);
-	console.log(memberPassword);
-
-	if (memberId.value == "") {
-		alert('아이디를 입력해주세요.');
-		floatingInput.focus();
-		return;
-	} else if (memberPassword.value == "") {
-		alert('비밀번호를 입력해주세요.');
-		floatingPassword.focus();
-		return;
-		}
-		
-	document.getElementById('loginForm').submit();
-}
-
 /*회원 삭제 버튼*/
 
 function button_event(){
