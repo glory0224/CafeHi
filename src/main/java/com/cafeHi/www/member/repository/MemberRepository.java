@@ -5,12 +5,14 @@ import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.MemberAuth;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -66,10 +68,15 @@ public class MemberRepository {
     }
 
     // 아이디로 멤버 조회
-    public Member findByMemberId(String memberId) {
-        return em.createQuery("select m from Member m where m.memberId = :memberId", Member.class)
-                .setParameter("memberId", memberId)
-                .getSingleResult();
+    public Optional<Member> findByMemberId(String memberId) {
+        try {
+            Member member = em.createQuery("select m from Member m where m.memberId = :memberId", Member.class)
+                    .setParameter("memberId", memberId)
+                    .getSingleResult();
+            return Optional.ofNullable(member);
+        } catch (RuntimeException e) {
+            return Optional.empty();
+        }
     }
     public void deleteMember(Long memberCode) {
         Member findMember = em.find(Member.class, memberCode);

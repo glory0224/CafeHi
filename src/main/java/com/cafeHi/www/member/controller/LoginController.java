@@ -19,7 +19,14 @@ public class LoginController {
                             @RequestParam(value = "exception", required = false) String exception, Model model) {
 
             model.addAttribute("error", error);
-            model.addAttribute("exception", exception);
+
+            if(exception != null && exception.equals("UsernameNotFoundException")) {
+                model.addAttribute("exception", "해당 하는 계정이 없습니다.<br>회원가입 후 로그인 해주세요.");
+            } else if(exception != null && exception.equals("BadCredentialsException")) {
+                model.addAttribute("exception", "비밀번호가 틀렸습니다. <br>다시 로그인 해주세요.");
+            } else {
+                model.addAttribute("exception", exception);
+            }
 
         return "common/login";
     }

@@ -192,19 +192,19 @@ public class MemberService {
     @Transactional
     public ChangeMemberPwByEmailForm changeMemberPw(String memberId) {
 
-        Member findMember = memberRepository.findByMemberId(memberId);
+//        Member findMember = memberRepository.findByMemberId(memberId);
 
         // 랜덤으로 20자리 미만의 패스워드를 생성하는 비지니스 로직
 
         String newPassword = generateRandomPassword();
 
         // 변경 감지 방식으로 findMember의 비밀번호를 암호화 방식으로 저장
-        findMember.passwordEncode(newPassword);
+//        findMember.passwordEncode(newPassword);
 
         // 변경된 비밀번호와 이메일 정보를 담아서 폼으로 반환
         ChangeMemberPwByEmailForm changeMemberPwByEmailForm = new ChangeMemberPwByEmailForm();
 
-        changeMemberPwByEmailForm.setEmail(findMember.getMemberEmail());
+//        changeMemberPwByEmailForm.setEmail(findMember.getMemberEmail());
         changeMemberPwByEmailForm.setNewPassword(newPassword); // 암호화 방식이 아닌 새로 발급한 비밀번호를 반환
 
         return changeMemberPwByEmailForm;
