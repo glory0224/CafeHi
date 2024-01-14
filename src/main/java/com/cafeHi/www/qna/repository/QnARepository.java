@@ -6,12 +6,18 @@ import com.cafeHi.www.qna.dto.QnASearch;
 import com.cafeHi.www.qna.entity.QQnA;
 import com.cafeHi.www.qna.entity.QQnAFile;
 import com.cafeHi.www.qna.entity.QnA;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 @Repository
@@ -48,17 +54,62 @@ public class QnARepository {
                 .select(qnA)
                 .from(qnA)
                 .join(qnA.member, member)
-                .where(
+                /*.where(
                         searchCriteria.getSearchType().equals("title") ? qnA.qnaTitle.contains(searchCriteria.getKeyword()) :
                                 searchCriteria.getSearchType().equals("content") ? qnA.qnaContent.contains(searchCriteria.getKeyword()) :
                                         searchCriteria.getSearchType().equals("writer") ? member.memberId.contains(searchCriteria.getKeyword()) :
                                                 null
-                )
+                )*/
+                .where(searchDateFilter(searchCriteria, qnA).or(searchTypeFilter(searchCriteria,qnA,member)))
                 .orderBy(qnA.qnaNum.desc())
                 .offset(offset - 1)
                 .limit(limit)
                 .fetch();
     }
+
+    private BooleanExpression searchTypeFilter(SearchCriteria searchCriteria, QQnA qnA, QMember member) {
+        return searchCriteria.getSearchType().equals("title") ? qnA.qnaTitle.contains(searchCriteria.getKeyword()) :
+                searchCriteria.getSearchType().equals("content") ? qnA.qnaContent.contains(searchCriteria.getKeyword()) :
+                        searchCriteria.getSearchType().equals("writer") ? member.memberId.contains(searchCriteria.getKeyword()) :
+                                null;
+    }
+
+
+    // 날짜 필터
+    private BooleanExpression searchDateFilter(SearchCriteria searchCriteria, QQnA qnA) {
+        //goe, loe 사용
+        BooleanExpression isGoeStartDate = qnA.qnaWriteDateTime.goe(LocalDateTime.of(searchCriteria.getStartDate(), LocalTime.MIN));
+        BooleanExpression isLoeEndDate = qnA.qnaWriteDateTime.loe(LocalDateTime.of(searchCriteria.getEndDate(), LocalTime.MAX).withNano(0));
+        return Expressions.allOf(isGoeStartDate, isLoeEndDate);
+    }
+
+   /* public List<QnA> findPagingList(int limit, int offset, SearchCriteria searchCriteria, LocalDateTime startDateTime, LocalDateTime endDateTime) {
+        QQnA qnA = QQnA.qnA;
+        QMember member = QMember.member;
+
+        BooleanExpression conditions = qnA.isNotNull();
+
+        // 조건
+        if (searchCriteria.getSearchType().equals("title")) {
+            conditions = conditions.and(qnA.qnaTitle.contains(searchCriteria.getKeyword()));
+        } else if (searchCriteria.getSearchType().equals("content")) {
+            conditions = conditions.and(qnA.qnaContent.contains(searchCriteria.getKeyword()));
+        } else if (searchCriteria.getSearchType().equals("writer")) {
+            conditions = conditions.and(qnA.member.memberId.contains(searchCriteria.getKeyword()));
+        }
+
+        // 검색조건이 시작일보다 크거나 같고 종료일보다 작거나 같은 조건
+        conditions = conditions.and(qnA.qnaWriteDate.goe(startDateTime).and(qnA.qnaWriteDate.loe(endDateTime)));
+
+        // Fetch entities based on the conditions
+        return queryFactory.selectFrom(qnA)
+                .where(conditions)
+                .orderBy(qnA.qnaNum.desc())
+                .offset(offset - 1)
+                .limit(limit)
+                .fetch();
+    }
+*/
 
     public List<QnA> findQnAListByMemberCode(int limit, int offset, SearchCriteria searchCriteria, Long MemberCode){
 

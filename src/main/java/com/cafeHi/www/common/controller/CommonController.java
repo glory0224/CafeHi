@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
@@ -77,13 +79,24 @@ public class CommonController {
 
 		int offset = searchCriteria.getRowStart();
 		int limit = searchCriteria.getPerPageNum();
-
 		List<QnAForm> qnAList = qnAService.findQnAList(limit, offset, searchCriteria);
 
 		PageMaker pageMaker = new PageMaker();
 
 		pageMaker.setCri(searchCriteria);
 		pageMaker.setTotalCount(qnAService.getPagingCount(searchCriteria));
+
+		// qna 게시판 날짜 초기화 여부
+		if(searchCriteria.getSearchStartDate() == "" && searchCriteria.getSearchEndDate() == "") {
+			LocalDate currentDate = LocalDate.now();
+			String strCurrentDate = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+			model.addAttribute("qnaStartDate", strCurrentDate);
+			model.addAttribute("qnaEndDate", strCurrentDate);
+		} else {
+			model.addAttribute("qnaStartDate", searchCriteria.getSearchStartDate());
+			model.addAttribute("qnaEndDate", searchCriteria.getSearchEndDate());
+		}
+
 
 		// 총 페이지 수
 		model.addAttribute("qnaList", qnAList);

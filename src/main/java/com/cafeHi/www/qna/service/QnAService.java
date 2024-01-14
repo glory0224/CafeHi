@@ -24,6 +24,11 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -123,8 +128,24 @@ public class QnAService {
     }
 
     public List<QnAForm> findQnAList(int limit, int offset, SearchCriteria searchCriteria) {
+        List<QnA> qnAList = new ArrayList<>();
 
-        List<QnA> qnAList = qnARepository.findPagingList(limit, offset, searchCriteria);
+        // 검색조건이 있는경우
+        if(searchCriteria.getSearchStartDate() != "" && searchCriteria.getSearchEndDate() != "") {
+            // 날짜 형식 포맷
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate searchStartDate = LocalDate.parse(searchCriteria.getSearchStartDate(), formatter);
+            LocalDate searchEndDate = LocalDate.parse(searchCriteria.getSearchEndDate(), formatter);
+            searchCriteria.setStartDate(searchStartDate);
+            searchCriteria.setEndDate(searchEndDate);
+            qnAList = qnARepository.findPagingList(limit, offset, searchCriteria);
+
+        } else {
+            // 특정 날짜가 아닌경우 오늘날짜로 조회하도록
+            searchCriteria.setStartDate(LocalDate.now());
+            searchCriteria.setEndDate(LocalDate.now());
+            qnAList = qnARepository.findPagingList(limit, offset, searchCriteria);
+        }
 
         List<QnAForm> qnAFormList = qnAList.stream().map(qna -> {
             QnAForm qnAForm = new QnAForm();
@@ -134,8 +155,10 @@ public class QnAService {
             qnAForm.setQnaContent(qna.getQnaContent());
             qnAForm.setQnaHit(qna.getQnaHit());
             qnAForm.setMember(qna.getMember());
-            qnAForm.setQnaWriteDate(qna.getQnaWriteDate());
-            qnAForm.setQnaUpdateDate(qna.getQnaUpdateDate());
+            qnAForm.setQnaWriteDateTime(qna.getQnaWriteDateTime());
+            qnAForm.setQnaUpdateDateTime(qna.getQnaUpdateDateTime());
+            qnAForm.setQnaWriteDate(qna.getQnaWriteDateTime().toLocalDate());
+            qnAForm.setQnaUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
             return qnAForm;
         }).collect(Collectors.toList());
 
@@ -156,8 +179,10 @@ public class QnAService {
             qnAForm.setQnaContent(qna.getQnaContent());
             qnAForm.setQnaHit(qna.getQnaHit());
             qnAForm.setMember(qna.getMember());
-            qnAForm.setQnaWriteDate(qna.getQnaWriteDate());
-            qnAForm.setQnaUpdateDate(qna.getQnaUpdateDate());
+            qnAForm.setQnaWriteDateTime(qna.getQnaWriteDateTime());
+            qnAForm.setQnaUpdateDateTime(qna.getQnaUpdateDateTime());
+            qnAForm.setQnaWriteDate(qna.getQnaWriteDateTime().toLocalDate());
+            qnAForm.setQnaUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
             return qnAForm;
         }).collect(Collectors.toList());
 
@@ -166,20 +191,22 @@ public class QnAService {
 
     public QnAForm findQnA(Long QnAId) {
 
-        QnA qnA = qnARepository.findQnA(QnAId);
+        QnA qna = qnARepository.findQnA(QnAId);
 
-        QnAForm qnaForm = new QnAForm();
+        QnAForm qnAForm = new QnAForm();
 
-        qnaForm.setQnaNum(qnA.getQnaNum());
-        qnaForm.setQnaTitle(qnA.getQnaTitle());
-        qnaForm.setQnaContent(qnA.getQnaContent());
-        qnaForm.setQnaTitleClassification(qnA.getQnaTitleClassification());
-        qnaForm.setQnaHit(qnA.getQnaHit());
-        qnaForm.setMember(qnA.getMember());
-        qnaForm.setQnaWriteDate(qnA.getQnaWriteDate());
-        qnaForm.setQnaUpdateDate(qnA.getQnaUpdateDate());
+        qnAForm.setQnaNum(qna.getQnaNum());
+        qnAForm.setQnaTitle(qna.getQnaTitle());
+        qnAForm.setQnaContent(qna.getQnaContent());
+        qnAForm.setQnaTitleClassification(qna.getQnaTitleClassification());
+        qnAForm.setQnaHit(qna.getQnaHit());
+        qnAForm.setMember(qna.getMember());
+        qnAForm.setQnaWriteDateTime(qna.getQnaWriteDateTime());
+        qnAForm.setQnaUpdateDateTime(qna.getQnaUpdateDateTime());
+        qnAForm.setQnaWriteDate(qna.getQnaWriteDateTime().toLocalDate());
+        qnAForm.setQnaUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
 
-        return qnaForm;
+        return qnAForm;
     }
 
 

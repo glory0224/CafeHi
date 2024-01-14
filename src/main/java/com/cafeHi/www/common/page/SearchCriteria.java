@@ -2,11 +2,19 @@ package com.cafeHi.www.common.page;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class SearchCriteria extends Criteria{
 
     private String searchType ="";
     private String keyword = "";
+    private String searchStartDate = "";
+    private String searchEndDate = "";
+    private LocalDate StartDate;
+    private LocalDate EndDate;
+
+
 
     public String getSearchType() {
         return searchType;
@@ -21,13 +29,44 @@ public class SearchCriteria extends Criteria{
         this.keyword = keyword;
     }
 
+    public String getSearchStartDate() {
+        return searchStartDate;
+    }
+
+    public void setSearchStartDate(String searchStartDate) {
+        this.searchStartDate = searchStartDate;
+    }
+
+    public String getSearchEndDate() {
+        return searchEndDate;
+    }
+
+    public void setSearchEndDate(String searchEndDate) {
+        this.searchEndDate = searchEndDate;
+    }
+
+    public LocalDate getStartDate() {
+        return StartDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        StartDate = startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return EndDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        EndDate = endDate;
+    }
 
     @Override
     public String toString() {
-        return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + "]";
+        return "SearchCriteria [searchType=" + searchType + ", keyword=" + keyword + ", searchStartDate=" + searchStartDate + ", searchEndDate=" + searchEndDate + "]";
     }
 
-    public String getQueryString(Long qnaNum, int page, int perPageNum, String searchType, String keyword) {
+    public String getQueryString(Long qnaNum, int page, int perPageNum, String searchType, String keyword, String searchStartDate, String searchEndDate) {
         StringBuilder sb = new StringBuilder();
         sb.append("?qnaNum=");
         sb.append(qnaNum);
@@ -39,6 +78,10 @@ public class SearchCriteria extends Criteria{
         sb.append(searchType);
         sb.append("&keyword=");
         sb.append(keyword);
+        sb.append("&searchStartDate=");
+        sb.append(searchStartDate);
+        sb.append("&searchStartDate=");
+        sb.append(searchEndDate);
 
         try {
             sb.append(URLEncoder.encode(keyword, "UTF-8"));
@@ -48,7 +91,7 @@ public class SearchCriteria extends Criteria{
         return sb.toString();
     }
 
-    public String getQueryString(int page, int perPageNum, String searchType, String keyword) {
+    public String getQueryString(int page, int perPageNum, String searchType, String keyword, String searchStartDate, String searchEndDate) {
         StringBuilder sb = new StringBuilder();
 
         sb.append("?page=");
@@ -59,6 +102,10 @@ public class SearchCriteria extends Criteria{
         sb.append(searchType);
         sb.append("&keyword=");
         sb.append(keyword);
+        sb.append("&searchStartDate=");
+        sb.append(searchStartDate);
+        sb.append("&searchStartDate=");
+        sb.append(searchEndDate);
 
         try {
             sb.append(URLEncoder.encode(keyword, "UTF-8"));

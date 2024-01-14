@@ -4,6 +4,9 @@ import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.qna.dto.QnAForm;
 import lombok.Getter;
 import lombok.ToString;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,6 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 //@Setter
 @ToString
+@EntityListeners(AuditingEntityListener.class)
 public class QnA {
 
     // 게시글 번호 사용을 위해 시퀀스 전략 사용
@@ -23,8 +27,10 @@ public class QnA {
     private String qnaTitle;
     private String qnaTitleClassification;
     private String qnaContent;
-    private LocalDateTime qnaWriteDate;
-    private LocalDateTime qnaUpdateDate;
+    @CreatedDate
+    private LocalDateTime qnaWriteDateTime;
+    @LastModifiedDate
+    private LocalDateTime qnaUpdateDateTime;
     private int qnaHit;
 
     @OneToOne(mappedBy = "qna", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
@@ -41,8 +47,8 @@ public class QnA {
         this.qnaTitleClassification = qnAForm.getQnaTitleClassification();
         this.qnaContent = qnAForm.getQnaContent();
         this.qnaHit = qnAForm.getQnaHit();
-        this.qnaWriteDate = LocalDateTime.now();
-        this.qnaUpdateDate = LocalDateTime.now();
+        this.qnaWriteDateTime = LocalDateTime.now();
+        this.qnaUpdateDateTime = LocalDateTime.now();
     }
 
     public void MemberSetQnA(Member member) {
@@ -60,7 +66,7 @@ public class QnA {
         this.qnaTitleClassification = qnAForm.getQnaTitleClassification();
         this.qnaContent = qnAForm.getQnaContent();
         this.qnaHit = qnAForm.getQnaHit();
-        this.qnaUpdateDate = LocalDateTime.now();
+        this.qnaUpdateDateTime = LocalDateTime.now();
     }
 
 

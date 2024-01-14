@@ -1,5 +1,6 @@
 package com.cafeHi.www.qna.dto;
 
+import com.cafeHi.www.common.date.CommonAudit;
 import com.cafeHi.www.member.entity.Member;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,13 +9,14 @@ import lombok.ToString;
 
 import javax.persistence.Column;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
-public class QnAForm {
+public class QnAForm extends CommonAudit {
 
     @Column(name = "qna_num")
     private Long qnaNum;
@@ -26,9 +28,5 @@ public class QnAForm {
     private int qnaHit;
 
     private Member member;
-
-    private LocalDateTime qnaWriteDate;
-
-    private LocalDateTime qnaUpdateDate;
 
 }

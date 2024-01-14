@@ -124,7 +124,9 @@ public class QnAController {
 
         qnAService.UpdateQnA(qna, uploadFile);
 
-        String queryString = searchCriteria.getQueryString(qna.getQnaNum(), searchCriteria.getPage(), searchCriteria.getPerPageNum(), searchCriteria.getSearchType(), searchCriteria.getKeyword());
+        String queryString = searchCriteria.getQueryString(qna.getQnaNum(), searchCriteria.getPage(), searchCriteria.getPerPageNum(),
+                searchCriteria.getSearchType(), searchCriteria.getKeyword(), searchCriteria.getSearchStartDate(), searchCriteria.getSearchEndDate());
+
         return "redirect:/qna/CafeHi-QnAUpdateView" + queryString;
     }
 
@@ -188,7 +190,8 @@ public class QnAController {
 
         qnAService.deleteQnA(qnAForm);
 
-        String queryString  = searchCriteria.getQueryString(searchCriteria.getPage(), searchCriteria.getPerPageNum(), searchCriteria.getSearchType(), searchCriteria.getKeyword());
+        String queryString  = searchCriteria.getQueryString(searchCriteria.getPage(), searchCriteria.getPerPageNum(), searchCriteria.getSearchType(),
+                searchCriteria.getKeyword(), searchCriteria.getSearchStartDate(), searchCriteria.getSearchEndDate());
 
         return "redirect:/CafeHi-QnAList" + queryString;
     }
