@@ -1,5 +1,6 @@
 package com.cafeHi.www.qna.entity;
 
+import com.cafeHi.www.comment.entity.Comment;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.qna.dto.QnAForm;
 import lombok.Getter;
@@ -10,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Getter
@@ -40,6 +42,9 @@ public class QnA {
     @JoinColumn(name = "member_code")
     private Member member;
 
+    @OneToMany(mappedBy = "qna", cascade = CascadeType.ALL,  orphanRemoval = true)
+    private List<Comment> comments;
+
 
 
     public void WriteFormSetQnA(QnAForm qnAForm) {
@@ -47,8 +52,8 @@ public class QnA {
         this.qnaTitleClassification = qnAForm.getQnaTitleClassification();
         this.qnaContent = qnAForm.getQnaContent();
         this.qnaHit = qnAForm.getQnaHit();
-        this.qnaWriteDateTime = LocalDateTime.now();
-        this.qnaUpdateDateTime = LocalDateTime.now();
+//        this.qnaWriteDateTime = LocalDateTime.now();
+//        this.qnaUpdateDateTime = LocalDateTime.now();
     }
 
     public void MemberSetQnA(Member member) {
@@ -66,7 +71,7 @@ public class QnA {
         this.qnaTitleClassification = qnAForm.getQnaTitleClassification();
         this.qnaContent = qnAForm.getQnaContent();
         this.qnaHit = qnAForm.getQnaHit();
-        this.qnaUpdateDateTime = LocalDateTime.now();
+//        this.qnaUpdateDateTime = LocalDateTime.now();
     }
 
 

@@ -15,6 +15,7 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -55,12 +56,12 @@ public class QnAController {
      */
     @GetMapping("/CafeHi-QnAWriteView")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String QnaWriteView(Model model) {
+    public String QnaWriteView(Model model, SearchCriteria searchCriteria) {
 
         model.addAttribute("qnAForm", new QnAForm());
+        model.addAttribute("scri", searchCriteria);
 
         getAuthAndUrlMapping();
-
         return url;
     }
 

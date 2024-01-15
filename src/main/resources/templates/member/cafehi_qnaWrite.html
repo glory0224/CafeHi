@@ -84,8 +84,10 @@
 					<div class="d-flex flex-row-reverse bd-highlight mt- 3 mb-3">
 						<div class="justify-content-end">
 							<input class="btn btn-success" type="submit" value="작성">
-							&nbsp; <input class="btn btn-success" type="button" value="목록"
-								onclick="location.href='QnAList.do'">
+							<a class="btn btn-success"  th:href="@{/CafeHi-QnAList(page = ${scri.page}, perPageNum = ${scri.perPageNum}, searchType = ${scri.searchType}, keyword = ${scri.keyword})}">목록</a>
+						</div>
+							&nbsp; <!--<input class="btn btn-success" type="button" value="목록"
+								onclick="location.href='/CafeHi-QnAList'">-->
 						</div>
 					</div>
 				</form>
