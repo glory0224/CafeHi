@@ -1,5 +1,6 @@
 package com.cafeHi.www.qna.controller;
 
+import com.cafeHi.www.comment.dto.CommentForm;
 import com.cafeHi.www.common.file.FileStore;
 import com.cafeHi.www.common.page.PageMaker;
 import com.cafeHi.www.common.page.SearchCriteria;
@@ -74,9 +75,10 @@ public class QnAController {
      */
     @PostMapping("/WriteQnA")
     @PreAuthorize("hasRole('ROLE_USER')")
-    public String WriteQnA(@Valid QnAForm qnAForm, BindingResult result, MultipartFile uploadFile){
+    public String WriteQnA(@Valid QnAForm qnAForm, BindingResult result, MultipartFile uploadFile,Model model, SearchCriteria searchCriteria){
 
         if (result.hasErrors()) {
+            model.addAttribute("scri", searchCriteria); // @Valid 로 검증하지 않는 검색조건에 관한 데이터 다시 반환
             getAuthAndUrlMapping();
             return url;
         }
@@ -178,6 +180,7 @@ public class QnAController {
         }
         model.addAttribute("qna", qnAForm);
         model.addAttribute("qnaFile", qnAService.findQnAFile(qnAForm.getQnaNum()));
+        model.addAttribute("commentForm", new CommentForm());
         model.addAttribute("scri", searchCriteria);
 
         return "common/cafehi_qnaContent";

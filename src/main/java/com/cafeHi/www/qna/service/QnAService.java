@@ -3,7 +3,6 @@ package com.cafeHi.www.qna.service;
 import com.cafeHi.www.common.file.FileStore;
 import com.cafeHi.www.common.file.dto.UploadFile;
 import com.cafeHi.www.common.page.SearchCriteria;
-import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.member.dto.MemberInfo;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.repository.MemberRepository;
@@ -25,9 +24,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -155,10 +152,10 @@ public class QnAService {
             qnAForm.setQnaContent(qna.getQnaContent());
             qnAForm.setQnaHit(qna.getQnaHit());
             qnAForm.setMember(qna.getMember());
-            qnAForm.setQnaWriteDateTime(qna.getQnaWriteDateTime());
-            qnAForm.setQnaUpdateDateTime(qna.getQnaUpdateDateTime());
-            qnAForm.setQnaWriteDate(qna.getQnaWriteDateTime().toLocalDate());
-            qnAForm.setQnaUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
+            qnAForm.setWriteDateTime(qna.getQnaWriteDateTime());
+            qnAForm.setUpdateDateTime(qna.getQnaUpdateDateTime());
+            qnAForm.setWriteDate(qna.getQnaWriteDateTime().toLocalDate());
+            qnAForm.setUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
             return qnAForm;
         }).collect(Collectors.toList());
 
@@ -179,10 +176,10 @@ public class QnAService {
             qnAForm.setQnaContent(qna.getQnaContent());
             qnAForm.setQnaHit(qna.getQnaHit());
             qnAForm.setMember(qna.getMember());
-            qnAForm.setQnaWriteDateTime(qna.getQnaWriteDateTime());
-            qnAForm.setQnaUpdateDateTime(qna.getQnaUpdateDateTime());
-            qnAForm.setQnaWriteDate(qna.getQnaWriteDateTime().toLocalDate());
-            qnAForm.setQnaUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
+            qnAForm.setWriteDateTime(qna.getQnaWriteDateTime());
+            qnAForm.setUpdateDateTime(qna.getQnaUpdateDateTime());
+            qnAForm.setWriteDate(qna.getQnaWriteDateTime().toLocalDate());
+            qnAForm.setUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
             return qnAForm;
         }).collect(Collectors.toList());
 
@@ -201,10 +198,10 @@ public class QnAService {
         qnAForm.setQnaTitleClassification(qna.getQnaTitleClassification());
         qnAForm.setQnaHit(qna.getQnaHit());
         qnAForm.setMember(qna.getMember());
-        qnAForm.setQnaWriteDateTime(qna.getQnaWriteDateTime());
-        qnAForm.setQnaUpdateDateTime(qna.getQnaUpdateDateTime());
-        qnAForm.setQnaWriteDate(qna.getQnaWriteDateTime().toLocalDate());
-        qnAForm.setQnaUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
+        qnAForm.setWriteDateTime(qna.getQnaWriteDateTime());
+        qnAForm.setUpdateDateTime(qna.getQnaUpdateDateTime());
+        qnAForm.setWriteDate(qna.getQnaWriteDateTime().toLocalDate());
+        qnAForm.setUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
 
         return qnAForm;
     }

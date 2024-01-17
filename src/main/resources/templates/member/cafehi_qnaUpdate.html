@@ -37,15 +37,15 @@
 					<input type="hidden" th:field="*{qnaNum}">
 					<input type="hidden" th:field="${qnaFile.id}">
 					
-					<table class="table table-striped" th:with="writeDate= ${qna.qnaWriteDate}, modifyDate= ${qna.qnaUpdateDate}">
+					<table class="table table-striped">
 							<tr>
 								<th>작성자</th><td th:text="${qna.member.memberId }"></td>
 								<th>조회수</th><td th:text="${qna.qnaHit }"></td>
 							</tr>
 							
 							<tr>
-								<th>작성일</th><td th:text="${#temporals.format(writeDate , 'yyyy-MM-dd HH:mm:ss')}"></td>
-								<th>수정일</th><td th:text="${#temporals.format(modifyDate , 'yyyy-MM-dd HH:mm:ss')}"></td>
+								<th>작성일</th><td th:text="${qna.writeDate}"></td>
+								<th>수정일</th><td th:text="${qna.updateDate}"></td>
 							</tr>
 							<tr>
 								<th>분류</th>
