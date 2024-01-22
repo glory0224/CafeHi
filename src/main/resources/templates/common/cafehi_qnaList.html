@@ -83,7 +83,7 @@
 
                     <tbody th:unless="${ qnaList.size() eq 0 }">
 
-                    <tr th:each="qna : ${ qnaList }" th:with="writeDate= ${qna.getWriteDate}">
+                    <tr th:each="qna : ${ qnaList }">
                         <td th:text="${qna.qnaNum }">글번호</td>
                         <td th:text="'[' + ${qna.qnaTitleClassification} + ']'" style="text-decoration: none; color: black; font-weight: bold;"></td>
                         <td>
@@ -93,10 +93,10 @@
                                 글제목
                             </a>
                         </td>
-                        <td th:text="${qna.member.memberId}">회원 id</td>
+                        <td th:text="${qna.memberDTO.memberId}">회원 id</td>
 <!--                        <td th:text="${#temporals.format(writeDate , 'yyyy-MM-dd HH:mm:ss')}">작성일자</td>-->
-                        <td th:text="${qna.getWriteDate}">작성일</td>
-                        <td th:text="${qna.getUpdateDate}">수정일</td>
+                        <td th:text="${qna.qnaWriteDate}">작성일</td>
+                        <td th:text="${qna.qnaUpdateDate}">수정일</td>
                         <td th:text="${qna.qnaHit }">조회수</td>
                     </tr>
 

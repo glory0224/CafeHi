@@ -11,7 +11,8 @@ import com.cafeHi.www.member.service.MemberService;
 import com.cafeHi.www.order.dto.OrderMenuDTO;
 import com.cafeHi.www.order.dto.OrderSearch;
 import com.cafeHi.www.order.service.OrderService;
-import com.cafeHi.www.qna.dto.QnAForm;
+import com.cafeHi.www.qna.dto.QnADTO;
+import com.cafeHi.www.qna.form.QnAForm;
 import com.cafeHi.www.qna.service.QnAService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -155,7 +156,7 @@ public class MemberMypageController {
         int offset = searchCriteria.getRowStart();
         int limit = searchCriteria.getPerPageNum();
 
-        List<QnAForm> qnAList = qnAService.findQnAListByMemberCode(limit, offset, searchCriteria, memberCode);
+        List<QnADTO> qnAList = qnAService.findQnAListByMemberCode(limit, offset, searchCriteria, memberCode);
 
         PageMaker pageMaker = new PageMaker();
 

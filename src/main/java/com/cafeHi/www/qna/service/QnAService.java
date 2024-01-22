@@ -1,13 +1,16 @@
 package com.cafeHi.www.qna.service;
 
+import com.cafeHi.www.comment.entity.Comment;
 import com.cafeHi.www.common.file.FileStore;
 import com.cafeHi.www.common.file.dto.UploadFile;
 import com.cafeHi.www.common.page.SearchCriteria;
+import com.cafeHi.www.member.dto.MemberDTO;
 import com.cafeHi.www.member.dto.MemberInfo;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.repository.MemberRepository;
-import com.cafeHi.www.qna.dto.QnAFileForm;
-import com.cafeHi.www.qna.dto.QnAForm;
+import com.cafeHi.www.qna.dto.QnADTO;
+import com.cafeHi.www.qna.form.QnAFileForm;
+import com.cafeHi.www.qna.form.QnAForm;
 import com.cafeHi.www.qna.entity.QnA;
 import com.cafeHi.www.qna.entity.QnAFile;
 import com.cafeHi.www.qna.repository.QnAFileRepository;
@@ -124,13 +127,13 @@ public class QnAService {
         qnARepository.deleteQnA(findQnA.getQnaNum());
     }
 
-    public List<QnAForm> findQnAList(int limit, int offset, SearchCriteria searchCriteria) {
-        List<QnA> qnAList = new ArrayList<>();
+    public List<QnADTO> findQnAList(int limit, int offset, SearchCriteria searchCriteria) {
 
+        // 날짜 형식 포맷
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        List<QnA> qnAList = new ArrayList<>();
         // 검색조건이 있는경우
         if(searchCriteria.getSearchStartDate() != "" && searchCriteria.getSearchEndDate() != "") {
-            // 날짜 형식 포맷
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate searchStartDate = LocalDate.parse(searchCriteria.getSearchStartDate(), formatter);
             LocalDate searchEndDate = LocalDate.parse(searchCriteria.getSearchEndDate(), formatter);
             searchCriteria.setStartDate(searchStartDate);
@@ -144,6 +147,9 @@ public class QnAService {
             qnAList = qnARepository.findPagingList(limit, offset, searchCriteria);
         }
 
+        List<QnADTO> qnADTOList = qnAList.stream().map(qnA -> qnA.convertQnADTO()).collect(Collectors.toList());
+
+/*
         List<QnAForm> qnAFormList = qnAList.stream().map(qna -> {
             QnAForm qnAForm = new QnAForm();
             qnAForm.setQnaNum(qna.getQnaNum());
@@ -152,23 +158,24 @@ public class QnAService {
             qnAForm.setQnaContent(qna.getQnaContent());
             qnAForm.setQnaHit(qna.getQnaHit());
             qnAForm.setMember(qna.getMember());
-            qnAForm.setWriteDateTime(qna.getQnaWriteDateTime());
-            qnAForm.setUpdateDateTime(qna.getQnaUpdateDateTime());
-            qnAForm.setWriteDate(qna.getQnaWriteDateTime().toLocalDate());
-            qnAForm.setUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
+            qnAForm.setWriteDate(qna.getQnaWriteDateTime().toLocalDate().format(formatter));
+            qnAForm.setUpdateDate(qna.getQnaUpdateDateTime().toLocalDate().format(formatter));
             return qnAForm;
         }).collect(Collectors.toList());
+*/
 
 
-        return qnAFormList;
+        return qnADTOList;
 
     }
 
-    public List<QnAForm> findQnAListByMemberCode(int limit, int offset, SearchCriteria searchCriteria, Long memberCode) {
+    public List<QnADTO> findQnAListByMemberCode(int limit, int offset, SearchCriteria searchCriteria, Long memberCode) {
 
         List<QnA> qnAList = qnARepository.findQnAListByMemberCode(limit, offset, searchCriteria, memberCode);
 
-        List<QnAForm> qnAFormList = qnAList.stream().map(qna -> {
+        List<QnADTO> qnADTOList = qnAList.stream().map(qnA -> qnA.convertQnADTO()).collect(Collectors.toList());
+
+/*        List<QnAForm> qnAFormList = qnAList.stream().map(qna -> {
             QnAForm qnAForm = new QnAForm();
             qnAForm.setQnaNum(qna.getQnaNum());
             qnAForm.setQnaTitle(qna.getQnaTitle());
@@ -176,34 +183,18 @@ public class QnAService {
             qnAForm.setQnaContent(qna.getQnaContent());
             qnAForm.setQnaHit(qna.getQnaHit());
             qnAForm.setMember(qna.getMember());
-            qnAForm.setWriteDateTime(qna.getQnaWriteDateTime());
-            qnAForm.setUpdateDateTime(qna.getQnaUpdateDateTime());
-            qnAForm.setWriteDate(qna.getQnaWriteDateTime().toLocalDate());
-            qnAForm.setUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
             return qnAForm;
-        }).collect(Collectors.toList());
+        }).collect(Collectors.toList());*/
 
-        return qnAFormList;
+        return qnADTOList;
     }
 
-    public QnAForm findQnA(Long QnAId) {
+    public QnADTO findQnA(Long QnAId) {
 
         QnA qna = qnARepository.findQnA(QnAId);
+        QnADTO qnADTO = new QnADTO(qna);
 
-        QnAForm qnAForm = new QnAForm();
-
-        qnAForm.setQnaNum(qna.getQnaNum());
-        qnAForm.setQnaTitle(qna.getQnaTitle());
-        qnAForm.setQnaContent(qna.getQnaContent());
-        qnAForm.setQnaTitleClassification(qna.getQnaTitleClassification());
-        qnAForm.setQnaHit(qna.getQnaHit());
-        qnAForm.setMember(qna.getMember());
-        qnAForm.setWriteDateTime(qna.getQnaWriteDateTime());
-        qnAForm.setUpdateDateTime(qna.getQnaUpdateDateTime());
-        qnAForm.setWriteDate(qna.getQnaWriteDateTime().toLocalDate());
-        qnAForm.setUpdateDate(qna.getQnaUpdateDateTime().toLocalDate());
-
-        return qnAForm;
+        return qnADTO;
     }
 
 

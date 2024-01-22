@@ -1,9 +1,10 @@
 package com.cafeHi.www.comment.controller;
 
-import com.cafeHi.www.comment.dto.CommentForm;
+import com.cafeHi.www.comment.form.CommentForm;
 import com.cafeHi.www.comment.service.CommentService;
 import com.cafeHi.www.common.page.SearchCriteria;
-import com.cafeHi.www.qna.dto.QnAForm;
+import com.cafeHi.www.qna.dto.QnADTO;
+import com.cafeHi.www.qna.form.QnAForm;
 import com.cafeHi.www.qna.service.QnAService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
@@ -31,13 +31,19 @@ public class CommentController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public String WriteComment(@Valid CommentForm commentForm, BindingResult result, Model model,Long qnaNum, SearchCriteria searchCriteria) {
 
+        QnADTO qnA = qnAService.findQnA(qnaNum);
+
         if (result.hasErrors()) {
-            QnAForm qnAForm = qnAService.findQnA(qnaNum);
             model.addAttribute("qnaFile", qnAService.findQnAFile(qnaNum));
-            model.addAttribute("qna", qnAForm);
+            model.addAttribute("qna", qnA);
             model.addAttribute("scri", searchCriteria);
             return "common/cafehi_qnaContent";
         }
+
+        commentService.WriteComment(commentForm);
+        model.addAttribute("qnaFile", qnAService.findQnAFile(qnaNum));
+        model.addAttribute("qna", qnA);
+        model.addAttribute("scri", searchCriteria);
 
         return "redirect:/qna/CafeHi-QnAView";
     }

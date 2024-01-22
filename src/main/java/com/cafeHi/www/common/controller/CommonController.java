@@ -3,7 +3,8 @@ package com.cafeHi.www.common.controller;
 import com.cafeHi.www.common.page.PageMaker;
 import com.cafeHi.www.common.page.SearchCriteria;
 import com.cafeHi.www.member.dto.MemberForm;
-import com.cafeHi.www.qna.dto.QnAForm;
+import com.cafeHi.www.qna.dto.QnADTO;
+import com.cafeHi.www.qna.form.QnAForm;
 import com.cafeHi.www.qna.service.QnAService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -79,7 +80,7 @@ public class CommonController {
 
 		int offset = searchCriteria.getRowStart();
 		int limit = searchCriteria.getPerPageNum();
-		List<QnAForm> qnAList = qnAService.findQnAList(limit, offset, searchCriteria);
+		List<QnADTO> qnAList = qnAService.findQnAList(limit, offset, searchCriteria);	// stackOverFlow Error
 
 		PageMaker pageMaker = new PageMaker();
 

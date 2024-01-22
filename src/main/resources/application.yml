@@ -1,4 +1,11 @@
 spring:
+  devtools:
+    restart:
+      enable: true
+
+  thymeleaf:
+    cache: false
+
   datasource:
     url: jdbc:postgresql://localhost:5432/cafeHi
     username: postgres
@@ -7,7 +14,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect

@@ -2,11 +2,10 @@ package com.cafeHi.www.qna.repository;
 
 import com.cafeHi.www.common.page.SearchCriteria;
 import com.cafeHi.www.member.entity.QMember;
-import com.cafeHi.www.qna.dto.QnASearch;
+import com.cafeHi.www.qna.form.QnASearch;
 import com.cafeHi.www.qna.entity.QQnA;
 import com.cafeHi.www.qna.entity.QQnAFile;
 import com.cafeHi.www.qna.entity.QnA;
-import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -15,7 +14,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;

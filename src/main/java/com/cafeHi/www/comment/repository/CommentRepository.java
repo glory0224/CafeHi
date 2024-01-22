@@ -23,8 +23,8 @@ public class CommentRepository {
         return comment.getId();
     }
 
-    // 전체 댓글 데이터
-    public List<Comment> findAll() {
+    // 특정 게시글에 대한 전체 댓글 데이터
+    public List<Comment> findAll(Long qnaNum) {
         return em.createQuery("select c from Comment c", Comment.class)
                 .getResultList();
     }
@@ -40,4 +40,12 @@ public class CommentRepository {
                 .limit(limit)
                 .fetch();
     }
+
+    // 특정 글에 대한 댓글 리스트
+//    public List<Comment> findAllByQnANum(Comment comm) {
+//        return em.createQuery("select c from Comment c where c.qna_id = : qnaId", Comment.class)
+//                .getParameter("qnaId", qnaId)
+//                .getResultList();
+//    }
+
 }

@@ -1,4 +1,4 @@
-package com.cafeHi.www.qna.dto;
+package com.cafeHi.www.qna.form;
 
 import com.cafeHi.www.qna.entity.QnA;
 import lombok.Getter;

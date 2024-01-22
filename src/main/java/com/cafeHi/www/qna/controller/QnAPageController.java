@@ -1,7 +1,7 @@
 //package com.cafeHi.www.qna.controller;
 //
 //import com.cafeHi.www.common.page.SearchCriteria;
-//import com.cafeHi.www.qna.dto.QnAForm;
+//import com.cafeHi.www.qna.form.QnAForm;
 //import com.cafeHi.www.qna.service.QnAService;
 //import lombok.RequiredArgsConstructor;
 //import lombok.extern.slf4j.Slf4j;

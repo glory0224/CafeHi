@@ -1,12 +1,14 @@
 package com.cafeHi.www.qna.controller;
 
-import com.cafeHi.www.comment.dto.CommentForm;
+import com.cafeHi.www.comment.dto.CommentDTO;
+import com.cafeHi.www.comment.form.CommentForm;
+import com.cafeHi.www.comment.service.CommentService;
 import com.cafeHi.www.common.file.FileStore;
-import com.cafeHi.www.common.page.PageMaker;
 import com.cafeHi.www.common.page.SearchCriteria;
 import com.cafeHi.www.member.dto.MemberInfo;
 import com.cafeHi.www.member.entity.MemberAuth;
-import com.cafeHi.www.qna.dto.QnAForm;
+import com.cafeHi.www.qna.dto.QnADTO;
+import com.cafeHi.www.qna.form.QnAForm;
 import com.cafeHi.www.qna.service.QnAService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +18,6 @@ import org.springframework.http.ContentDisposition;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -34,8 +35,6 @@ import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,6 +45,8 @@ public class QnAController {
     private final QnAService qnAService;
 
     private final FileStore fileStore;
+
+    private final CommentService commentService;
 
     private String url;
 
@@ -157,18 +158,23 @@ public class QnAController {
      * 글 조회는 모든 권한이 볼 수 있음
      * @param request
      * @param response
-     * @param qnaNum
      * @param searchCriteria
      * @param model
      * @return
      */
     @GetMapping("/CafeHi-QnAView")
-    public String QnAView(HttpServletRequest request, HttpServletResponse response, Long qnaNum, SearchCriteria searchCriteria, Model model) {
+    public String QnAView(HttpServletRequest request, HttpServletResponse response,@ModelAttribute QnADTO qna, SearchCriteria searchCriteria, Model model) {
 
 
-        qnAService.increaseHit(request, response, qnaNum);
+        qnAService.increaseHit(request, response, qna.getQnaNum());
 
-        QnAForm qnAForm = qnAService.findQnA(qnaNum);
+        QnADTO qnADTO = qnAService.findQnA(qna.getQnaNum());
+
+        List<CommentDTO> commentDTOList = qnADTO.getCommentDTOList();
+
+        for (CommentDTO commentDTO : commentDTOList) {
+            System.out.println(commentDTO.toString());
+        }
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
@@ -178,8 +184,9 @@ public class QnAController {
             MemberInfo memberInfo = (MemberInfo) authentication.getPrincipal();
             model.addAttribute("securityId", memberInfo.getMemberId()); // 로그인 중인 사용자의 권한에 따라 보이는 항목을 다르게 하기위해 ID값 반환
         }
-        model.addAttribute("qna", qnAForm);
-        model.addAttribute("qnaFile", qnAService.findQnAFile(qnAForm.getQnaNum()));
+        model.addAttribute("qna", qnADTO);
+        model.addAttribute("comments", commentDTOList);
+        model.addAttribute("qnaFile", qnAService.findQnAFile(qnADTO.getQnaNum()));
         model.addAttribute("commentForm", new CommentForm());
         model.addAttribute("scri", searchCriteria);
 
@@ -242,12 +249,12 @@ public class QnAController {
 
         qnAService.increaseHit(request, response, qnaNum);
 
-        QnAForm qnAForm = qnAService.findQnA(qnaNum);
+        QnADTO qnADTO = qnAService.findQnA(qnaNum);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         model.addAttribute("securityId", authentication.getName()); // 로그인 중인 사용자의 권한에 따라 보이는 항목을 다르게 하기위해 ID값 반환
-        model.addAttribute("qna", qnAForm);
-        model.addAttribute("qnaFile", qnAService.findQnAFile(qnAForm.getQnaNum()));
+        model.addAttribute("qna", qnADTO);
+        model.addAttribute("qnaFile", qnAService.findQnAFile(qnADTO.getQnaNum()));
         model.addAttribute("scri", searchCriteria);
 
         return "common/cafehi_qnaContent";

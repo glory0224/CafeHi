@@ -2,7 +2,8 @@ package com.cafeHi.www.qna.entity;
 
 import com.cafeHi.www.comment.entity.Comment;
 import com.cafeHi.www.member.entity.Member;
-import com.cafeHi.www.qna.dto.QnAForm;
+import com.cafeHi.www.qna.dto.QnADTO;
+import com.cafeHi.www.qna.form.QnAForm;
 import lombok.Getter;
 import lombok.ToString;
 import org.springframework.data.annotation.CreatedDate;
@@ -52,8 +53,6 @@ public class QnA {
         this.qnaTitleClassification = qnAForm.getQnaTitleClassification();
         this.qnaContent = qnAForm.getQnaContent();
         this.qnaHit = qnAForm.getQnaHit();
-//        this.qnaWriteDateTime = LocalDateTime.now();
-//        this.qnaUpdateDateTime = LocalDateTime.now();
     }
 
     public void MemberSetQnA(Member member) {
@@ -71,9 +70,11 @@ public class QnA {
         this.qnaTitleClassification = qnAForm.getQnaTitleClassification();
         this.qnaContent = qnAForm.getQnaContent();
         this.qnaHit = qnAForm.getQnaHit();
-//        this.qnaUpdateDateTime = LocalDateTime.now();
     }
 
-
+    public QnADTO convertQnADTO() {
+        QnADTO qnADTO = new QnADTO(this);
+        return qnADTO;
+    }
 
 }
