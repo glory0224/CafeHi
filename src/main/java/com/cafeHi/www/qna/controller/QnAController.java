@@ -163,7 +163,7 @@ public class QnAController {
      * @return
      */
     @GetMapping("/CafeHi-QnAView")
-    public String QnAView(HttpServletRequest request, HttpServletResponse response,@ModelAttribute QnADTO qna, SearchCriteria searchCriteria, Model model) {
+    public String QnAView(HttpServletRequest request, HttpServletResponse response, @ModelAttribute("qna") QnADTO qna, @ModelAttribute("scri") SearchCriteria searchCriteria, Model model) {
 
 
         qnAService.increaseHit(request, response, qna.getQnaNum());
