@@ -172,10 +172,6 @@ public class QnAController {
 
         List<CommentDTO> commentDTOList = qnADTO.getCommentDTOList();
 
-        for (CommentDTO commentDTO : commentDTOList) {
-            System.out.println(commentDTO.toString());
-        }
-
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
 

@@ -261,6 +261,7 @@ public class QnAService {
 
         // 쿠키 생성으로 방문 했던 게시글 새로고침 할 때 계속 조회수 증가하는 현상 방지
         Cookie oldCookie = null;
+
         Cookie[] cookies = request.getCookies();
 
         // postView 라고 이름 지어진 쿠키가 있으면 새로운 쿠키 값을 넣는다.
