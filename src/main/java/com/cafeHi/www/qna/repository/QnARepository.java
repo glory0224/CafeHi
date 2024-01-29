@@ -51,7 +51,7 @@ public class QnARepository {
         return queryFactory
                 .select(qnA)
                 .from(qnA)
-                .join(qnA.member, member)
+//                .join(member)
                 /*.where(
                         searchCriteria.getSearchType().equals("title") ? qnA.qnaTitle.contains(searchCriteria.getKeyword()) :
                                 searchCriteria.getSearchType().equals("content") ? qnA.qnaContent.contains(searchCriteria.getKeyword()) :
@@ -162,7 +162,7 @@ public class QnARepository {
         long totalCount  = queryFactory
                 .select(qnA.qnaNum)
                 .from(qnA)
-                .join(qnA.member, member)
+//                .join(qnA.member, member)
                 .where(
                         searchCriteria.getSearchType().equals("title") ? qnA.qnaTitle.contains(searchCriteria.getKeyword()) :
                                 searchCriteria.getSearchType().equals("content") ? qnA.qnaContent.contains(searchCriteria.getKeyword()) :

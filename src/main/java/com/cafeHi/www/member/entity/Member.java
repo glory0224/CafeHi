@@ -1,6 +1,7 @@
 package com.cafeHi.www.member.entity;
 
 import com.cafeHi.www.comment.entity.Comment;
+import com.cafeHi.www.member.dto.MemberInfo;
 import lombok.Getter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
@@ -36,6 +37,21 @@ public class Member {
 
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
+
+    public void initMember(MemberInfo memberInfo) {
+        this.id = memberInfo.getMemberCode();
+        this.memberId = memberInfo.getMemberId();
+        this.memberPw = memberInfo.getMemberPw();
+        this.memberName = memberInfo.getMemberName();
+        this.memberContact = memberInfo.getMemberContact();
+        this.memberEmail = memberInfo.getMemberEmail();
+        this.memberZipCode = memberInfo.getMemberZipCode();
+        this.memberAddress = memberInfo.getMemberAddress();
+        this.memberDetailAddress = memberInfo.getMemberDetailAddress();
+        this.enabled = memberInfo.isEnabled();
+        this.membership = memberInfo.getMembership();
+        this.memberAuthEntities = memberInfo.getMemberAuthEntities();
+    }
 
     public void signupMember(String memberId, String memberPw, String memberName, String memberContact, String memberEmail
                         , String memberZipCode, String memberAddress, String memberDetailAddress) {

@@ -1,5 +1,6 @@
 package com.cafeHi.www.member.dto;
 
+import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.MemberAuth;
 import com.cafeHi.www.member.entity.Membership;
 import lombok.Getter;
@@ -97,5 +98,11 @@ public class MemberInfo {
         this.memberDetailAddress = memberDetailAddress;
         this.enabled = enabled;
         this.memberAuthEntities = memberAuthEntities;
+    }
+
+    public Member convertToMember() {
+        Member member = new Member();
+        member.initMember(this);
+        return member;
     }
 }

@@ -182,7 +182,7 @@ public class QnAController {
         }
         model.addAttribute("qna", qnADTO);
         model.addAttribute("comments", commentDTOList);
-        model.addAttribute("qnaFile", qnAService.findQnAFile(qnADTO.getQnaNum()));
+        model.addAttribute("qnaFile", qnADTO.getQnAFileDTO());
         model.addAttribute("commentForm", new CommentForm());
         model.addAttribute("scri", searchCriteria);
 

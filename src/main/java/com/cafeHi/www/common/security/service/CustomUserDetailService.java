@@ -49,8 +49,7 @@ public class CustomUserDetailService implements UserDetailsService{
 
 				// 권한에 따라 분기
 				if("ROLE_USER".equals(memberAuthName)) {
-					Membership membershipEntity = membershipRepository.findMembershipbByMemberId(memberEntity.get());
-
+					Membership membershipEntity = memberEntity.get().getMembership();
 					if(membershipEntity == null) {
 						throw new UsernameNotFoundException("Not Found Membership By userName");
 					}

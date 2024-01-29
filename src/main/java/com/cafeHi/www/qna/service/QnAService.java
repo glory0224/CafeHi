@@ -53,13 +53,13 @@ public class QnAService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MemberInfo memberInfo = (MemberInfo) principal;
 
-        Member findMember = memberRepository.findMember(memberInfo.getMemberCode());
+//        Member findMember = memberRepository.findMember(memberInfo.getMemberCode());
 
         QnA qna = new QnA();
 
         qna.WriteFormSetQnA(qnAForm);
 
-        qna.MemberSetQnA(findMember);
+        qna.MemberInfoSetQnA(memberInfo);
 
         long findQnANum = qnARepository.save(qna);
 
@@ -147,7 +147,14 @@ public class QnAService {
             qnAList = qnARepository.findPagingList(limit, offset, searchCriteria);
         }
 
-        List<QnADTO> qnADTOList = qnAList.stream().map(qnA -> qnA.convertQnADTO()).collect(Collectors.toList());
+//        List<QnADTO> qnADTOList = qnAList.stream().map(qnA -> qnA.convertQnADTO()).collect(Collectors.toList());
+
+        List<QnADTO> qnADTOList = new ArrayList<>();
+
+        for (QnA qnA : qnAList) {
+            QnADTO qnADTO = qnA.convertQnADTO();
+            qnADTOList.add(qnADTO);
+        }
 
 /*
         List<QnAForm> qnAFormList = qnAList.stream().map(qna -> {

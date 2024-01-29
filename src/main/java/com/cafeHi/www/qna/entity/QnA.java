@@ -1,6 +1,7 @@
 package com.cafeHi.www.qna.entity;
 
 import com.cafeHi.www.comment.entity.Comment;
+import com.cafeHi.www.member.dto.MemberInfo;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.qna.dto.QnADTO;
 import com.cafeHi.www.qna.form.QnAForm;
@@ -55,8 +56,8 @@ public class QnA {
         this.qnaHit = qnAForm.getQnaHit();
     }
 
-    public void MemberSetQnA(Member member) {
-        this.member = member;
+    public void MemberInfoSetQnA(MemberInfo member) {
+        this.member = member.convertToMember();
     }
 
 

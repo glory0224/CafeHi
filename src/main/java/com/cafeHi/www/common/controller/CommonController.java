@@ -80,7 +80,7 @@ public class CommonController {
 
 		int offset = searchCriteria.getRowStart();
 		int limit = searchCriteria.getPerPageNum();
-		List<QnADTO> qnAList = qnAService.findQnAList(limit, offset, searchCriteria);	// stackOverFlow Error
+		List<QnADTO> qnAList = qnAService.findQnAList(limit, offset, searchCriteria);
 
 		PageMaker pageMaker = new PageMaker();
 
