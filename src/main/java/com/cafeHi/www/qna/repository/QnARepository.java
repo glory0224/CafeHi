@@ -43,7 +43,7 @@ public class QnARepository {
                 .getResultList();
     }
 
-    public List<QnA> findPagingList(int limit, int offset, SearchCriteria searchCriteria){
+   /* public List<QnA> findPagingList(int limit, int offset, SearchCriteria searchCriteria){
 
         QQnA qnA = QQnA.qnA;
         QMember member = QMember.member;
@@ -52,18 +52,18 @@ public class QnARepository {
                 .select(qnA)
                 .from(qnA)
 //                .join(member)
-                /*.where(
+                *//*.where(
                         searchCriteria.getSearchType().equals("title") ? qnA.qnaTitle.contains(searchCriteria.getKeyword()) :
                                 searchCriteria.getSearchType().equals("content") ? qnA.qnaContent.contains(searchCriteria.getKeyword()) :
                                         searchCriteria.getSearchType().equals("writer") ? member.memberId.contains(searchCriteria.getKeyword()) :
                                                 null
-                )*/
+                )*//*
                 .where(searchDateFilter(searchCriteria, qnA).or(searchTypeFilter(searchCriteria,qnA,member)))
                 .orderBy(qnA.qnaNum.desc())
                 .offset(offset - 1)
                 .limit(limit)
                 .fetch();
-    }
+    }*/
 
     private BooleanExpression searchTypeFilter(SearchCriteria searchCriteria, QQnA qnA, QMember member) {
         return searchCriteria.getSearchType().equals("title") ? qnA.qnaTitle.contains(searchCriteria.getKeyword()) :

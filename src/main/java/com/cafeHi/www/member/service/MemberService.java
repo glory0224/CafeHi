@@ -2,6 +2,7 @@ package com.cafeHi.www.member.service;
 
 import com.cafeHi.www.cart.entity.Cart;
 import com.cafeHi.www.cart.repository.CartRepository;
+import com.cafeHi.www.common.exception.EntityNotFoundException;
 import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.delivery.repository.DeliveryRepository;
 import com.cafeHi.www.member.dto.ChangeMemberPwByEmailForm;
@@ -9,7 +10,8 @@ import com.cafeHi.www.member.dto.ChangeMemberPwForm;
 import com.cafeHi.www.member.dto.MemberForm;
 import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.entity.MemberAuth;
-import com.cafeHi.www.member.repository.MemberRepository;
+import com.cafeHi.www.member.repository.MemberAuthJpaRepository;
+import com.cafeHi.www.member.repository.MemberJpaRepository;
 import com.cafeHi.www.order.entity.OrderMenu;
 import com.cafeHi.www.order.repository.OrderRepository;
 import com.cafeHi.www.qna.entity.QnA;
@@ -27,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -35,8 +38,9 @@ import java.util.concurrent.ThreadLocalRandom;
 @Slf4j
 public class MemberService {
 
-    private final MemberRepository memberRepository;
-
+//    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberJpaRepository;
+    private final MemberAuthJpaRepository memberAuthJpaRepository;
     private final QnARepository qnARepository;
 
     private final QnAFileRepository qnAFileRepository;
@@ -55,45 +59,48 @@ public class MemberService {
 
         member.passwordEncode(member.getMemberPw()); // 패스워드 암호화
 
-        memberRepository.saveMember(member);
-
+//        memberRepository.saveMember(member);
+          memberJpaRepository.save(member);
         return member;
     }
     @Transactional
     public Long joinMemberAuth(MemberAuth memberAuth) {
-        memberRepository.saveMemberAuth(memberAuth);
-        return memberAuth.getId();
+//        memberRepository.saveMemberAuth(memberAuth);
+        MemberAuth findMemberAuth = memberAuthJpaRepository.save(memberAuth);
+        return findMemberAuth.getId();
     }
 
 
     @Transactional
     public void modifyMember(MemberForm memberForm)  {
         // merge로 변경하는 것이 아닌 변경감지(더디체킹)으로 값을 변경한다.
-        Member findMember = memberRepository.findMember(memberForm.getId());
+//        Member findMember = memberRepository.findMember(memberForm.getId());
+        Optional<Member> findMember = memberJpaRepository.findById(memberForm.getId());
 
-        findMember.modifyMember(memberForm.getId(),memberForm.getMemberId(), memberForm.getMemberName(), memberForm.getMemberContact(), memberForm.getMemberEmail()
-                ,memberForm.getMemberZipCode(), memberForm.getMemberAddress(), memberForm.getMemberDetailAddress());
+        if(findMember.isPresent()) {
+            Member member = findMember.get();
+            member.modifyMember(memberForm.getId(),memberForm.getMemberId(), memberForm.getMemberName(), memberForm.getMemberContact(), memberForm.getMemberEmail()
+                    ,memberForm.getMemberZipCode(), memberForm.getMemberAddress(), memberForm.getMemberDetailAddress());
+            // 세션 정보 업데이트
+            // 현재 인증된 사용자 정보 가져오기
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        // 세션 정보 업데이트
+            // 사용자 정보 업데이트
+            CustomUser customUser = (CustomUser) authentication.getPrincipal();
+            customUser.getMemberInfo().setMemberId(memberForm.getMemberId());
+            customUser.getMemberInfo().setMemberName(memberForm.getMemberName());
+            customUser.getMemberInfo().setMemberContact(memberForm.getMemberContact());
+            customUser.getMemberInfo().setMemberEmail(memberForm.getMemberEmail());
+            customUser.getMemberInfo().setMemberZipCode(memberForm.getMemberZipCode());
+            customUser.getMemberInfo().setMemberAddress(memberForm.getMemberAddress());
+            customUser.getMemberInfo().setMemberDetailAddress(memberForm.getMemberDetailAddress());
 
-        // 현재 인증된 사용자 정보 가져오기
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        // 사용자 정보 업데이트
-        CustomUser customUser = (CustomUser) authentication.getPrincipal();
-        customUser.getMemberInfo().setMemberId(memberForm.getMemberId());
-        customUser.getMemberInfo().setMemberName(memberForm.getMemberName());
-        customUser.getMemberInfo().setMemberContact(memberForm.getMemberContact());
-        customUser.getMemberInfo().setMemberEmail(memberForm.getMemberEmail());
-        customUser.getMemberInfo().setMemberZipCode(memberForm.getMemberZipCode());
-        customUser.getMemberInfo().setMemberAddress(memberForm.getMemberAddress());
-        customUser.getMemberInfo().setMemberDetailAddress(memberForm.getMemberDetailAddress());
-
-        // 인증 객체 업데이트
-        Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(customUser, authentication.getCredentials(), authentication.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
-
-
+            // 인증 객체 업데이트
+            Authentication updatedAuthentication = new UsernamePasswordAuthenticationToken(customUser, authentication.getCredentials(), authentication.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(updatedAuthentication);
+        } else {
+            // todo : 커스텀 에러 throw 및 로그 남기기
+        }
     }
 
     /**
@@ -149,14 +156,16 @@ public class MemberService {
             }
         }
 
-            memberRepository.deleteMember(memberCode);
+//            memberRepository.deleteMember(memberCode);
+            memberJpaRepository.deleteById(memberCode);
         }
 
 
     private void validateDuplicateMember(Member member) {
         // 아이디가 중복 여부
-        List<Member> findMembers = memberRepository.findById(member.getMemberId());
-        if (!findMembers.isEmpty()) {
+//        List<Member> findMembers = memberJpaRepository.findById(member.getMemberId());
+        boolean exists = memberJpaRepository.existsByMemberId(member.getMemberId());
+        if (exists) {
             throw new IllegalStateException("해당 아이디의 회원이 이미 존재합니다.");
         }
 
@@ -164,15 +173,21 @@ public class MemberService {
 
     // 회원 전체 조회
     public List<Member> findMembers() {
-        return memberRepository.findAll();
+
+//        return memberRepository.findAll();
+        return memberJpaRepository.findAll();
     }
 
     public Member findMember(Long memberId) {
-        return memberRepository.findMember(memberId);
+//        return memberRepository.findMember(memberId);
+        Optional<Member> findMember = memberJpaRepository.findById(memberId);
+        return findMember.orElseThrow(() -> new EntityNotFoundException("해당하는 멤버가 없습니다."));
     }
 
     public MemberAuth findMemberAuth(Long memberAuthId) {
-        return memberRepository.findMemberAuth(memberAuthId);
+//        return memberRepository.findMemberAuth(memberAuthId);
+        Optional<MemberAuth> findMemberAuth = memberAuthJpaRepository.findById(memberAuthId);
+        return findMemberAuth.orElseThrow(() -> new EntityNotFoundException("해당하는 멤버권한이 없습니다."));
     }
 
 
@@ -184,8 +199,8 @@ public class MemberService {
 
 
     public String findMemberByEmail(String memberEmail) {
-
-        return memberRepository.findMemberByEmail(memberEmail);
+//        return memberRepository.findMemberByEmail(memberEmail);
+        return memberJpaRepository.findMemberIdByMemberEmail(memberEmail);
     }
 
     // 아이디에 해당하는 계정의 비밀번호 변경
@@ -238,10 +253,12 @@ public class MemberService {
 
         // String encodePw = passwordEncode.encode(changeMemberPwForm.getCurrentPassword());
 
-        Member member = memberRepository.findMember(changeMemberPwForm.getMemberCode());
+//        Member member = memberRepository.findMember(changeMemberPwForm.getMemberCode());
+        Optional<Member> findMember = memberJpaRepository.findById(changeMemberPwForm.getMemberCode());
+        Member member = findMember.orElseThrow(() -> new EntityNotFoundException("해당하는 멤버가 없습니다."));
 
         // 가져온 엔티티의 비밀번호와 인코딩한 비밀번호가 서로 일치한다면
-        if (member != null && passwordEncode.matches(changeMemberPwForm.getCurrentPassword(), member.getMemberPw())) {
+        if (passwordEncode.matches(changeMemberPwForm.getCurrentPassword(), member.getMemberPw())) {
             member.passwordEncode(changeMemberPwForm.getChangedPassword()); // 비밀번호 변경
             return true;
         } else { // 아니면 false

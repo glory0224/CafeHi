@@ -1,20 +1,18 @@
 package com.cafeHi.www.qna.service;
 
-import com.cafeHi.www.comment.entity.Comment;
+import com.cafeHi.www.common.exception.EntityNotFoundException;
 import com.cafeHi.www.common.file.FileStore;
 import com.cafeHi.www.common.file.dto.UploadFile;
 import com.cafeHi.www.common.page.SearchCriteria;
-import com.cafeHi.www.member.dto.MemberDTO;
 import com.cafeHi.www.member.dto.MemberInfo;
-import com.cafeHi.www.member.entity.Member;
 import com.cafeHi.www.member.repository.MemberRepository;
 import com.cafeHi.www.qna.dto.QnADTO;
 import com.cafeHi.www.qna.form.QnAFileForm;
 import com.cafeHi.www.qna.form.QnAForm;
 import com.cafeHi.www.qna.entity.QnA;
 import com.cafeHi.www.qna.entity.QnAFile;
-import com.cafeHi.www.qna.repository.QnAFileRepository;
-import com.cafeHi.www.qna.repository.QnARepository;
+import com.cafeHi.www.qna.repository.QnAFileJpaRepository;
+import com.cafeHi.www.qna.repository.QnAJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +28,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,10 +37,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class QnAService {
 
-    private final QnARepository qnARepository;
-
-    private final QnAFileRepository qnAFileRepository;
-
+    private final QnAJpaRepository qnAJpaRepository;
+    private final QnAFileJpaRepository qnAFileJpaRepository;
     private final MemberRepository memberRepository;
 
 
@@ -53,17 +50,13 @@ public class QnAService {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MemberInfo memberInfo = (MemberInfo) principal;
 
-//        Member findMember = memberRepository.findMember(memberInfo.getMemberCode());
-
         QnA qna = new QnA();
 
         qna.WriteFormSetQnA(qnAForm);
 
         qna.MemberInfoSetQnA(memberInfo);
 
-        long findQnANum = qnARepository.save(qna);
-
-        QnA findQnA = qnARepository.findQnA(findQnANum);
+        QnA findQnA = qnAJpaRepository.save(qna);
 
         QnAFile qnAFile = new QnAFile();
 
@@ -75,7 +68,7 @@ public class QnAService {
 
         qnAFile.QnASetQnAFile(findQnA);
 
-        qnAFileRepository.save(qnAFile);
+        qnAFileJpaRepository.save(qnAFile);
 
     }
 
@@ -83,48 +76,49 @@ public class QnAService {
     @Transactional
     public void UpdateQnA(QnAForm qnAForm, MultipartFile uploadFile){
 
-
-        QnA findQnA = qnARepository.findQnA(qnAForm.getQnaNum());
-        QnAFile qnAFileByQnA = qnAFileRepository.findQnAFileByQnA(findQnA);
-
+        Optional<QnA> findQnA = qnAJpaRepository.findById(qnAForm.getQnaNum());
+        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+        QnAFile qnAFile = qnAFileJpaRepository.findQnAFileByQnA(qnA);
         // 기존 파일 존재하는 경우
-        if(uploadFile != null && !uploadFile.isEmpty() && !qnAFileByQnA.getUploadPath().equals("none")) {
+        if(!uploadFile.isEmpty() && !qnAFile.getUploadPath().equals("none")) {
 
             // 기존의 S3새로운 파일 삭제
-            fileStore.deleteFile(qnAFileByQnA.getStoreFileName());
+            fileStore.deleteFile(qnAFile.getStoreFileName());
 
             // 새로운 파일 등록
             try {
-                AttachUploadFile(uploadFile, qnAFileByQnA);
+                AttachUploadFile(uploadFile, qnAFile);
             }catch (IOException e) {
                 e.printStackTrace();
             }
-            findQnA.updateFormSetQnA(qnAForm);
+            qnA.updateFormSetQnA(qnAForm);
             // 기존에 파일이 없던 경우
-        } else if(uploadFile != null && !uploadFile.isEmpty() && qnAFileByQnA.getUploadPath().equals("none")) {
+        } else if(uploadFile != null && !uploadFile.isEmpty() && qnAFile.getUploadPath().equals("none")) {
             // 새로운 파일 처리
             try {
-                AttachUploadFile(uploadFile, qnAFileByQnA);
+                AttachUploadFile(uploadFile, qnAFile);
             }catch (IOException e) {
                 e.printStackTrace();
             }
-            findQnA.updateFormSetQnA(qnAForm);
+            qnA.updateFormSetQnA(qnAForm);
         } else {
-            findQnA.updateFormSetQnA(qnAForm);
+            qnA.updateFormSetQnA(qnAForm);
         }
 
     }
 
     @Transactional
     public void deleteQnA(QnAForm qnAForm) throws IOException {
-        QnA findQnA = qnARepository.findQnA(qnAForm.getQnaNum());
-        QnAFile qnAFileByQnA = qnAFileRepository.findQnAFileByQnA(findQnA);
-        if(!qnAFileByQnA.getUploadPath().equals("none")) {
-            fileStore.deleteFile(qnAFileByQnA.getStoreFileName());
+        Optional<QnA> findQnA = qnAJpaRepository.findById(qnAForm.getQnaNum());
+        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+        QnAFile qnAFile = qnAFileJpaRepository.findQnAFileByQnA(qnA);
+
+        if(!qnAFile.getUploadPath().equals("none")) {
+            fileStore.deleteFile(qnAFile.getStoreFileName());
         }
 
-        qnAFileRepository.deleteQnAFile(qnAFileByQnA.getId());
-        qnARepository.deleteQnA(findQnA.getQnaNum());
+        qnAFileJpaRepository.deleteById(qnAFile.getId());
+        qnAJpaRepository.deleteById(qnA.getQnaNum());
     }
 
     public List<QnADTO> findQnAList(int limit, int offset, SearchCriteria searchCriteria) {
@@ -138,16 +132,13 @@ public class QnAService {
             LocalDate searchEndDate = LocalDate.parse(searchCriteria.getSearchEndDate(), formatter);
             searchCriteria.setStartDate(searchStartDate);
             searchCriteria.setEndDate(searchEndDate);
-            qnAList = qnARepository.findPagingList(limit, offset, searchCriteria);
-
+            qnAList = qnAJpaRepository.findPagingList(limit, offset, searchCriteria);
         } else {
             // 특정 날짜가 아닌경우 오늘날짜로 조회하도록
             searchCriteria.setStartDate(LocalDate.now());
             searchCriteria.setEndDate(LocalDate.now());
-            qnAList = qnARepository.findPagingList(limit, offset, searchCriteria);
+            qnAList = qnAJpaRepository.findPagingList(limit, offset, searchCriteria);
         }
-
-//        List<QnADTO> qnADTOList = qnAList.stream().map(qnA -> qnA.convertQnADTO()).collect(Collectors.toList());
 
         List<QnADTO> qnADTOList = new ArrayList<>();
 
@@ -155,82 +146,63 @@ public class QnAService {
             QnADTO qnADTO = qnA.convertQnADTO();
             qnADTOList.add(qnADTO);
         }
-
-/*
-        List<QnAForm> qnAFormList = qnAList.stream().map(qna -> {
-            QnAForm qnAForm = new QnAForm();
-            qnAForm.setQnaNum(qna.getQnaNum());
-            qnAForm.setQnaTitle(qna.getQnaTitle());
-            qnAForm.setQnaTitleClassification(qna.getQnaTitleClassification());
-            qnAForm.setQnaContent(qna.getQnaContent());
-            qnAForm.setQnaHit(qna.getQnaHit());
-            qnAForm.setMember(qna.getMember());
-            qnAForm.setWriteDate(qna.getQnaWriteDateTime().toLocalDate().format(formatter));
-            qnAForm.setUpdateDate(qna.getQnaUpdateDateTime().toLocalDate().format(formatter));
-            return qnAForm;
-        }).collect(Collectors.toList());
-*/
-
-
         return qnADTOList;
 
     }
 
     public List<QnADTO> findQnAListByMemberCode(int limit, int offset, SearchCriteria searchCriteria, Long memberCode) {
 
-        List<QnA> qnAList = qnARepository.findQnAListByMemberCode(limit, offset, searchCriteria, memberCode);
-
+        List<QnA> qnAList = qnAJpaRepository.findQnAListByMemberCode(limit, offset, searchCriteria, memberCode);
         List<QnADTO> qnADTOList = qnAList.stream().map(qnA -> qnA.convertQnADTO()).collect(Collectors.toList());
-
-/*        List<QnAForm> qnAFormList = qnAList.stream().map(qna -> {
-            QnAForm qnAForm = new QnAForm();
-            qnAForm.setQnaNum(qna.getQnaNum());
-            qnAForm.setQnaTitle(qna.getQnaTitle());
-            qnAForm.setQnaTitleClassification(qna.getQnaTitleClassification());
-            qnAForm.setQnaContent(qna.getQnaContent());
-            qnAForm.setQnaHit(qna.getQnaHit());
-            qnAForm.setMember(qna.getMember());
-            return qnAForm;
-        }).collect(Collectors.toList());*/
 
         return qnADTOList;
     }
 
     public QnADTO findQnA(Long QnAId) {
 
-        QnA qna = qnARepository.findQnA(QnAId);
-        QnADTO qnADTO = new QnADTO(qna);
+//        QnA qna = qnARepository.findQnA(QnAId);
+        Optional<QnA> findQnA = qnAJpaRepository.findById(QnAId);
+        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+
+        QnADTO qnADTO = new QnADTO(qnA);
 
         return qnADTO;
     }
 
 
 
-    public int getCountAll() {
-        return qnARepository.getCountAll();
+    public long getCountAll() {
+//        return qnARepository.getCountAll();
+        return qnAJpaRepository.count();
     }
 
     public int getPagingCount(SearchCriteria searchCriteria) {
-        return qnARepository.getPagingCount(searchCriteria);
+
+//        return qnARepository.getPagingCount(searchCriteria);
+        return qnAJpaRepository.getPagingCount(searchCriteria);
     }
 
 
-
+// 2024 01 31 여기까지 고쳤음
     public QnAFileForm findQnAFile(Long qnaId) {
 
-        QnA qnA = qnARepository.findQnA(qnaId);
+        Optional<QnA> findQnA = qnAJpaRepository.findById(qnaId);
+        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+        QnAFile qnAFile = qnAFileJpaRepository.findQnAFileByQnA(qnA);
 
-        QnAFile qnAFileByQnA = qnAFileRepository.findQnAFileByQnA(qnA);
+//        QnA qnA = qnARepository.findQnA(qnaId);
+//
+//        QnAFile qnAFileByQnA = qnAFileRepository.findQnAFileByQnA(qnA);
 
         // ModelMapper 라이브러리를 이용해 간편하게 Form 객체로 변경가능
 
         QnAFileForm qnAFileForm = new QnAFileForm();
 
-        qnAFileForm.setId(qnAFileByQnA.getId());
-        qnAFileForm.setQna(qnAFileByQnA.getQna());
-        qnAFileForm.setUploadPath(qnAFileByQnA.getUploadPath());
-        qnAFileForm.setStoreFileName(qnAFileByQnA.getStoreFileName());
-        qnAFileForm.setUploadFileName(qnAFileByQnA.getUploadFileName());
+        qnAFileForm.setId(qnAFile.getId());
+        qnAFileForm.setQna(qnAFile.getQna());
+        qnAFileForm.setUploadPath(qnAFile.getUploadPath());
+        qnAFileForm.setStoreFileName(qnAFile.getStoreFileName());
+        qnAFileForm.setUploadFileName(qnAFile.getUploadFileName());
 
         return qnAFileForm;
     }
@@ -282,26 +254,32 @@ public class QnAService {
 
         if (oldCookie != null) {
             if(!oldCookie.getValue().contains("[" + qnaNum +"]")) {
-                QnA qnA = qnARepository.findQnA(qnaNum);
+//                QnA qnA = qnARepository.findQnA(qnaNum);
+                Optional<QnA> findQnA = qnAJpaRepository.findById(qnaNum);
+                QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
                 oldCookie.setValue(oldCookie.getValue() + "[" + qnaNum + "]");
                 oldCookie.setPath("/");
                 oldCookie.setMaxAge(60*60*24); // 쿠키 설정 시간 하루
                 response.addCookie(oldCookie);
 
                 qnA.increaseHit();
-                qnARepository.save(qnA);
+//                qnARepository.save(qnA);
+                qnAJpaRepository.save(qnA);
             }
 
         }else {
 
-            QnA qnA = qnARepository.findQnA(qnaNum);
+//            QnA qnA = qnARepository.findQnA(qnaNum);
+            Optional<QnA> findQnA = qnAJpaRepository.findById(qnaNum);
+            QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
             Cookie newCookie = new Cookie("postView", "[" + qnaNum + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
 
             qnA.increaseHit();
-            qnARepository.save(qnA);
+//            qnARepository.save(qnA);
+            qnAJpaRepository.save(qnA);
         }
     }
 

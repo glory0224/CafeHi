@@ -63,16 +63,17 @@
 							
 							<tbody th:unless="${ MyQnaListSize eq 0 }">
 								
-									<tr th:each="myQna : ${MyQnaList}" th:with="writeDate= ${myQna.qna_writetime}">
-										<td th:text="${myQna.qna_num }">글번호</td>
+									<tr th:each="myQna : ${MyQnaList}">
+										<td th:text="${myQna.qnaNum }">글번호</td>
 										<td>
-										<a th:text="${myQna.qna_title }" th:href="@{/CafeHi-QnA(qna_num = ${myQna.qna_num})}"  style="text-decoration: none; color: black; font-weight: bold;" >
+										<a th:text="${myQna.qnaTitle }" th:href="@{/CafeHi-QnA(qna_num = ${myQna.qnaNum})}"  style="text-decoration: none; color: black; font-weight: bold;" >
 										글제목
 										</a>
 										</td>
-										<td th:text="${myQna.member.member_id}">회원 id</td>
-										<td th:text="${#temporals.format(writeDate , 'yyyy-MM-dd HH:mm:ss')}">작성일자</td>
-										<td th:text="${myQna.qna_hit }">조회수</td>
+										<td th:text="${myQna.memberDTO.memberId}">회원 id</td>
+<!--										<td th:text="${#temporals.format(writeDate , 'yyyy-MM-dd HH:mm:ss')}">작성일자</td>-->
+										<td th:text="${myQna.qnaWriteDate}">작성일자</td>
+										<td th:text="${myQna.qnaHit }">조회수</td>
 									</tr>
 
 
