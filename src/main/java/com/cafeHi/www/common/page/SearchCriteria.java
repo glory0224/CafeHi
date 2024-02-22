@@ -1,9 +1,9 @@
 package com.cafeHi.www.common.page;
 
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class SearchCriteria extends Criteria{
 
@@ -11,8 +11,8 @@ public class SearchCriteria extends Criteria{
     private String keyword = "";
     private String searchStartDate = "";
     private String searchEndDate = "";
-    private LocalDate StartDate;
-    private LocalDate EndDate;
+    private LocalDate StartDate = LocalDate.now();
+    private LocalDate EndDate = LocalDate.now();
 
 
 
@@ -114,8 +114,6 @@ public class SearchCriteria extends Criteria{
         }
         return sb.toString();
     }
-
-
 
 
 }

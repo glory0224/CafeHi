@@ -104,7 +104,7 @@
     	var csrfInput =  document.createElement('input');
     	 // set attribute (form) 
         form.setAttribute("method", "post");
-        form.setAttribute("action", "deleteCart");
+        form.setAttribute("action", "http://localhost:8080/deleteCart");  // url을 직접 하드코딩하는 방식은 보안상 좋지 않다.
      	// set attribute (input)
         cartInput.setAttribute("type", "hidden");
         cartInput.setAttribute("name", "cart_code");
@@ -131,7 +131,7 @@
     	var csrfInput =  document.createElement('input');
     	 // set attribute (form) 
         form.setAttribute("method", "post");
-        form.setAttribute("action", "deleteCartAll");
+        form.setAttribute("action", "http://localhost:8080/deleteCartAll");	// url을 직접 하드코딩하는 방식은 보안상 좋지 않다.
 		form.setAttribute("enctype", "application/x-www-form-urlencoded");
 
 
@@ -160,7 +160,7 @@
 		var csrfInput =  document.createElement('input');
 		// set attribute (form)
 		form.setAttribute("method", "post");
-		form.setAttribute("action", "cartOrderAll");
+		form.setAttribute("action", "http://localhost:8080/cartOrderAll"); // url을 직접 하드코딩하는 방식은 보안상 좋지 않다.
 		form.setAttribute("enctype", "application/x-www-form-urlencoded");
 
 		// Set attribute (input) - cartList value as JSON string

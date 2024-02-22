@@ -1,23 +1,15 @@
 package com.cafeHi.www.cart.controller;
 
-import com.cafeHi.www.cart.dto.CartForm;
 import com.cafeHi.www.cart.dto.ModifyCartForm;
 import com.cafeHi.www.cart.service.CartService;
-import com.cafeHi.www.common.security.service.CustomUser;
 import com.cafeHi.www.member.dto.MemberInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
 import javax.servlet.http.HttpServletRequest;
-import java.security.Principal;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -27,8 +19,8 @@ public class CartController {
 	private final CartService cartService;
 
 	@PostMapping("/insertCart")
-	public String CartInsert(@AuthenticationPrincipal CustomUser customUser, @RequestParam int toCartAmount, @RequestParam Long menuId, HttpServletRequest request) {
-		
+	public String CartInsert(@AuthenticationPrincipal MemberInfo memberInfo, @RequestParam int toCartAmount, @RequestParam Long menuId, HttpServletRequest request) {
+
 		if(toCartAmount == 0) {
 			request.setAttribute("msg", "수량은 1개 이상 담을 수 있습니다.");
 			request.setAttribute("url", "javascript:history.back()");
@@ -36,14 +28,14 @@ public class CartController {
 			return "common/alert";
 		}
 
-		cartService.insertCart(customUser.getMemberInfo().getMemberCode(),menuId, toCartAmount);
+		cartService.insertCart(memberInfo.getMemberCode(),menuId, toCartAmount);
 
 		//		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 //		CustomUser userInfo = (CustomUser) principal;
 //		CustomUser 강제 캐스팅 하는 방식에서 java.lang.classcastexception; 에러가 발생했다.
 //		구글 서치를 통해 @AuthenticationPrincipal를 이용하여 CustomUser 객체를 인자에 넘겨주는 방식을 사용하여 해결했다.
 
-		return "redirect:/CafeHi-MyPageCart";
+		return "redirect:member/mypage/CafeHi-MyPageCart";
 		
 	}
 	
@@ -54,7 +46,7 @@ public class CartController {
 
 		cartService.deleteCart(cart_code);
 
-		return "redirect:/CafeHi-MyPageCart";
+		return "redirect:member/mypage/CafeHi-MyPageCart";
 	}
 
 	// 장바구니 수정
@@ -63,22 +55,16 @@ public class CartController {
 
 			cartService.modifyCart(cartForm);
 
-			return "redirect:/CafeHi-MyPageCart";
+			return "redirect:member/mypage/CafeHi-MyPageCart";
 
 		}
 
 	// 장바구니 비우기
 		@PostMapping("/deleteCartAll")
-		public String CartDeleteAll() {
+		public String CartDeleteAll(@AuthenticationPrincipal MemberInfo memberInfo) {
 
-			Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			CustomUser userInfo = (CustomUser) principal;
-			Long member_code = userInfo.getMemberInfo().getMemberCode();
-
-
-			cartService.deleteAllCart(member_code);
-
-			return "redirect:/CafeHi-MyPageCart";
+			cartService.deleteAllCart(memberInfo.getMemberCode());
+			return "redirect:member/mypage/CafeHi-MyPageCart";
 
 		}
 	

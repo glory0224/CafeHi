@@ -3,11 +3,14 @@ package com.cafeHi.www.cart.service;
 import com.cafeHi.www.cart.dto.CartForm;
 import com.cafeHi.www.cart.dto.ModifyCartForm;
 import com.cafeHi.www.cart.entity.Cart;
+import com.cafeHi.www.cart.repository.CartJpaRepository;
 import com.cafeHi.www.cart.repository.CartRepository;
+import com.cafeHi.www.common.exception.EntityNotFoundException;
+import com.cafeHi.www.common.page.SearchCriteria;
 import com.cafeHi.www.member.entity.Member;
-import com.cafeHi.www.member.repository.MemberRepository;
+import com.cafeHi.www.member.repository.MemberJpaRepository;
 import com.cafeHi.www.menu.entity.Menu;
-import com.cafeHi.www.menu.repository.MenuRepository;
+import com.cafeHi.www.menu.repository.MenuJpaRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,32 +27,33 @@ public class CartService {
 
     private final CartRepository cartRepository;
 
-    private final MemberRepository memberRepository;
+    private final CartJpaRepository cartJpaRepository;
 
-    private final MenuRepository menuRepository;
+    private final MemberJpaRepository memberJpaRepository;
+
+    private final MenuJpaRepository menuJpaRepository;
 
     @Transactional
-    public void insertCart(Long MemberCode, Long MenuId, int cartAmount){
+    public void insertCart(Long memberCode, Long MenuId, int cartAmount){
 
 
-        Member member = memberRepository.findMember(MemberCode);
-        Menu menu = menuRepository.findMenu(MenuId);
+        Member member = memberJpaRepository.findById(memberCode).orElseThrow(() -> new EntityNotFoundException("Not Found Member Info"));
+
+        Menu menu = menuJpaRepository.findById(MenuId).orElseThrow(() -> new EntityNotFoundException("Not Found Menu Info"));
 
         Cart cart = new Cart();
 
         cart.insertCartInfo(menu, member, cartAmount);
-
-        cartRepository.saveCart(cart);
+        cartJpaRepository.save(cart);
 
     };
 
 
     @Transactional
-    public List<CartForm> findCartList(Long MemberCode) {
-
-        List<Cart> cartList = cartRepository.findCartList(MemberCode);
-
-        Member member = memberRepository.findMember(MemberCode);
+    public List<CartForm> findCartList(SearchCriteria searchCriteria, Long memberCode) {
+        int offset = searchCriteria.getRowStart();
+        int limit = searchCriteria.getPerPageNum();
+        List<Cart> cartList = cartJpaRepository.findCartList(limit, offset, searchCriteria, memberCode);
 
         List<CartForm> cartFormList = new ArrayList<>();
 
@@ -66,15 +70,14 @@ public class CartService {
     @Transactional
     public void deleteCart(Long cartCode) {
 
-        cartRepository.deleteCart(cartCode);
+        cartJpaRepository.deleteById(cartCode);
     }
 
     @Transactional
     public void modifyCart(ModifyCartForm cartForm) {
         // merge로 변경하는 것이 아닌 변경감지(더디체킹)으로 값을 변경한다.
         // Transactional 때문에 가능함
-        Cart cart = cartRepository.findCart(cartForm.getCart_code());
-
+        Cart cart = cartJpaRepository.findById(cartForm.getCart_code()).orElseThrow(() -> new EntityNotFoundException("Not Found Cart Info"));
         cart.modifyCartInfo(cartForm.getCart_amount());
     }
 
@@ -85,7 +88,8 @@ public class CartService {
 
 
     public double CalculateCartPoint(int sumMoney, Long memberCode) {
-        Member member = memberRepository.findMember(memberCode);
+
+        Member member = memberJpaRepository.findById(memberCode).orElseThrow(() -> new EntityNotFoundException("Not Found Member Info"));
 
         double totalPoint = 0;
 

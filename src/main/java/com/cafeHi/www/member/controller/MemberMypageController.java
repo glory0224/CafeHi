@@ -12,9 +12,9 @@ import com.cafeHi.www.order.dto.OrderMenuDTO;
 import com.cafeHi.www.order.dto.OrderSearch;
 import com.cafeHi.www.order.service.OrderService;
 import com.cafeHi.www.qna.dto.QnADTO;
-import com.cafeHi.www.qna.form.QnAForm;
 import com.cafeHi.www.qna.service.QnAService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.security.Principal;
 import java.util.List;
 
 /**
@@ -175,18 +174,12 @@ public class MemberMypageController {
     /**
      * ROLE_USER 마이페이지 - 장바구니 페이지
      * @param model
-     * @param principal
      * @return
      */
     @GetMapping("/CafeHi-MyPageCart")
-    public String myPageCartView(Model model, Principal principal) {
-
-        if (principal != null) {
-
-            MemberInfo memberInfo = (MemberInfo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            Long memberCode = memberInfo.getMemberCode();
-
-            List<CartForm> cartList = cartService.findCartList(memberCode);
+    public String myPageCartView(@AuthenticationPrincipal MemberInfo memberInfo, Model model) {
+            SearchCriteria searchCriteria = new SearchCriteria();
+            List<CartForm> cartList = cartService.findCartList(searchCriteria, memberInfo.getMemberCode());
 
             int sumMoney = 0;
 
@@ -196,13 +189,13 @@ public class MemberMypageController {
             }
 
             // 합계에 대한 포인트 계산
-            double totalPoint = cartService.CalculateCartPoint(sumMoney, memberCode);
+            double totalPoint = cartService.CalculateCartPoint(sumMoney, memberInfo.getMemberCode());
 
             model.addAttribute("sumMoney", sumMoney);
             model.addAttribute("totalPoint", totalPoint);
             model.addAttribute("cartList", cartList);
-            model.addAttribute("memberCode", memberCode);
-        }
+            model.addAttribute("memberCode", memberInfo.getMemberCode());
+
 
         return "member/cafehi_myPageCart";
     }
