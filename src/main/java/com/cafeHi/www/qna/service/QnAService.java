@@ -77,7 +77,7 @@ public class QnAService {
     public void UpdateQnA(QnAForm qnAForm, MultipartFile uploadFile){
 
         Optional<QnA> findQnA = qnAJpaRepository.findById(qnAForm.getQnaNum());
-        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("Not Found QnA Info"));
         QnAFile qnAFile = qnAFileJpaRepository.findQnAFileByQnA(qnA);
         // 기존 파일 존재하는 경우
         if(!uploadFile.isEmpty() && !qnAFile.getUploadPath().equals("none")) {
@@ -110,7 +110,7 @@ public class QnAService {
     @Transactional
     public void deleteQnA(QnAForm qnAForm) throws IOException {
         Optional<QnA> findQnA = qnAJpaRepository.findById(qnAForm.getQnaNum());
-        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("Not Found QnA Info"));
         QnAFile qnAFile = qnAFileJpaRepository.findQnAFileByQnA(qnA);
 
         if(!qnAFile.getUploadPath().equals("none")) {
@@ -160,9 +160,8 @@ public class QnAService {
 
     public QnADTO findQnA(Long QnAId) {
 
-//        QnA qna = qnARepository.findQnA(QnAId);
         Optional<QnA> findQnA = qnAJpaRepository.findById(QnAId);
-        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("Not Found QnA Info"));
 
         QnADTO qnADTO = new QnADTO(qnA);
 
@@ -172,27 +171,21 @@ public class QnAService {
 
 
     public long getCountAll() {
-//        return qnARepository.getCountAll();
         return qnAJpaRepository.count();
     }
 
     public int getPagingCount(SearchCriteria searchCriteria) {
 
-//        return qnARepository.getPagingCount(searchCriteria);
         return qnAJpaRepository.getPagingCount(searchCriteria);
     }
 
 
-// 2024 01 31 여기까지 고쳤음
     public QnAFileForm findQnAFile(Long qnaId) {
 
         Optional<QnA> findQnA = qnAJpaRepository.findById(qnaId);
-        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+        QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("Not Found QnA Info"));
         QnAFile qnAFile = qnAFileJpaRepository.findQnAFileByQnA(qnA);
 
-//        QnA qnA = qnARepository.findQnA(qnaId);
-//
-//        QnAFile qnAFileByQnA = qnAFileRepository.findQnAFileByQnA(qnA);
 
         // ModelMapper 라이브러리를 이용해 간편하게 Form 객체로 변경가능
 
@@ -254,31 +247,27 @@ public class QnAService {
 
         if (oldCookie != null) {
             if(!oldCookie.getValue().contains("[" + qnaNum +"]")) {
-//                QnA qnA = qnARepository.findQnA(qnaNum);
                 Optional<QnA> findQnA = qnAJpaRepository.findById(qnaNum);
-                QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+                QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("Not Found QnA Info"));
                 oldCookie.setValue(oldCookie.getValue() + "[" + qnaNum + "]");
                 oldCookie.setPath("/");
                 oldCookie.setMaxAge(60*60*24); // 쿠키 설정 시간 하루
                 response.addCookie(oldCookie);
 
                 qnA.increaseHit();
-//                qnARepository.save(qnA);
                 qnAJpaRepository.save(qnA);
             }
 
         }else {
 
-//            QnA qnA = qnARepository.findQnA(qnaNum);
             Optional<QnA> findQnA = qnAJpaRepository.findById(qnaNum);
-            QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("해당하는 QnA가 없습니다."));
+            QnA qnA = findQnA.orElseThrow(() -> new EntityNotFoundException("Not Found QnA Info"));
             Cookie newCookie = new Cookie("postView", "[" + qnaNum + "]");
             newCookie.setPath("/");
             newCookie.setMaxAge(60 * 60 * 24);
             response.addCookie(newCookie);
 
             qnA.increaseHit();
-//            qnARepository.save(qnA);
             qnAJpaRepository.save(qnA);
         }
     }

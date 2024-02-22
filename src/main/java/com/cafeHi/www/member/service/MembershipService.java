@@ -28,7 +28,7 @@ public class MembershipService {
     public Membership findMembership(Long MembershipId) {
 //        return membershipRepository.findMembership(MembershipId);
         Optional<Membership> findMembership = membershipJpaRepository.findById(MembershipId);
-        return findMembership.orElseThrow(() -> new EntityNotFoundException("해당하는 멤버쉽이 없습니다."));
+        return findMembership.orElseThrow(() -> new EntityNotFoundException("Not Found Membership Info"));
     }
 
 }

@@ -181,13 +181,13 @@ public class MemberService {
     public Member findMember(Long memberId) {
 //        return memberRepository.findMember(memberId);
         Optional<Member> findMember = memberJpaRepository.findById(memberId);
-        return findMember.orElseThrow(() -> new EntityNotFoundException("해당하는 멤버가 없습니다."));
+        return findMember.orElseThrow(() -> new EntityNotFoundException("Not Found Member Info"));
     }
 
     public MemberAuth findMemberAuth(Long memberAuthId) {
 //        return memberRepository.findMemberAuth(memberAuthId);
         Optional<MemberAuth> findMemberAuth = memberAuthJpaRepository.findById(memberAuthId);
-        return findMemberAuth.orElseThrow(() -> new EntityNotFoundException("해당하는 멤버권한이 없습니다."));
+        return findMemberAuth.orElseThrow(() -> new EntityNotFoundException("Not Found Member Auth Info"));
     }
 
 
@@ -255,7 +255,7 @@ public class MemberService {
 
 //        Member member = memberRepository.findMember(changeMemberPwForm.getMemberCode());
         Optional<Member> findMember = memberJpaRepository.findById(changeMemberPwForm.getMemberCode());
-        Member member = findMember.orElseThrow(() -> new EntityNotFoundException("해당하는 멤버가 없습니다."));
+        Member member = findMember.orElseThrow(() -> new EntityNotFoundException("Not Found Member Info"));
 
         // 가져온 엔티티의 비밀번호와 인코딩한 비밀번호가 서로 일치한다면
         if (passwordEncode.matches(changeMemberPwForm.getCurrentPassword(), member.getMemberPw())) {
